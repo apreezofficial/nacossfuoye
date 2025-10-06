@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>NACOS MEMO Generator</title>
+   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+   <link rel="stylesheet" href="memo.css">
+</head>
+
+<body>
+   <div class="container">
+      <header class="header">
+         <h1>NACOSS MEMO Generator</h1>
+      </header>
+
+      <div class="main-content">
+         <aside class="form-section">
+            <div class="form-group">
+               <label for="dateInput">Date</label>
+               <input type="date" id="dateInput" name="dateInput" min="2025-10-01">
+            </div>
+
+            <div class="form-group">
+               <label for="refInput">Reference Number</label>
+               <input type="number" id="refInput" name="refInput" value="01" min="1">
+            </div>
+
+            <div class="form-group">
+               <label for="headInput">Memo Subject</label>
+               <input type="text" id="headInput" name="headInput" value="THIS IS A DEMO OF THE PROPOSED LETTER HEAD"
+                  placeholder="Enter memo subject">
+            </div>
+
+            <div class="form-group">
+               <label>Memo Content</label>
+               <div class="editor-container">
+                  <div id="contentInput"></div>
+               </div>
+            </div>
+         </aside>
+
+         <main class="preview-section">
+            <div class="download-buttons">
+               <button id="downloadPNG" class="btn btn-primary">Download PNG</button>
+               <button id="downloadPDF" class="btn btn-secondary">Download PDF</button>
+            </div>
+            <section class="letterHead">
+               <div class="header-section">
+                  <div class="logos">
+                     <img src="assets/nacossLogo.png" alt="NACOSS Logo" loading="lazy">
+                     <img src="assets/fuoyeLogo.png" alt="FUOYE Logo" loading="lazy">
+                  </div>
+                  <h2 id="nacossName">NIGERIA ASSOCIATION OF COMPUTER SCIENCE STUDENTS (NACOSS)
+                     <span>Federal University Oye-Ekiti (FUOYE)</span>
+                  </h2>
+
+                  <div class="ref-date">
+                     <h2>REF:.............................</h2>
+                     <h2>DATE:..........................</h2>
+                  </div>
+               </div>
+
+               <div id="memoDate">27-01-2025</div>
+               <div id="memoRef">NACOS/25/__</div>
+               <h1 id="memoHead"></h1>
+
+               <div id="memoContent">
+                  <!--  class="ql-editor" add this for more styling -->
+               </div>
+
+               <footer class="footer-section">
+                  <div class="signatures">
+                     <div class="signed">
+                        <img src="assets/presidentSign.png" alt="president signature" class="signature">
+                        <p class="name">Comr. Vincent Oluwatobiloba</p>
+                        <p class="position">President</p>
+                        <p class="contact">08165753505</p>
+                     </div>
+                     <div class="signed">
+                        <img src="assets/genSign.png" alt="gensec signature" class="signature">
+                        <p class="name">Comr. Ogunniran Damilola</p>
+                        <p class="position">General Secretary</p>
+                        <p class="contact">09036440269</p>
+                     </div>
+                     <div class="signed">
+                        <img src="assets/proSign.png" alt="PRO signature" class="signature">
+                        <p class="name">Comr. Idowu Emmanuel</p>
+                        <p class="position">P.R.O.</p>
+                        <p class="contact">08148310886</p>
+                     </div>
+
+                  </div>
+                  <img src="assets/footer.png" alt="footer-img">
+               </footer>
+            </section>
+         </main>
+      </div>
+
+   </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+   <script src="script.js"></script>
+</body>
+
+</html>
