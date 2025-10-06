@@ -10,6 +10,8 @@ import { Route, Routes } from 'react-router-dom';
 import AdminLogin from './AdminLogin';
 import ProtectedRoute from './ProtectedRoute';
 import supabase from '../supabaseClient';
+import Index from './Index';
+
 
 function App() {
    const currentDate = new Date();
@@ -98,10 +100,9 @@ function App() {
          />
 
          <Route path='/memos' element={<Memos />} />
-
          <Route path='/memos/:reference' element={<ViewMemo />} />
-         <Route path="/admin/login" element={<AdminLogin />}
-         />
+         <Route path="/admin/login" element={<AdminLogin />} />
+         <Route path="/" element={<Index />} />
       </Routes>
 
    )

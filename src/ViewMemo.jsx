@@ -26,7 +26,7 @@ function ViewMemo() {
          if (error) {
             setError('Could not fetch');
             console.log(error);
-            navigate('/memos', { replace: true });
+            navigate('/', { replace: true });
          }
          if (data) {
             setDate(data.date);
