@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import Notification from './Notification';
-import supabase from '../supabaseClient';
+import supabase from '../services/supabaseClient';
 
 function Buttons({ elementRef, referenceNumber = 'document',
    date = new Date().toISOString().split('T')[0],

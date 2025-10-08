@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import supabase from "../supabaseClient";
-import Notification from "./Notification";
-import Letterhead from "./Letterhead";
+import supabase from "../services/supabaseClient";
+import Notification from "../components/Notification";
+import Letterhead from "../components/Letterhead";
 
 function ViewMemo() {
 
@@ -44,11 +44,11 @@ function ViewMemo() {
          {error && <Notification message={'Fail to get data'} type={"error"} />}
          <section className="view-memo">
             <Link to={'/memos'}>
-               <button className="btn btn-primary" style={{marginBottom : '20px'}}>HOME</button>
-         </Link>
+               <button className="btn btn-primary" style={{ marginBottom: '20px' }}>HOME</button>
+            </Link>
 
-         <Letterhead date={date} referenceNumber={reference} head={head} content={content} letterHeadRef={null} />
-      </section >
+            <Letterhead date={date} referenceNumber={reference} head={head} content={content} letterHeadRef={null} />
+         </section >
       </>
    )
 }

@@ -2,9 +2,141 @@
 <html lang="en">
 
 <head>
+   <!-- *========= Meta Tags and Page Information ========= -->
    <meta charset="UTF-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <title>NACOSS</title>
+
+   <!-- ? ------- SEO Optimization -------- -->
+   <meta name="robots" content="index, follow" />
+   <meta name="description"
+      content="Official NACOSS MEMO Generator - Create, preview, and manage professional memos for Nigeria Association of Computer Science Students. Secure admin portal with database storage and letterhead generation." />
+   <meta name="keywords"
+      content="NACOSS, memo generator, Nigeria Association of Computer Science Students, official memo, letterhead generator, memo management, student organization, NACOSS memos, computer science students, memo database, admin portal, Nick Frøst Innovations" />
+   <meta name="author" content="Nick Frøst Innovations" />
+
+   <!-- Open Graph / Facebook Meta Tags -->
+   <meta property="og:title" content="NACOSS MEMO Generator - Official Memo Management System" />
+   <meta property="og:description"
+      content="Create and manage official NACOSS memos online. Secure admin authentication, professional letterhead generation, and database storage for Nigeria Association of Computer Science Students." />
+   <meta property="og:image" content="https://yourdomain.com/images/nacoss-memo-preview.png" />
+   <meta property="og:url" content="https://yourdomain.com/" />
+   <meta property="og:type" content="website" />
+   <meta property="og:site_name" content="NACOSS MEMO Generator" />
+
+   <!-- *========== Twitter Meta Tags====== -->
+   <meta name="twitter:card" content="summary_large_image" />
+   <meta name="twitter:title" content="NACOSS MEMO Generator - Official Memo Management" />
+   <meta name="twitter:description"
+      content="📝 Create. 👀 Preview. 💾 Manage. Official memo generator for NACOSS executives with secure admin portal and database storage." />
+   <meta name="twitter:image" content="https://yourdomain.com/images/nacoss-memo-preview.png" />
+   <meta name="twitter:creator" content="@nickfrost2" />
+
+   <!-- *========= Structured Data for SEO ========= -->
+   <script type="application/ld+json">
+       {
+         "@context": "https://schema.org",
+         "@type": "WebApplication",
+         "name": "NACOSS MEMO Generator",
+         "applicationCategory": "BusinessApplication",
+         "offers": {
+           "@type": "Offer",
+           "price": "0",
+           "priceCurrency": "NGN"
+         },
+         "operatingSystem": "All",
+         "description": "Official memo generator and management system for NACOSS (Nigeria Association of Computer Science Students). Create, preview, and manage professional memos with secure admin authentication.",
+         "creator": {
+           "@type": "Person",
+           "name": "Nick Frøst",
+           "url": "https://nickfrost-portfolio.vercel.app/"
+         },
+         "maintainer": {
+           "@type": "Person",
+           "name": "Nick Frøst",
+           "jobTitle": "Lead Developer",
+           "email": "bensonnicholas206@gmail.com"
+         },
+         "inLanguage": "en-US",
+         "audience": {
+           "@type": "Audience",
+           "audienceType": "NACOSS Executives and Members"
+         },
+         "featureList": [
+           "Memo Editor with live preview",
+           "Official NACOSS letterhead generation",
+           "Secure admin authentication",
+           "Database storage with Supabase",
+           "Memo management dashboard",
+           "Protected routes for admins",
+           "Responsive mobile and desktop design",
+           "Reference number tracking"
+         ],
+         "potentialAction": [
+           {
+             "@type": "CreateAction",
+             "target": {
+               "@type": "EntryPoint",
+               "urlTemplate": "https://yourdomain.com/admin",
+               "description": "Create and edit official NACOSS memos"
+             },
+             "object": {
+               "@type": "Thing",
+               "name": "NACOSS Official Memo"
+             }
+           },
+           {
+             "@type": "ViewAction",
+             "target": {
+               "@type": "EntryPoint",
+               "urlTemplate": "https://yourdomain.com/memos",
+               "description": "View all NACOSS memos"
+             },
+             "object": {
+               "@type": "Thing",
+               "name": "Memo Archive"
+             }
+           }
+         ],
+         "about": {
+           "@type": "Organization",
+           "name": "NACOSS - Nigeria Association of Computer Science Students",
+           "description": "Official memo management system for creating and archiving NACOSS communications and official documents."
+         },
+         "mainEntityOfPage": {
+           "@type": "WebPage",
+           "url": "https://yourdomain.com/"
+         },
+         "softwareVersion": "1.0",
+         "programmingLanguage": "JavaScript",
+         "runtimePlatform": "React",
+         "database": "Supabase",
+         "targetProduct": {
+           "@type": "SoftwareApplication",
+           "name": "NACOSS MEMO Generator",
+           "operatingSystem": "Web Browser"
+         }
+       }
+   </script>
+
+   <!-- *========= Favicon ========= -->
+   <link rel="icon" type="image/png" sizes="192x192" href="src/assets/nacossLogo.png" />
+   <link rel="icon" type="image/png" sizes="32x32" href="src/assets/nacossLogo.png" />
+   <link rel="icon" type="image/png" sizes="96x96" href="src/assets/nacossLogo.png" />
+   <link rel="icon" type="image/png" sizes="16x16" href="src/assets/nacossLogo.png" />
+   <meta name="theme-color" content="#039133" />
+   <meta name="apple-mobile-web-app-title" content="NACOSS MEMO" />
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+   <link rel="canonical" href="https://yourdomain.com/" />
+
+   <!-- *========= External CSS Libraries ========= -->
+   <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css" />
+
+   <!-- *========= Custom Stylesheet ========= -->
+   <link rel="stylesheet" href="assets/styles/homepage.css" />
+
+   <title>NACOSS MEMO</title>
 </head>
 
 <body>

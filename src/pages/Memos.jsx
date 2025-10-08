@@ -1,6 +1,6 @@
-import supabase from '../supabaseClient';
+import supabase from '../services/supabaseClient';
 import { useEffect, useState } from 'react';
-import Item from './Item';
+import Item from '../components/Item';
 
 function Memos() {
    const [fetchError, setFetchError] = useState(null);
@@ -32,7 +32,7 @@ function Memos() {
          {data && (
             <div className="item-container">
                {data.map(item => (
-                  <Item key={item.id} {...item}/>
+                  <Item key={item.id} {...item} />
                ))}
             </div>
          )}

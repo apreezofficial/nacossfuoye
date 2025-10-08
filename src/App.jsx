@@ -1,16 +1,20 @@
-/* eslint-disable no-unused-vars */
-import { useState, useEffect, useRef } from 'react'
-import './App.css'
-import Editor from './Editor'
-import Letterhead from './Letterhead';
-import Buttons from './Buttons';
-import Memos from './Memos';
-import ViewMemo from './ViewMemo'
+// *React imports
+import { useState, useEffect, useRef } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import AdminLogin from './AdminLogin';
-import ProtectedRoute from './ProtectedRoute';
-import supabase from '../supabaseClient';
-import Index from './Index';
+import './App.css';
+import ProtectedRoute from './routes/ProtectedRoute';
+import supabase from './services/supabaseClient';
+
+// * Components
+import Editor from './components/Editor'
+import Letterhead from './components/Letterhead';
+import Buttons from './components/Buttons';
+
+// * Pages
+import Memos from './pages/Memos';
+import ViewMemo from './pages/ViewMemo';
+import AdminLogin from './pages/AdminLogin';
+import Homepage from './pages/Home';
 
 
 function App() {
@@ -102,7 +106,7 @@ function App() {
          <Route path='/memos' element={<Memos />} />
          <Route path='/memos/:reference' element={<ViewMemo />} />
          <Route path="/admin/login" element={<AdminLogin />} />
-         <Route path="/" element={<Index />} />
+         <Route path="/" element={<Homepage />} />
       </Routes>
 
    )
