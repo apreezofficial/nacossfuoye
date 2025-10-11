@@ -3,7 +3,8 @@ import fuoyeLogo from '../assets/fuoyeLogo.png';
 import genSign from '../assets/genSign.png';
 import presidentSign from '../assets/presidentSign.png';
 import proSign from '../assets/proSign.png';
-import footer from '../assets/footer.png';
+import footer from '../assets/footer.png'
+
 function Letterhead({ date, referenceNumber, head, content, letterHeadRef }) {
 
    return (
@@ -58,4 +59,4 @@ function Letterhead({ date, referenceNumber, head, content, letterHeadRef }) {
    )
 }
 
-export default Letterhead
+export default Letterhead;

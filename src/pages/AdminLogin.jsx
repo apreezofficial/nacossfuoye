@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import supabase from '../services/supabaseClient';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
+import { EyeOff, Eye} from 'lucide-react'
 
 function LoginForm() {
    const [formData, setFormData] = useState({
@@ -56,10 +58,14 @@ function LoginForm() {
          password: formData.password,
       });
 
-      if (error) return setError(error.message);
+      if (error) {
+         setIsLoading(false);
+         return setError(error.message)
+      };
 
       // ✅ Store the session token safely (handled by Supabase internally)
-      navigate("/admin/edit");
+      navigate("/admin/dashboard");
+      // localStorage.setItem("email", formData.email);
       setIsLoading(false);
    };
 
@@ -103,7 +109,7 @@ function LoginForm() {
                      onClick={() => setShowPassword(!showPassword)}
                      tabIndex={-1}
                   >
-                     {showPassword ? '👁️' : '👁️‍🗨️'}
+                     {showPassword ? <Eye size={16}/> : <EyeOff size={16}/>}
                   </button>
                </div>
                {errors.password && <span className="error-message">{errors.password}</span>}
@@ -123,7 +129,16 @@ function LoginForm() {
                   'Login'
                )}
             </button>
-         </form>
+
+            <Link to='/' className='plain-link'>
+            <button
+               type="button"
+               className="login-button"
+            >
+               Student Page
+               </button>
+            </Link>
+         </form>  
       </div>
    );
 }

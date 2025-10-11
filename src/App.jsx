@@ -1,64 +1,33 @@
 // *React imports
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import ProtectedRoute from './routes/ProtectedRoute';
 import supabase from './services/supabaseClient';
-
-// * Components
-import Editor from './components/Editor'
-import Letterhead from './components/Letterhead';
-import Buttons from './components/Buttons';
+import Logout from './components/Logout';
 
 // * Pages
 import Memos from './pages/Memos';
 import ViewMemo from './pages/ViewMemo';
 import AdminLogin from './pages/AdminLogin';
-import Homepage from './pages/Home';
+import CreateNewMemo from './pages/CreateNewMemo';
+import AdminDashBoard from './pages/AdminDashBoard';
+import EditMemo from './pages/EditMemo';
 
+import Loading from './components/Loading';
 
 function App() {
-   const currentDate = new Date();
-   const formattedDate = currentDate.toISOString().slice(0, 10);
-
-   const [date, setDate] = useState(formattedDate);
-   const [referenceNumber, setReferenceNumber] = useState('NACOSS/25__');
-   const [head, setHead] = useState('This is a demo');
-   const [content, setContent] = useState('');
-
-   const letterHeadRef = useRef(null);
-   const previewRef = useRef(null);
-
    const [user, setUser] = useState();
+   const [loading, setLoading] = useState(true);
 
    useEffect(() => {
-      function scalePaper() {
-         const paper = letterHeadRef.current;
-         const wrapper = previewRef.current;
-         if (!paper || !wrapper) return;
-         const baseWidth = 794;
-         const baseHeight = 1123;
-         const scale = wrapper.offsetWidth / (baseWidth + 100);
-         paper.style.transform = `scale(${scale})`;
-      }
-      window.addEventListener("resize", scalePaper);
-      window.addEventListener("load", scalePaper);
-
-      scalePaper();
-
-      return () => {
-         window.removeEventListener("resize", scalePaper);
-         window.removeEventListener("load", scalePaper);
-      };
-   }, []);
-
-   useEffect(() => {
-      // Get current session (if user already logged in)
-      supabase.auth.getSession().then(({ data }) => {
+      async function checkSession() {
+         const { data } = await supabase.auth.getSession();
          setUser(data.session?.user ?? null);
-      });
+         setLoading(false);
+      }
+      checkSession();
 
-      // Listen for login/logout changes
       const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
          setUser(session?.user ?? null);
       });
@@ -66,49 +35,46 @@ function App() {
       return () => listener.subscription.unsubscribe();
    }, []);
 
+   if (loading) return <Loading />;
+
    return (
       <Routes>
+         <Route path='/' element={<Memos />} />
+
+         <Route path='/:reference' element={<ViewMemo />} />
+
+         <Route path="/admin" element={
+            <>
+               <Logout />
+               <AdminLogin />
+            </>
+         } />
          <Route path='/admin/edit' element={
             <ProtectedRoute user={user}>
-               <div className="container">
-                  <header className="header">
-                     <h1>NACOSS MEMO Generator</h1>
-                  </header>
-
-                  <div className='main-content'>
-                     <Editor
-                        date={date}
-                        setDate={setDate}
-                        referenceNumber={referenceNumber}
-                        setReferenceNumber={setReferenceNumber}
-                        head={head}
-                        setHead={setHead}
-                        setContent={setContent}
-                     />
-                     <main className="preview-section" ref={previewRef}>
-                        <Buttons elementRef={letterHeadRef} referenceNumber={referenceNumber} date={date} head={head} content={content} />
-
-                        <Letterhead
-                           date={date}
-                           referenceNumber={referenceNumber}
-                           head={head}
-                           content={content}
-                           letterHeadRef={letterHeadRef}
-                        />
-                     </main>
-                  </div>
-               </div>
+               <>
+                  <Logout />
+                  <CreateNewMemo />
+               </>
             </ProtectedRoute>
-         }
+         } />
+         <Route path='/admin/dashboard' element={
+            <ProtectedRoute user={user}>
+               <>
+                  <Logout />
+                  <AdminDashBoard />
+               </>
+            </ProtectedRoute>
+         } />
 
-         />
-
-         <Route path='/memos' element={<Memos />} />
-         <Route path='/memos/:reference' element={<ViewMemo />} />
-         <Route path="/admin/login" element={<AdminLogin />} />
-         <Route path="/" element={<Homepage />} />
+         <Route path='/admin/edit/:reference' element={
+            <ProtectedRoute user={user}>
+               <>
+                  <Logout />
+                  <EditMemo />
+               </>
+            </ProtectedRoute>
+         } />
       </Routes>
-
    )
 }
 

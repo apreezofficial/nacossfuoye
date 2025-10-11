@@ -1,6 +1,5 @@
 
 function FromGroup({ title, type = 'text', name, onChange }) {
-
    return (
       <div className="form-group">
          <label htmlFor={name}>{title}</label>

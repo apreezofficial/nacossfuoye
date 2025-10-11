@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 
-function QuilEditor({ onChange }) {
+function QuilEditor({ onChange, value = null }) {
    const editorRef = useRef(null);
    const quillRef = useRef(null);
 
@@ -23,7 +23,7 @@ function QuilEditor({ onChange }) {
             modules: {
                toolbar: [
                   [{ 'font': Font.whitelist }],
-                  [{ size: Size.whitelist}],
+                  [{ size: Size.whitelist }],
                   [{ align: [] }],
                   [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
                   [{ indent: "-1" }, { indent: "+1" }],
@@ -50,7 +50,9 @@ function QuilEditor({ onChange }) {
       <div className="form-group">
          <label>Memo Content</label>
          <div className="editor-container">
-            <div ref={editorRef} />
+            <div ref={editorRef}>
+               {value && <div dangerouslySetInnerHTML={{ __html: value }} />}
+            </div>
          </div>
       </div>
    );

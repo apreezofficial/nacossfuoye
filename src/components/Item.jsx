@@ -8,7 +8,7 @@ function Item(props) {
    }
 
    return (
-      <Link to={`/memos/${encodeURIComponent(props.reference)}`} className='plain-link'>
+      <Link to={`/${encodeURIComponent(props.reference)}`} className='plain-link'>
          <div className="item-card" title={props.head.toUpperCase()}>
             <p className="item-ref">{props.reference}</p>
             <p className="item-date">{props.date}</p>
