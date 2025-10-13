@@ -40,7 +40,7 @@ function Memos() {
    return (
       <div>
          <div className='page-title'>
-            <Link to={'/admin'}>
+            <Link to={'/admin/dashboard'}>
                <button className="btn btn-primary">
                   <UserStar size={20} />
                </button>
