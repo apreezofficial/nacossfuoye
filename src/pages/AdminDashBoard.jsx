@@ -2,7 +2,7 @@ import supabase from '../services/supabaseClient';
 import { useEffect, useState } from 'react';
 import MemoCard from '../components/MemoCard';
 import { Link } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { Plus, House } from 'lucide-react';
 import Loading from '../components/Loading';
 
 function AdminDashBoard() {
@@ -90,7 +90,14 @@ function AdminDashBoard() {
 
    return (
       <div>
-         {fetchError && <h1 className='error-message'>{fetchError}</h1>}
+         <div className='page-title'>
+            <Link to={'/'}>
+               <button className="btn btn-primary">
+                  <House size={20} />
+               </button>
+            </Link>
+            <h1>Admin Dashboard</h1>
+         </div>
          <Link to='/admin/create' className='plain-link'>
             <div className="create-memo" title='Create new memo'>
                <Plus size={50} />
@@ -107,6 +114,7 @@ function AdminDashBoard() {
          </div>
 
          <div className="item-container">
+            {fetchError && <h1 className='error-message'>{fetchError}</h1>}
             {data.map(item => (
                <MemoCard
                   key={item.id}

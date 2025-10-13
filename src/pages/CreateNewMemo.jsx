@@ -9,8 +9,6 @@ import { Link } from 'react-router-dom';
 import { AddNewMemo, UpdateMemo } from '../components/PublishBtn';
 
 function CreateNewMemo({ Date = '', ReferenceNumber = '', Head = '', Content = '', is_New = true }) {
-   // const currentDate = new Date();
-   // const formattedDate = currentDate.toISOString().slice(0, 10);
 
    const [date, setDate] = useState(Date);
    const [referenceNumber, setReferenceNumber] = useState(ReferenceNumber);
@@ -41,7 +39,11 @@ function CreateNewMemo({ Date = '', ReferenceNumber = '', Head = '', Content = '
    return (
       <div className="container">
          <header className="header">
-            <h1>NACOSS MEMO Generator</h1>
+            <Link to={'/admin/dashboard'}>
+               <button className="btn btn-primary">
+                  <House size={24} />
+               </button>
+            </Link>
          </header>
 
          <div className='main-content'>
@@ -85,12 +87,6 @@ function CreateNewMemo({ Date = '', ReferenceNumber = '', Head = '', Content = '
 
             <main className="preview-section" ref={previewRef}>
                <div className="view-btns">
-                  <Link to={'/admin/dashboard'}>
-                     <button className="btn">
-                        <House size={18} />
-                     </button>
-                  </Link>
-
                   <DownloadBtn elementRef={letterHeadRef} referenceNumber={referenceNumber} />
 
                   {is_New ? <AddNewMemo referenceNumber={referenceNumber} date={date} head={head} content={content} /> : <UpdateMemo referenceNumber={referenceNumber} date={date} head={head} content={content} />}
