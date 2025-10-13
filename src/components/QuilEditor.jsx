@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 
-function QuilEditor({ onChange, value = null }) {
+function QuilEditor({ onChange, content = '' }) {
    const editorRef = useRef(null);
    const quillRef = useRef(null);
 
@@ -46,12 +46,21 @@ function QuilEditor({ onChange, value = null }) {
       }
    }, []);
 
+   useEffect(() => {
+      if (quillRef.current && content) {
+         // Only update if the current content is different
+         const currentContent = quillRef.current.root.innerHTML;
+         if (currentContent !== content) {
+            quillRef.current.root.innerHTML = content;
+         }
+      }
+   }, [content]);
+
    return (
       <div className="form-group">
          <label>Memo Content</label>
          <div className="editor-container">
             <div ref={editorRef}>
-               {value && <div dangerouslySetInnerHTML={{ __html: value }} />}
             </div>
          </div>
       </div>

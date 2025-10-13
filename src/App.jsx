@@ -49,7 +49,7 @@ function App() {
                <AdminLogin />
             </>
          } />
-         <Route path='/admin/edit' element={
+         <Route path='/admin/create' element={
             <ProtectedRoute user={user}>
                <>
                   <Logout />

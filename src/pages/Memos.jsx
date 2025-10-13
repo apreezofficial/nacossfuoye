@@ -31,7 +31,7 @@ function Memos() {
       };
 
       fetchData();
-   }, [order]);
+   }, [order, data]);
 
    if (loading) return <Loading />;
 

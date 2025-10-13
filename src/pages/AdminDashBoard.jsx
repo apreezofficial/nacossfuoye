@@ -1,6 +1,5 @@
 import supabase from '../services/supabaseClient';
 import { useEffect, useState } from 'react';
-// import Item from '../components/Item';
 import MemoCard from '../components/MemoCard';
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
@@ -8,51 +7,116 @@ import Loading from '../components/Loading';
 
 function AdminDashBoard() {
    const [fetchError, setFetchError] = useState(null);
-   const [data, setData] = useState(null);
+   const [data, setData] = useState([]);
    const [loading, setLoading] = useState(true);
+   const [order, setOrder] = useState(true);
 
    useEffect(() => {
       const fetchData = async () => {
          const { data, error } = await supabase
             .from('memo')
             .select()
-            .order('created_at', { ascending: false });
+            .order('created_at', { ascending: order });
 
          if (error) {
-            setFetchError('Could not fetch');
-            setData(null);
+            setFetchError('Could not fetch memos');
+            setData([]); // Set data to empty array on error
          } else {
             setData(data);
             setFetchError(null);
-            const timer = setTimeout(() => {
-               setLoading(false);
-            }, 1000);
-            return () => clearTimeout(timer);
          }
+         // Always set loading to false after the fetch attempt is complete
+         setLoading(false);
       };
 
       fetchData();
-   }, []);
+   }, [order]);
 
-   if (loading) return <Loading />;  
+   // This function handles both the database and local state updates
+   async function handleVisibility(reference, status) {
+      setData(currentMemos =>
+         currentMemos.map(memo =>
+            memo.reference === reference
+               ? { ...memo, is_published: !memo.is_published }
+               : memo
+         )
+      );
+
+      const { error } = await supabase
+         .from('memo')
+         .update({ is_published: !status })
+         .eq('reference', reference);
+
+      if (error) {
+         console.error("Failed to update memo:", error);
+         alert("Error: Could not update the memo's visibility.");
+         // Revert the state to its original form
+         setData(currentMemos =>
+            currentMemos.map(memo =>
+               memo.reference === reference
+                  ? { ...memo, is_published: status } // Revert back to original status
+                  : memo
+            )
+         );
+      }
+   }
+
+   // In your AdminDashBoard.js component
+
+   async function handleDelete(reference) {
+      if (!window.confirm("Are you sure you want to delete this memo? This action cannot be undone.")) {
+         return;
+      }
+
+      const originalData = [...data];
+
+      setData(currentMemos =>
+         currentMemos.filter(memo => memo.reference !== reference)
+      );
+
+      const { error } = await supabase
+         .from('memo')
+         .delete()
+         .eq('reference', reference);
+
+      if (error) {
+         console.error("Failed to delete memo:", error);
+         alert("Error: Could not delete the memo. Restoring the item.");
+         setData(originalData);
+      }
+   }
+
+   if (loading) return <Loading />;
 
    return (
       <div>
-         {fetchError && <h1>{fetchError}</h1>}
-         <Link to='/admin/edit' className='plain-link'>
+         {fetchError && <h1 className='error-message'>{fetchError}</h1>}
+         <Link to='/admin/create' className='plain-link'>
             <div className="create-memo" title='Create new memo'>
-               <Plus size={50}/>
+               <Plus size={50} />
                <p>Create New Memo</p>
             </div >
          </Link>
 
-         {data && (
-            <div className="item-container">
-               {data.map(item => (
-                  <MemoCard key={item.id} {...item} />
-               ))}
-            </div>
-         )}
+         <div className="filter-container">
+            <h3>Date Created:</h3>
+            <select name="order" id="order" onChange={e => setOrder(e.target.value === "true")}>
+               <option value="true">Newest</option>
+               <option value="false">Oldest</option>
+            </select>
+         </div>
+
+         <div className="item-container">
+            {data.map(item => (
+               <MemoCard
+                  key={item.id}
+                  {...item}
+                  // ISSUE 3 (FIXED): Pass the handler function as a prop
+                  onToggleVisibility={handleVisibility}
+                  onDelete={handleDelete}
+               />
+            ))}
+         </div>
       </div>
    );
 }

@@ -4,13 +4,16 @@ import Letterhead from '../components/Letterhead';
 import DownloadBtn from '../components/DownloadBtn';
 import useScale from '../hooks/useScale';
 import QuilEditor from '../components/QuilEditor';
+import { House } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { AddNewMemo, UpdateMemo } from '../components/PublishBtn';
 
-function CreateNewMemo({Date = null, ReferenceNumber = null, Head = null, Content = null}) {
+function CreateNewMemo({ Date = '', ReferenceNumber = '', Head = '', Content = '', is_New = true }) {
    // const currentDate = new Date();
    // const formattedDate = currentDate.toISOString().slice(0, 10);
 
    const [date, setDate] = useState(Date);
-   const [referenceNumber, setReferenceNumber] = useState(`NACOSS/25/${ReferenceNumber}`);
+   const [referenceNumber, setReferenceNumber] = useState(ReferenceNumber);
    const [head, setHead] = useState(Head);
    const [content, setContent] = useState(Content);
 
@@ -24,8 +27,7 @@ function CreateNewMemo({Date = null, ReferenceNumber = null, Head = null, Conten
    }
 
    function handleRefChange(event) {
-      const newRef = `NACOSS/25/${event.target.value}`;
-      setReferenceNumber(newRef);
+      setReferenceNumber(event.target.value);
    }
 
    function handleHeadChange(event) {
@@ -56,12 +58,13 @@ function CreateNewMemo({Date = null, ReferenceNumber = null, Head = null, Conten
                <div className="form-group">
                   <label htmlFor="refInput">Reference Number</label>
                   <input
-                     type="number"
+                     type="text"
                      id="refInput"
                      name="refInput"
                      value={referenceNumber}
                      min={1}
                      onChange={handleRefChange}
+                     disabled={!is_New}
                   />
                </div>
                <div className="form-group">
@@ -76,14 +79,21 @@ function CreateNewMemo({Date = null, ReferenceNumber = null, Head = null, Conten
                   />
                </div>
 
-               <QuilEditor onChange={handleContentChange} />
+               <QuilEditor onChange={handleContentChange} content={content} />
 
             </aside>
 
             <main className="preview-section" ref={previewRef}>
-               <div className="download-buttons">
+               <div className="view-btns">
+                  <Link to={'/admin/dashboard'}>
+                     <button className="btn">
+                        <House size={18} />
+                     </button>
+                  </Link>
+
                   <DownloadBtn elementRef={letterHeadRef} referenceNumber={referenceNumber} />
-                  {/* <PublishBtn /> */}
+
+                  {is_New ? <AddNewMemo referenceNumber={referenceNumber} date={date} head={head} content={content} /> : <UpdateMemo referenceNumber={referenceNumber} date={date} head={head} content={content} />}
                </div>
 
                <Letterhead

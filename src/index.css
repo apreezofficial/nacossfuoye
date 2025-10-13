@@ -609,6 +609,18 @@ body {
    position: relative;
 }
 
+.notPublished-card {
+   background: var(--error);
+}
+
+.remove-pointer {
+   cursor: default;
+}
+
+.add-pointer {
+   cursor: pointer;
+}
+
 .create-memo {
    background: var(--border);
    color: var(--secondary-color);
@@ -876,7 +888,9 @@ body {
    align-items: center;
    align-content: center;
    position: fixed;
+   z-index: 1000;
 }
+
 .loader {
    width: 50px;
    aspect-ratio: 1;
