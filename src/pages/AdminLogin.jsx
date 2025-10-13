@@ -2,7 +2,7 @@ import { useState } from 'react';
 import supabase from '../services/supabaseClient';
 import { useNavigate, Link } from "react-router-dom";
 
-import { EyeOff, Eye} from 'lucide-react'
+import { EyeOff, Eye, UserStar } from 'lucide-react'
 
 function LoginForm() {
    const [formData, setFormData] = useState({
@@ -72,7 +72,7 @@ function LoginForm() {
    return (
       <div className="login-container">
          <form onSubmit={handleSubmit} className="login-form">
-            <h2>Welcome Back</h2>
+            <h2><UserStar /> Admin Login</h2>
             {error && <span className="error-message">{error}</span>}
 
             <div className="form-group">
@@ -109,7 +109,7 @@ function LoginForm() {
                      onClick={() => setShowPassword(!showPassword)}
                      tabIndex={-1}
                   >
-                     {showPassword ? <Eye size={16}/> : <EyeOff size={16}/>}
+                     {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
                   </button>
                </div>
                {errors.password && <span className="error-message">{errors.password}</span>}
@@ -126,19 +126,19 @@ function LoginForm() {
                      Logging in...
                   </>
                ) : (
-                  'Login'
+                  'Login as Admin'
                )}
             </button>
 
             <Link to='/' className='plain-link'>
-            <button
-               type="button"
-               className="login-button"
-            >
-               Student Page
+               <button
+                  type="button"
+                  className="login-button"
+               >
+                  Student Page
                </button>
             </Link>
-         </form>  
+         </form>
       </div>
    );
 }

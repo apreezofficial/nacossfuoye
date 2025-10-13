@@ -3,7 +3,6 @@ import { Navigate } from "react-router-dom";
 import { LogOut } from 'lucide-react'
 
 const Logout = () => {
-
    const handleLogout = async () => {
       await supabase.auth.signOut();
       return <Navigate to="/admin" replace />;

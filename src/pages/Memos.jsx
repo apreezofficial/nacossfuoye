@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Item from '../components/Item';
 import Loading from '../components/Loading';
 import { Link } from 'react-router-dom';
-import { House } from 'lucide-react';
+import { UserStar } from 'lucide-react';
 
 function Memos() {
    const [fetchError, setFetchError] = useState(null);
@@ -40,9 +40,9 @@ function Memos() {
    return (
       <div>
          <div className='page-title'>
-            <Link to={'/'}>
+            <Link to={'/admin'}>
                <button className="btn btn-primary">
-                  <House size={20} />
+                  <UserStar size={20} />
                </button>
             </Link>
             <h1>Student View</h1>
@@ -54,7 +54,7 @@ function Memos() {
                <option value="false">Oldest</option>
             </select>
          </div>
-         
+
          {fetchError && <h1>{fetchError}</h1>}
          {data && (
             <div className="item-container">
