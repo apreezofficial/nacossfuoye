@@ -57,7 +57,7 @@ function Memos() {
 
          {fetchError && <h1>{fetchError}</h1>}
          {data && (
-            <div className="item-container">
+            <div className="item-container"> 
                {data.map(item => (
                   <Item key={item.id} {...item} />
                ))}
