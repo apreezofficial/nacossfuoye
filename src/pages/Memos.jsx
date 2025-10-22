@@ -13,7 +13,7 @@ function Memos() {
 
    useEffect(() => {
       const fetchData = async () => {
-         const { data, error } = await supabase
+         const { data: fetchedData, error } = await supabase
             .from('memo')
             .select('*')
             .eq('is_published', true)
@@ -23,17 +23,37 @@ function Memos() {
             setFetchError('Could not fetch');
             setData(null);
          } else {
-            setData(data);
+            setData(fetchedData);
             setFetchError(null);
-            const timer = setTimeout(() => {
-               setLoading(false);
-            }, 1000);
-            return () => clearTimeout(timer);
          }
       };
-
       fetchData();
-   }, [order, data]);
+      const timer = setTimeout(() => {
+         setLoading(false);
+      }, 1000);
+
+      // Set up realtime subscription for relevant changes
+      const channel = supabase
+         .channel('memo-changes')
+         .on(
+            'postgres_changes',
+            {
+               event: '*',
+               schema: 'public',
+               table: 'memo',
+            },
+            (payload) => {
+                  console.log('Relevant change detected, refetching...', payload);
+                  fetchData();
+               }
+         )
+         .subscribe();
+
+      return () => {
+         clearTimeout(timer);
+         supabase.removeChannel(channel);
+      };
+   }, [order]);
 
    if (loading) return <Loading />;
 
@@ -57,7 +77,7 @@ function Memos() {
 
          {fetchError && <h1>{fetchError}</h1>}
          {data && (
-            <div className="item-container"> 
+            <div className="item-container">
                {data.map(item => (
                   <Item key={item.id} {...item} />
                ))}

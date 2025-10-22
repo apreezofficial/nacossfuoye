@@ -20,12 +20,12 @@ function AdminDashBoard() {
 
          if (error) {
             setFetchError('Could not fetch memos');
-            setData([]); // Set data to empty array on error
+            setData([]);
          } else {
             setData(data);
             setFetchError(null);
          }
-         // Always set loading to false after the fetch attempt is complete
+         
          setLoading(false);
       };
 
@@ -61,13 +61,10 @@ function AdminDashBoard() {
       }
    }
 
-   // In your AdminDashBoard.js component
-
    async function handleDelete(reference) {
       if (!window.confirm("Are you sure you want to delete this memo? This action cannot be undone.")) {
          return;
       }
-
       const originalData = [...data];
 
       setData(currentMemos =>
