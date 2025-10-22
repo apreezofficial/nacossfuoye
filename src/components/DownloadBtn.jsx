@@ -20,7 +20,8 @@ function DownloadBtn({ elementRef, referenceNumber = 'document'}) {
          if (!elementRef.current) throw new Error('Element not found');
 
          const canvas = await html2canvas(elementRef.current, {
-            scale: 3,
+            scale: 7,
+            letterRendering: true,
             useCORS: true,
             allowTaint: true,
             backgroundColor: '#ffffff',
