@@ -233,7 +233,7 @@ body {
 
 .memoHead {
    position: absolute;
-   top: 198px;
+   top: 208px;
    left: 50%;
    transform: translateX(-50%);
    font-weight: 700;
@@ -362,22 +362,20 @@ body {
 
 /* Loading state */
 .btn.loading {
-   position: relative;
    color: transparent;
+   max-width: 60px;
+   position: relative;
+   overflow: hidden;
 }
 
 .btn.loading::after {
    content: '';
-   position: absolute;
    width: 20px;
    height: 20px;
-   top: 50%;
-   left: 50%;
-   margin-left: -10px;
-   margin-top: -10px;
+   position: absolute;
+   border-radius: 50%;
    border: 2px solid var(--text-black);
    border-top-color: currentColor;
-   border-radius: 50%;
    animation: spin 1s linear infinite;
 }
 
