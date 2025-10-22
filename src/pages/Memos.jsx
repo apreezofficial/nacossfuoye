@@ -8,7 +8,7 @@ import { UserStar } from 'lucide-react';
 function Memos() {
    const [fetchError, setFetchError] = useState(null);
    const [data, setData] = useState(null);
-   const [order, setOrder] = useState(true);
+   const [order, setOrder] = useState(false);
    const [loading, setLoading] = useState(true);
 
    useEffect(() => {
@@ -50,8 +50,8 @@ function Memos() {
          <div className="filter-container">
             <h3>Date Created:</h3>
             <select name="order" id="order" onChange={e => setOrder(e.target.value === "true")}>
-               <option value="true">Newest</option>
-               <option value="false">Oldest</option>
+               <option value="false">Newest</option>
+               <option value="true">Oldest</option>
             </select>
          </div>
 
