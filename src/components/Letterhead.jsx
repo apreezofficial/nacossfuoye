@@ -35,9 +35,9 @@ function Letterhead({ date, referenceNumber, head, content, letterHeadRef }) {
             <div className="signatures">
                <div className="signed">
                   <img src={presidentSign} alt="gensec signature" className="signature" />
-                  <p className="name">Comr. Vincent Oluwatobiloba</p>
+                  <p className="name">Comr. Agbelekale David</p>
                   <p className="position">President</p>
-                  <p className="contact">08165753505</p>
+                  <p className="contact">08108190023</p>
                </div>
                <div className="signed">
                   <img src={genSign} alt="gensec signature" className="signature" />

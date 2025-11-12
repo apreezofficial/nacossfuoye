@@ -161,7 +161,7 @@ body {
 }
 
 
-/* Memo content positioning */
+/** Memo content positioning */
 .header-section {
    position: absolute;
    top: 30px;
@@ -310,7 +310,7 @@ body {
 
    & .signature {
       height: 50px;
-      width: auto;
+      max-width: 50px;
       margin-bottom: 10px;
    }
 }
