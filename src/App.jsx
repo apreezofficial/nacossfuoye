@@ -1,7 +1,6 @@
 // *React imports
 import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import './App.css';
 import ProtectedRoute from './routes/ProtectedRoute';
 import supabase from './services/supabaseClient';
 import Logout from './components/Logout';
