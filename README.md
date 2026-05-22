@@ -1,3 +1,5 @@
+<!-- @format -->
+
 # NACOSS MEMO Generator
 
 ## Overview
@@ -28,22 +30,24 @@ The **NACOSS MEMO Generator** is a web application designed to help NACOSS (Nige
    git clone https://github.com/yourusername/nacoss-memo-generator.git
    cd nacoss-memo-generator
    ```
+
 2. **Install dependencies:**
 
    ```
    npm install
    ```
-3. **Configure Supabase:**
 
+3. **Configure Supabase:**
    - Create a project on [Supabase](https://supabase.com/).
    - Copy your Supabase URL and public anon key into `src/supabaseClient.js`.
+
 4. **Run the development server:**
 
    ```
    npm run dev
    ```
-5. **Access the app:**
 
+5. **Access the app:**
    - Visit [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## Usage
@@ -66,4 +70,4 @@ NACOSS
 To provide NACOSS with a simple, secure, and efficient tool for generating and managing official memos online.
 
 **Author:**
-[Nick Frøst ❄️](https://github.com/NickFrost2 "Github Profile")
+[Nick Frøst ❄️](https://github.com/nickfrostcode "Github Profile")
