@@ -70,4 +70,4 @@ NACOSS
 To provide NACOSS with a simple, secure, and efficient tool for generating and managing official memos online.
 
 **Author:**
-[Nick Frøst ❄️](https://github.com/nickfrostcode "Github Profile")
+[Nick Frøst ❄️](https://github.com/nickfrostech "Github Profile")
