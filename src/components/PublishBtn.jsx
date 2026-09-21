@@ -1,24 +1,20 @@
-import supabase from '../services/supabaseClient';
+'use client';
+
 import { useState } from 'react';
-import Notification from '../components/Notification';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
+import Notification from '@/components/Notification';
 
-const adminUser = localStorage.getItem('adminUser');
-const currentUser = adminUser ? JSON.parse(adminUser).email : null;
-
-function AddNewMemo({ referenceNumber, date, head, content }) {
+export function AddNewMemo({ referenceNumber, date, head, content, type = 'executive' }) {
    const [isAdding, setIsAdding] = useState(false);
    const [notification, setNotification] = useState(null);
-   const navigate = useNavigate();
+   const router = useRouter();
+   const supabase = createClient();
    const REFERENCE_REGEX = /^NACOSS\/(25|26)\/\d{1,3}$/;
 
    const showNotification = (message, type) => {
       setNotification({ message, type });
       setTimeout(() => setNotification(null), 3000);
-   };
-
-   const validateReferenceFormat = (reference) => {
-      return REFERENCE_REGEX.test(reference);
    };
 
    async function addMemo() {
@@ -29,37 +25,39 @@ function AddNewMemo({ referenceNumber, date, head, content }) {
 
       try {
          if (!allProvided) {
-            showNotification('Please provide all field', 'error');
-            throw new Error('Data not complete');
-         };
-
-         if (!validateReferenceFormat(referenceNumber)) {
-            showNotification(`Reference must follow format:NACOSS/25/XXX or NACOSS/26/XXX where XXX is sequence number (1-3 digits)`, 'error');
+            showNotification('Please provide all fields', 'error');
             return;
          }
 
-         const { error } = await supabase
-            .from('memo')
-            .insert({
-               reference: referenceNumber,
-               date: date,
-               head: head,
-               content: content,
-               created_by: currentUser
-            })
+         if (!REFERENCE_REGEX.test(referenceNumber)) {
+            showNotification(`Reference must follow format: NACOSS/25/XXX`, 'error');
+            return;
+         }
+
+         const { data: { user } } = await supabase.auth.getUser();
+
+         const { error } = await supabase.from('memo').insert({
+            reference: referenceNumber,
+            date: date,
+            head: head,
+            content: content,
+            type: type,
+            created_by: user?.email
+         });
+
          if (error) {
             if (error.code === '23505') {
-               showNotification('Reference already exists. Please use a different reference.', 'error');
-               throw new Error('Reference number already exists. Please use a different reference.');
+               showNotification('Reference already exists.', 'error');
             } else {
                showNotification('Server error, please try again', 'error');
-               throw new Error('supabase issue', error);
             }
+            return;
          }
+
          showNotification('Published successfully!', 'success');
-         navigate('/admin/dashboard');
+         router.push('/admin/dashboard');
       } catch (error) {
-         console.log(error);
+         console.error(error);
       } finally {
          setIsAdding(false);
       }
@@ -69,55 +67,55 @@ function AddNewMemo({ referenceNumber, date, head, content }) {
       <>
          {notification && <Notification message={notification.message} type={notification.type} />}
          <button
-            className={`btn btn-primary ${isAdding ? 'loading' : ''}`}
+            className="px-6 py-3 bg-primary/95 hover:bg-primary backdrop-blur-md text-white font-semibold rounded-xl border border-white/20 transition-all duration-300 ease-out active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
             disabled={isAdding}
             onClick={addMemo}
          >
-            Publish Memo
+            {isAdding ? 'Publishing...' : 'Publish Memo'}
          </button>
       </>
-   )
+   );
 }
 
-
-
-function UpdateMemo({ referenceNumber, date, head, content }) {
+export function UpdateMemo({ referenceNumber, date, head, content, type = 'executive' }) {
    const [isAdding, setIsAdding] = useState(false);
    const [notification, setNotification] = useState(null);
+   const supabase = createClient();
 
    const showNotification = (message, type) => {
       setNotification({ message, type });
       setTimeout(() => setNotification(null), 3000);
    };
 
-   async function UpdateMemo() {
+   async function updateMemo() {
       setIsAdding(true);
       const allProvided = [referenceNumber, date, head, content].every(
          v => v !== null && v !== undefined && String(v).trim() !== ""
       );
+
       try {
          if (!allProvided) {
-            showNotification('Please provide all field', 'error');
-            throw new Error('Data not complete');
-         };
+            showNotification('Please provide all fields', 'error');
+            return;
+         }
 
-         const { error } = await supabase
-            .from('memo')
-            .update({
-               date: date,
-               head: head,
-               content: content,
-               last_edited_by: currentUser,
-            })
-            .eq('reference', referenceNumber)
+         const { data: { user } } = await supabase.auth.getUser();
+
+         const { error } = await supabase.from('memo').update({
+            date: date,
+            head: head,
+            content: content,
+            type: type,
+            last_edited_by: user?.email,
+         }).eq('reference', referenceNumber);
+
          if (error) {
             showNotification('Server error, please try again', 'error');
-            throw new Error('supabase issue', error);
+            return;
          }
          showNotification('Updated successfully!', 'success');
-
       } catch (error) {
-         console.log(error);
+         console.error(error);
       } finally {
          setIsAdding(false);
       }
@@ -127,14 +125,12 @@ function UpdateMemo({ referenceNumber, date, head, content }) {
       <>
          {notification && <Notification message={notification.message} type={notification.type} />}
          <button
-            className={`btn btn-primary ${isAdding ? 'loading' : ''}`}
+            className="px-6 py-3 bg-primary/95 hover:bg-primary backdrop-blur-md text-white font-semibold rounded-xl border border-white/20 transition-all duration-300 ease-out active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
             disabled={isAdding}
-            onClick={UpdateMemo}
+            onClick={updateMemo}
          >
-            Update Memo
+            {isAdding ? 'Updating...' : 'Update Memo'}
          </button>
       </>
-   )
+   );
 }
-
-export { AddNewMemo, UpdateMemo }

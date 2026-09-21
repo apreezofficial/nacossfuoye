@@ -1,23 +1,36 @@
-import { useEffect } from "react"
+import { useLayoutEffect } from "react";
 
 function useScale({ letterHeadRef, previewRef, dependency = [] }) {
-   useEffect(() => {
+   useLayoutEffect(() => {
       function scalePaper() {
          const paper = letterHeadRef.current;
          const wrapper = previewRef.current;
          if (!paper || !wrapper) return;
-         const baseWidth = 794;
-         const baseHeight = 1123;
-         const scale = wrapper.offsetWidth / (baseWidth + 100);
-         paper.style.transform = `scale(${scale})`;
-      }
-      window.addEventListener("resize", scalePaper);
-      window.addEventListener("load", scalePaper);
 
+         const baseWidth = 794;
+         const scale = wrapper.offsetWidth / baseWidth;
+
+         paper.style.transform = `scale(${scale})`;
+         paper.style.transformOrigin = "top left";
+      }
+
+      const wrapper = previewRef.current;
+      let resizeObserver;
+
+      if (wrapper) {
+         // Use ResizeObserver for real-time tracking of container width changes
+         resizeObserver = new ResizeObserver(() => scalePaper());
+         resizeObserver.observe(wrapper);
+      }
+
+      window.addEventListener("load", scalePaper);
       scalePaper();
 
       return () => {
-         window.removeEventListener("resize", scalePaper);
+         if (resizeObserver && wrapper) {
+            resizeObserver.unobserve(wrapper);
+         }
+         resizeObserver?.disconnect();
          window.removeEventListener("load", scalePaper);
       };
    }, dependency);

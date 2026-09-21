@@ -1,62 +1,55 @@
-import nacossLogo from '../assets/nacossLogo.png';
-import fuoyeLogo from '../assets/fuoyeLogo.png';
-import genSign from '../assets/genSign.png';
-import presidentSign from '../assets/presidentSign.png';
-import proSign from '../assets/proSign.png';
-import footer from '../assets/footer.png'
+import DOMPurify from 'dompurify';
+import dynamic from 'next/dynamic';
 
-function Letterhead({ date, referenceNumber, head, content, letterHeadRef }) {
+import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor';
+
+const MEMO_CONFIGS = {
+   executive: {
+      background: '/assets/letter_head.svg',
+      referenceClass: 'absolute top-26 right-10 text-[11pt] text-black font-nasalization',
+      dateClass: 'absolute top-32 right-13 text-[11pt] text-black font-nasalization',
+      contentClass: 'absolute top-48 font-medium text-[14pt] w-[85%] text-left left-1/2 -translate-x-1/2 text-black'
+   },
+   src: {
+      background: '/assets/src_letter_head.svg',
+      referenceClass: 'absolute top-[120px] right-8 text-[11pt] text-black font-nasalization',
+      dateClass: 'absolute top-[150px] right-8 text-[11pt] text-black font-nasalization',
+      contentClass: 'absolute top-[250px] font-medium text-[14pt] w-[85%] text-left left-1/2 -translate-x-1/2 text-black'
+   },
+   elecom: {
+      background: '/assets/elecom_letter_head.svg',
+      referenceClass: 'absolute top-20 right-12 text-[11pt] text-black font-nasalization',
+      dateClass: 'absolute top-28 right-12 text-[11pt] text-black font-nasalization',
+      contentClass: 'absolute top-40 font-medium text-[14pt] w-[85%] text-left left-1/2 -translate-x-1/2 text-black'
+   }
+};
+
+function Letterhead({ date, referenceNumber, content, letterHeadRef, viewMode, setContent, type = 'executive' }) {
+   const config = MEMO_CONFIGS[type] || MEMO_CONFIGS['executive'];
 
    return (
-      <section className="letterHead" ref={letterHeadRef}>
-         <div className="header-section">
-            <div className="logos">
-               <img src={nacossLogo} alt="NACOSS Logo" loading="lazy" />
-               <img src={fuoyeLogo} alt="FUOYE Logo" loading="lazy" />
-            </div>
-            <h2 className="nacossName">NIGERIA ASSOCIATION OF COMPUTER SCIENCE STUDENTS (NACOSS)
-               <span>Federal University Oye-Ekiti (FUOYE)</span>
-            </h2>
+      <section
+         className="absolute top-0 left-0 origin-top-left overflow-hidden bg-white"
+         ref={letterHeadRef}
+         style={{ width: '794px', height: '1123px' }}
+      >
+         <img src={config.background} alt={`${type} Letterhead template`} className="pointer-events-none absolute inset-0 w-full h-full object-cover" />
+         <div className="absolute inset-0 z-10">
 
+            <div className={config.referenceClass}>{referenceNumber}</div>
 
-            <div className="ref-date">
-               <h2>REF:.............................</h2>
-               <h2>DATE:..........................</h2>
-            </div>
+            <div className={config.dateClass}>{date}</div>
+
+            {viewMode === 'document' ? (
+               <div className={config.contentClass}>
+                  <SimpleEditor content={content} setContent={setContent} mode="document" />
+               </div>
+            ) : (
+               <div className={`${config.contentClass} tiptap ProseMirror`} dangerouslySetInnerHTML={{ __html: typeof window !== 'undefined' ? DOMPurify.sanitize(content) : content }} />
+            )}
          </div>
-
-         <div className="memoDate">{date}</div>
-         <div className="memoRef">{referenceNumber}</div>
-         <h1 className="memoHead">{head}</h1>
-
-         <div className='memoContent' dangerouslySetInnerHTML={{ __html: content }} />
-
-         <footer className="footer-section">
-            <div className="signatures">
-               <div className="signed">
-                  <img src={presidentSign} alt="gensec signature" className="signature" />
-                  <p className="name">Comr. Agbelekale David</p>
-                  <p className="position">President</p>
-                  <p className="contact">08108190023</p>
-               </div>
-               <div className="signed">
-                  <img src={genSign} alt="gensec signature" className="signature" />
-                  <p className="name">Comr. Ogunniran Damilola</p>
-                  <p className="position">General Secretary</p>
-                  <p className="contact">09036440269</p>
-               </div>
-               <div className="signed">
-                  <img src={proSign} alt="gensec signature" className="signature" />
-                  <p className="name">Comr. Idowu Emmanuel</p>
-                  <p className="position">P.R.O.</p>
-                  <p className="contact">08148310886</p>
-               </div>
-
-            </div>
-            <img src={footer} alt="footer-img" />
-         </footer>
       </section>
-   )
+   );
 }
 
 export default Letterhead;
