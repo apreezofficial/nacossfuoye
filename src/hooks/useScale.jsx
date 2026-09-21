@@ -33,6 +33,7 @@ function useScale({ letterHeadRef, previewRef, dependency = [] }) {
          resizeObserver?.disconnect();
          window.removeEventListener("load", scalePaper);
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, dependency);
 }
 

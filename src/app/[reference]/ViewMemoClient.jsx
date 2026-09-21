@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Letterhead from '@/components/Letterhead';

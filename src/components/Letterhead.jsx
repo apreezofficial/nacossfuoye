@@ -1,5 +1,4 @@
 import DOMPurify from 'dompurify';
-import dynamic from 'next/dynamic';
 
 import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor';
 

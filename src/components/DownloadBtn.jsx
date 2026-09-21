@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 import { useState } from 'react';
 import { toPng } from 'html-to-image';
 import Notification from './Notification';
