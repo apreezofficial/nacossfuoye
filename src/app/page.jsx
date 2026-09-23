@@ -1,98 +1,52 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { createClient } from '@/utils/supabase/client';
-import Link from 'next/link';
-import { UserStar } from 'lucide-react';
-
-function Loading() {
-   return (
-      <div className="flex justify-center items-center h-64">
-         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-   );
-}
-
-import MemoCard from '@/components/MemoCard';
-
 import PageHeader from '@/components/PageHeader';
+import Link from 'next/link';
+import { FileText, ArrowRight, UserStar } from 'lucide-react';
 
 export default function Home() {
-   const [fetchError, setFetchError] = useState(null);
-   const [data, setData] = useState(null);
-   const [order, setOrder] = useState(false);
-   const [loading, setLoading] = useState(true);
-   const supabase = createClient();
-
-   useEffect(() => {
-      const fetchData = async () => {
-         const { data: fetchedData, error } = await supabase
-            .from('memo')
-            .select('*')
-            .eq('is_published', true)
-            .order('created_at', { ascending: order });
-
-         if (error) {
-            setFetchError('Could not fetch memos');
-            setData(null);
-         } else {
-            setData(fetchedData);
-            setFetchError(null);
-         }
-      };
-
-      fetchData();
-      const timer = setTimeout(() => setLoading(false), 800);
-
-      const channel = supabase
-         .channel('memo-changes')
-         .on(
-            'postgres_changes',
-            { event: '*', schema: 'public', table: 'memo' },
-            () => fetchData()
-         )
-         .subscribe();
-
-      return () => {
-         clearTimeout(timer);
-         supabase.removeChannel(channel);
-      };
-   }, [order, supabase]);
-
    return (
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-         <PageHeader 
-            title="Official Memos"
-            description="View the latest updates and announcements."
-            onSortChange={setOrder}
-         >
+         <PageHeader title="NACOSS Portal">
             <Link href="/admin/dashboard" aria-label="Go to admin dashboard" className="inline-flex items-center justify-center p-3 rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/60 text-slate-500 hover:text-primary hover:border-primary/30 transition-all duration-300 ease-out active:scale-[0.97]">
                <UserStar size={22} />
             </Link>
          </PageHeader>
 
-         {loading ? (
-            <Loading />
-         ) : fetchError ? (
-            <div className="rounded-xl bg-red-50 p-6 border border-red-100">
-               <h3 className="text-sm font-medium text-red-800">{fetchError}</h3>
-            </div>
-         ) : data && data.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-               {data.map(item => (
-                  <MemoCard
-                     key={item.id}
-                     {...item}
-                     isAdminView={false}
-                     href={item.authStatus ? `/admin/edit/${encodeURIComponent(item.reference)}` : `/${encodeURIComponent(item.reference)}`}
-                  />
-               ))}
-            </div>
-         ) : (
-            <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-slate-200">
-               <p className="text-slate-500 font-medium">No official memos available yet.</p>
-            </div>
-         )}
+         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+            <Link 
+               href="/memos"
+               className="relative group h-full flex flex-col p-6 rounded-2xl overflow-hidden border border-white/20 transition-[transform] duration-300 ease-out active:scale-[0.98] bg-primary/95 text-white backdrop-blur-md"
+            >
+               {/* Memo Icon Background Decoration */}
+               <div className="absolute -bottom-6 -right-6 text-white/5 transition-transform duration-[800ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-translate-y-2 group-hover:-translate-x-2 pointer-events-none">
+                  <FileText size={180} strokeWidth={1.5} />
+               </div>
+
+               <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex items-start justify-between mb-4">
+                     <span className="inline-flex items-center rounded-full bg-white/20 px-2.5 py-1 text-xs text-white backdrop-blur-sm border border-white/10 font-medium uppercase tracking-wider">
+                        Memos
+                     </span>
+                  </div>
+
+                  <div className="flex flex-col flex-1 py-2">
+                     <h3 className="text-xl font-bold text-white leading-snug mb-2">
+                        Official Memos
+                     </h3>
+                     <p className="text-white/70 text-sm font-medium leading-relaxed">
+                        View the latest updates, directives, and announcements from the department.
+                     </p>
+                  </div>
+                  
+                  <div className="mt-auto flex justify-between items-center border-t border-white/20 pt-4">
+                     <div className="flex items-center text-sm font-semibold text-white opacity-90 group-hover:opacity-100 transition-opacity">
+                        View Memos <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1 duration-300 ease-out" />
+                     </div>
+                  </div>
+               </div>
+            </Link>
+         </div>
       </main>
    );
 }

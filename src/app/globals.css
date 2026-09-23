@@ -16,6 +16,7 @@
    --color-error: #ef4444;
    --font-sans: var(--font-raleway), 'Inter', system-ui, sans-serif;
    --font-nasalization: var(--font-nasalization);
+   --font-raleway: var(--font-raleway);
 }
 
 @layer base {

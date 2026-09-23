@@ -17,5 +17,5 @@ export default async function EditMemo({ params }) {
     notFound();
   }
 
-  return <MemoForm isNew={false} initialData={data} />;
+  return <MemoForm isNew={false} initialData={data} memoType={data.type || 'executive'} />;
 }

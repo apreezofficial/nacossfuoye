@@ -1,13 +1,12 @@
 import { useLayoutEffect } from "react";
 
-function useScale({ letterHeadRef, previewRef, dependency = [] }) {
+function useScale({ letterHeadRef, previewRef, baseWidth = 794, dependency = [] }) {
    useLayoutEffect(() => {
       function scalePaper() {
          const paper = letterHeadRef.current;
          const wrapper = previewRef.current;
          if (!paper || !wrapper) return;
 
-         const baseWidth = 794;
          const scale = wrapper.offsetWidth / baseWidth;
 
          paper.style.transform = `scale(${scale})`;

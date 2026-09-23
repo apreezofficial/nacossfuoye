@@ -99,7 +99,7 @@ export default function AdminLogin() {
                      />
                      <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 transition-colors active:scale-[0.97] duration-[160ms] ease-out"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 transition-colors active:scale-[0.97] duration-160 ease-out"
                         onClick={() => setShowPassword(!showPassword)}
                         tabIndex={-1}
                         aria-label={showPassword ? "Hide password" : "Show password"}
@@ -114,7 +114,7 @@ export default function AdminLogin() {
                   <button
                      type="submit"
                      disabled={isLoading}
-                     className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-4 rounded-lg transition duration-[160ms] ease-out active:scale-[0.97] disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
+                     className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-4 rounded-lg transition duration-160 ease-out active:scale-[0.97] disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
                   >
                      {isLoading ? (
                         <>
