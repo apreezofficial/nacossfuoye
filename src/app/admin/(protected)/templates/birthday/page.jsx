@@ -13,7 +13,7 @@ export default function BirthdayTemplateEditor() {
    const [firstname, setFirstname] = useState('John');
    const [lastname, setLastname] = useState('Doe');
    const [post, setPost] = useState('Member');
-   const [date, setDate] = useState('March, 03');
+   const [date, setDate] = useState('January 01');
 
    const [rawImage, setRawImage] = useState(null);
    const [imagePreview, setImagePreview] = useState(null);
@@ -151,7 +151,7 @@ export default function BirthdayTemplateEditor() {
             </div>
          </PageHeader>
 
-         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 items-start mt-4">
+         <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-8 items-start mt-4">
             {/* Sidebar Form */}
             <aside className="p-6 rounded-2xl bg-white shadow-xl lg:sticky lg:top-8 border border-slate-100">
                <h3 className="text-lg font-bold text-slate-800 mb-6">Flyer Details</h3>
@@ -205,7 +205,7 @@ export default function BirthdayTemplateEditor() {
                   </div>
 
                   <div>
-                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date (e.g. March 03, 2026)</label>
+                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date (e.g. January 01)</label>
                      <input
                         type="text"
                         value={date}
@@ -245,7 +245,7 @@ export default function BirthdayTemplateEditor() {
 
                      {/* Picture Frame - Masked with CSS to solid white background shape */}
                      <div
-                        className="absolute top-187 left-165 w-231.5 h-317.5 bg-slate-200 overflow-hidden flex items-center justify-center"
+                        className="absolute top-187 left-165 w-231.5 h-317.5 bg-white overflow-hidden flex items-center justify-center"
                         style={{
                            WebkitMaskImage: 'url(/assets/frame_background.png)',
                            maskImage: 'url(/assets/frame_background.png)',
@@ -260,7 +260,7 @@ export default function BirthdayTemplateEditor() {
                         {imagePreview ? (
                            <img src={imagePreview} alt="User" className="w-full h-full object-cover" />
                         ) : (
-                           <span className="text-4xl text-slate-400 font-bold font-raleway">Photo</span>
+                           <span className="text-7xl text-slate-400 font-bold font-raleway">Photo</span>
                         )}
                      </div>
 

@@ -40,7 +40,16 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
    const letterHeadRef = useRef(null);
    const previewRef = useRef(null);
 
+   const publishRef = useRef(null);
+
    useScale({ letterHeadRef, previewRef });
+
+   const handleBeforeDownload = async () => {
+      if (publishRef.current) {
+         return await publishRef.current.publish();
+      }
+      return true;
+   };
 
    return (
       <div>
@@ -48,14 +57,14 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
             title={isNew ? 'Create New Memo' : 'Edit Memo'}
          >
             <div className="flex flex-wrap items-center gap-3">
-               <Link href="/admin/dashboard" aria-label="Go back to dashboard" className="inline-flex items-center justify-center p-3 rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/60 text-primary hover:border-primary/30 transition-all duration-300">
+               <Link href={`/admin/dashboard/${memoType}`} aria-label="Go back to dashboard" className="inline-flex items-center justify-center p-3 rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/60 text-primary hover:border-primary/30 transition-all duration-300">
                   <House size={22} />
                </Link>
-               <DownloadBtn elementRef={letterHeadRef} referenceNumber={referenceNumber || 'draft'} />
+               <DownloadBtn elementRef={letterHeadRef} referenceNumber={referenceNumber || 'draft'} onBeforeDownload={handleBeforeDownload} />
                {isNew ? (
-                  <AddNewMemo referenceNumber={referenceNumber} date={date} head={derivedHead} content={content} type={memoType} />
+                  <AddNewMemo ref={publishRef} referenceNumber={referenceNumber} date={date} head={derivedHead} content={content} type={memoType} />
                ) : (
-                  <UpdateMemo referenceNumber={referenceNumber} date={date} head={derivedHead} content={content} type={memoType} />
+                  <UpdateMemo ref={publishRef} referenceNumber={referenceNumber} date={date} head={derivedHead} content={content} type={memoType} />
                )}
             </div>
          </PageHeader>
@@ -108,7 +117,7 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
             {/* Preview Section */}
             <main className="shadow-xl rounded-2xl w-full relative flex flex-col min-w-0">
                <div id="toolbar-portal-target" className="w-full z-50 sticky top-0" />
-               <div ref={previewRef} className="w-full relative aspect-794/1123">
+               <div ref={previewRef} className="w-full relative aspect-794/1123 overflow-hidden">
                   <Letterhead
                      date={date}
                      referenceNumber={referenceNumber}

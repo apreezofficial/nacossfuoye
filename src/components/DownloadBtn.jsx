@@ -4,7 +4,7 @@ import { toPng } from 'html-to-image';
 import Notification from './Notification';
 import { FileDown } from "lucide-react";
 
-function DownloadBtn({ elementRef, referenceNumber = 'document'}) {
+function DownloadBtn({ elementRef, referenceNumber = 'document', onBeforeDownload }) {
    const [isPNGLoading, setIsPNGLoading] = useState(false);
    const [notification, setNotification] = useState(null);
 
@@ -15,8 +15,13 @@ function DownloadBtn({ elementRef, referenceNumber = 'document'}) {
 
    // Download PNG
    async function downloadPNG() {
+      if (onBeforeDownload) {
+         const canDownload = await onBeforeDownload();
+         if (!canDownload) return; // Abort download if validation/publish failed
+      }
+
       setIsPNGLoading(true);
-      
+
       const paper = elementRef.current;
       if (!paper) {
          showNotification('Element not found', 'error');
@@ -59,7 +64,7 @@ function DownloadBtn({ elementRef, referenceNumber = 'document'}) {
          paper.style.transform = originalTransform;
          paper.style.transformOrigin = originalOrigin;
          paper.style.transition = originalTransition;
-         
+
          setIsPNGLoading(false);
       }
    }
