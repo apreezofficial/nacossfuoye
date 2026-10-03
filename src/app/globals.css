@@ -39,17 +39,11 @@
    }
 }
 
-/* Letterhead Preview Styles */
-.letterHead {
-   background-color: #ffffff;
-   background-image: url('/assets/letter_head.svg');
-   background-position: center;
-   background-size: cover;
-   background-repeat: no-repeat;
-   width: 794px;
-   height: 1123px;
-   position: relative;
-   overflow: hidden;
-   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-   transform-origin: top center;
+@keyframes marquee {
+   0% { transform: translateX(0); }
+   100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+   animation: marquee 100s linear infinite;
 }

@@ -1,0 +1,161 @@
+{
+   "categories": [
+      {
+         "id": "executive",
+         "name": "The Executives",
+         "priority": 1,
+         "members": [
+            {
+               "name": "Comr. Nicholas Benson",
+               "post": "President",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Kolawole Goodnews",
+               "post": "Vice President",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Ibraheem Rasheedat",
+               "post": "General Secretary",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Ajiniran Tobiloba",
+               "post": "Financial Secretary",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Lukman AbdulMalik",
+               "post": "Treasurer",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Jacob Godwin",
+               "post": "Public Relations Officer",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Adewumi Micheal",
+               "post": "Social Director",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Tsadu Caleb",
+               "post": "Software Director",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Adedeji Marvellous",
+               "post": "Sport Director",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Babatunde Praise",
+               "post": "Welfare Director",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Oni Gabriel",
+               "post": "Librarian",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            },
+            {
+               "name": "Oloruntomi Moyosola",
+               "post": "Assistant General Secretary",
+               "level": "400 Level",
+               "image": "",
+               "phone": "",
+               "socials": {
+                  "twitter": "#",
+                  "linkedin": "#"
+               }
+            }
+         ]
+      },
+      {
+         "id": "cscrc",
+         "name": "CSCRC",
+         "priority": 2,
+         "members": []
+      },
+      {
+         "id": "class_representatives",
+         "name": "Class Representatives",
+         "priority": 3,
+         "members": []
+      },
+      {
+         "id": "electoral_committee",
+         "name": "Electoral Committee",
+         "priority": 4,
+         "members": []
+      }
+   ]
+}
