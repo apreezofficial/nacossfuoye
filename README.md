@@ -1,73 +1,65 @@
-<!-- @format -->
+# NACOSS Memo & Executive Dashboard 🚀
 
-# NACOSS MEMO Generator
+A comprehensive full-stack platform built for the National Association of Computing Students (NACOSS) to digitize and streamline executive workflows, memo generation, financial ledgers, and official communications.
 
-## Overview
+Built with **Next.js 14**, **TailwindCSS**, and **Supabase**.
 
-The **NACOSS MEMO Generator** is a web application designed to help NACOSS (Nigeria Association of Computer Science Students) executives and members easily create, preview, and manage official memos. The app provides a simple editor for composing memos, generates a formatted letterhead, and allows users to view and manage previously created memos.
+## 🌟 Features
+- **Official Memo Generation**: Create beautifully formatted, printable memos for the Executive, SRC, Electoral Committee, and President.
+- **Financial Ledger & Treasury**: Secure, role-based tracking of income, expenses, and society funds.
+- **Design Templates**: Auto-generate "Do You Know", "Invest Friday", and Executive Birthday flyers.
+- **Strict Role-Based Access Control (RBAC)**: Fine-grained security ensuring executives only see and manage what they are authorized to.
 
-## Features
+## 🛠️ Tech Stack
+- **Framework**: Next.js (App Router)
+- **Styling**: Tailwind CSS, Lucide Icons
+- **Database & Auth**: Supabase (PostgreSQL with Row Level Security)
+- **Deployment**: Vercel
 
-- **Memo Editor:** Compose memos with date, reference number, heading, and content.
-- **Live Preview:** Instantly see how your memo will look on the official NACOSS letterhead.
-- **Save & Manage Memos:** Store memos in a Supabase database and view them in a list.
-- **Admin Authentication:** Secure admin login for editing and generating memos.
-- **Protected Routes:** Only authenticated admins can access memo creation and editing features.
-- **Responsive Design:** Works well on both desktop and mobile devices.
+## 🚀 Getting Started (For Contributors)
 
-## Technologies Used
+To run this project locally, you will need Node.js and a free Supabase account.
 
-- **React** – Frontend UI
-- **React Router** – Routing and protected pages
-- **Supabase** – Database and authentication
-- **Vite** – Fast development server and build tool
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/NACOSS-Memo.git
+cd NACOSS-Memo
+```
 
-## Getting Started
+### 2. Install dependencies
+We use `pnpm` as our package manager.
+```bash
+pnpm install
+```
 
-1. **Clone the repository:**
+### 3. Setup Supabase (Database)
+1. Create a new project on [Supabase](https://supabase.com).
+2. Go to the **SQL Editor** in your Supabase dashboard.
+3. Copy the entire contents of the `supabase_schema.sql` file from this repository and run it. This will instantly build the database tables and apply all our security rules.
+4. **(Optional but Recommended)**: Copy and run the `supabase_seed.sql` file to populate your database with dummy memos, financial records, and quotes so you have data to test with!
 
+### 4. Setup Environment Variables
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env.local
    ```
-   git clone https://github.com/yourusername/nacoss-memo-generator.git
-   cd nacoss-memo-generator
-   ```
+2. Open `.env.local` and paste your Supabase Project URL and Anon Key.
 
-2. **Install dependencies:**
+### 5. Run the Development Server
+```bash
+pnpm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-   ```
-   npm install
-   ```
+## 🆘 We Need Your Help! (Student-Facing Interfaces)
+While the Executive Admin Dashboard is fully functional and highly secure, **we currently need massive help building the public, student-facing interfaces!** 
 
-3. **Configure Supabase:**
-   - Create a project on [Supabase](https://supabase.com/).
-   - Copy your Supabase URL and public anon key into `src/supabaseClient.js`.
+If you are a student or frontend developer looking to contribute, we need:
+- A beautiful public landing page for students to view published memos and announcements.
+- A public directory for students to view the executive team and stakeholders.
+- General UI/UX improvements to make the platform feel alive and engaging for the student body.
 
-4. **Run the development server:**
+Please check the `todo.md` and issues tab, read our [CONTRIBUTING.md](CONTRIBUTING.md), or just fork the repo and submit a PR!
 
-   ```
-   npm run dev
-   ```
-
-5. **Access the app:**
-   - Visit [http://localhost:5173](http://localhost:5173) in your browser.
-
-## Usage
-
-- **Admins:** Log in via `/admin/login` to access memo creation and editing.
-- **View Memos:** Go to `/memos` to see all memos.
-- **View Individual Memo:** Click a memo to view its details at `/memos/:reference`.
-
-## Contributing
-
-Pull requests are welcome! Please open an issue first to discuss major changes.
-
-## License
-
-NACOSS
-
----
-
-**Aim:**
-To provide NACOSS with a simple, secure, and efficient tool for generating and managing official memos online.
-
-**Author:**
-[Nick Frøst ❄️](https://github.com/nickfrostech "Github Profile")
+## 📜 License
+This project is open-source and available under the MIT License. See the [LICENSE.md](LICENSE.md) file for details.
