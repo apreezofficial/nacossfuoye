@@ -1,0 +1,11 @@
+admin (Has access to absolutely everything)
+president (Has access to absolutely everything)
+vp
+gen_sec
+ags
+pro
+fin_sec
+treasurer
+src
+elecom
+others
