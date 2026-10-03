@@ -35,6 +35,9 @@ function DownloadBtn({ elementRef, referenceNumber = 'document', onBeforeDownloa
       const originalTransition = paper.style.transition;
 
       try {
+         // Pause the useScale observer from re-applying scale while we process
+         paper.dataset.scalingPaused = 'true';
+
          // 2. Temporarily remove transform to capture full quality 794x1123 canvas
          paper.style.transition = 'none';
          paper.style.transform = 'none';
@@ -61,6 +64,7 @@ function DownloadBtn({ elementRef, referenceNumber = 'document', onBeforeDownloa
          showNotification(`Download failed: ${error.message || 'Unknown error'}`, 'error');
       } finally {
          // 5. Restore transform immediately
+         delete paper.dataset.scalingPaused;
          paper.style.transform = originalTransform;
          paper.style.transformOrigin = originalOrigin;
          paper.style.transition = originalTransition;

@@ -3,7 +3,7 @@ import Cropper from 'react-easy-crop';
 import getCroppedImg from '@/utils/cropImage';
 import { X, Check } from 'lucide-react';
 
-export default function ImageCropperModal({ imageSrc, onComplete, onCancel }) {
+export default function ImageCropperModal({ imageSrc, onComplete, onCancel, aspect = 926 / 1270 }) {
    const [crop, setCrop] = useState({ x: 0, y: 0 });
    const [zoom, setZoom] = useState(1);
    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
@@ -29,7 +29,7 @@ export default function ImageCropperModal({ imageSrc, onComplete, onCancel }) {
    };
 
    return (
-      <div className="fixed inset-0 z-[100] flex flex-col bg-slate-900/95 backdrop-blur-sm">
+      <div className="fixed inset-0 z-100 flex flex-col bg-green-900/95 backdrop-blur-sm">
          <div className="flex items-center justify-between p-4 border-b border-white/10 text-white">
             <h2 className="text-lg font-bold">Crop Photo</h2>
             <button onClick={onCancel} className="p-2 hover:bg-white/10 rounded-full transition-colors" aria-label="Cancel crop">
@@ -42,14 +42,14 @@ export default function ImageCropperModal({ imageSrc, onComplete, onCancel }) {
                image={imageSrc}
                crop={crop}
                zoom={zoom}
-               aspect={926 / 1270}
+               aspect={aspect}
                onCropChange={setCrop}
                onCropComplete={onCropCompleteHandler}
                onZoomChange={setZoom}
             />
          </div>
 
-         <div className="p-6 bg-slate-900 border-t border-white/10 flex flex-col items-center gap-6">
+         <div className="p-6 bg-green-900 border-t border-white/10 flex flex-col items-center gap-6">
             <div className="w-full max-w-md">
                <label className="text-white/80 text-sm font-medium mb-2 block text-center">Zoom</label>
                <input
@@ -60,7 +60,7 @@ export default function ImageCropperModal({ imageSrc, onComplete, onCancel }) {
                   step={0.1}
                   aria-labelledby="Zoom"
                   onChange={(e) => setZoom(e.target.value)}
-                  className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                  className="w-full h-2 bg-green-700 rounded-lg appearance-none cursor-pointer accent-primary"
                />
             </div>
             

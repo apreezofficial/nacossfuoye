@@ -7,6 +7,8 @@ function useScale({ letterHeadRef, previewRef, baseWidth = 794, dependency = [] 
          const wrapper = previewRef.current;
          if (!paper || !wrapper) return;
 
+         if (paper.dataset.scalingPaused === 'true') return;
+
          // Get exact float width rather than rounded integer offsetWidth to prevent clipping on right/bottom
          const exactWidth = wrapper.getBoundingClientRect().width;
          const scale = exactWidth / baseWidth;
