@@ -1,7 +1,7 @@
 import { Eye, EyeOff, Trash, SquarePen, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-export default function MemoCard({ reference, head, date, is_published, onToggleVisibility, onDelete, href, isAdminView = false, type = 'executive' }) {
+export default function MemoCard({ reference, head, date, is_published, onToggleVisibility, href, isAdminView = false, type = 'executive' }) {
    const shortHead = head?.length > 50 ? `${head.substring(0, 50).toUpperCase().trim()}...` : head?.toUpperCase();
    const isDraft = !is_published;
    const bgClasses = isDraft ? 'bg-red-600/95 border-red-400/30 text-white' : 'bg-primary/95 border-white/20 text-white';
@@ -15,7 +15,7 @@ export default function MemoCard({ reference, head, date, is_published, onToggle
    const CardContent = (
       <div className={`relative h-full flex flex-col p-4 rounded-2xl overflow-hidden border transition-[transform] duration-300 ease-out active:scale-[0.98] group ${bgClasses} backdrop-blur-md`}>
          {/* Expanding Circle Background */}
-         <div className="absolute -top-15 -right-6 w-35 h-35 bg-black/10 rounded-full transition-transform duration-[800ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-[20] origin-center pointer-events-none" />
+         <div className="absolute -top-15 -right-6 w-35 h-35 bg-black/10 rounded-full transition-transform duration-800 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-[20] origin-center pointer-events-none" />
 
          {/* Content Container (z-10) */}
          <div className="relative z-10 flex flex-col h-full">
@@ -67,13 +67,6 @@ export default function MemoCard({ reference, head, date, is_published, onToggle
                            title={is_published ? "Unpublish" : "Publish"}
                         >
                            {is_published ? <Eye size={18} /> : <EyeOff size={18} />}
-                        </button>
-                        <button
-                           onClick={(e) => { e.preventDefault(); onDelete(reference); }}
-                           className="p-2 text-white/80 hover:text-red-300 bg-white/5 hover:bg-red-500/30 rounded-full cursor-pointer transition-colors backdrop-blur-sm border border-white/10"
-                           title="Delete Memo"
-                        >
-                           <Trash size={18} />
                         </button>
                      </div>
                   </>

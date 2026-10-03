@@ -8,7 +8,11 @@ export const AddNewMemo = forwardRef(({ referenceNumber, date, head, content, ty
    const [isAdding, setIsAdding] = useState(false);
    const [notification, setNotification] = useState(null);
    const supabase = createClient();
-   const REFERENCE_REGEX = /^NACOSS\/(25|26)\/\d{1,3}$/;
+
+   const getPrefix = (t) => {
+      const map = { executive: 'NACOSS', elecom: 'CSCEC', src: 'CSCSRC', president: 'CSCPR' };
+      return map[t] || 'NACOSS';
+   };
 
    const showNotification = (message, type) => {
       setNotification({ message, type });
@@ -33,8 +37,12 @@ export const AddNewMemo = forwardRef(({ referenceNumber, date, head, content, ty
             return false;
          }
 
-         if (!REFERENCE_REGEX.test(referenceNumber)) {
-            showNotification(`Reference must follow format: NACOSS/25/XXX`, 'error');
+         const prefix = getPrefix(type);
+         const currentYearSuffix = new Date().getFullYear().toString().slice(-2);
+         const regex = new RegExp(`^${prefix}\\/${currentYearSuffix}\\/\\d{1,3}$`);
+
+         if (!regex.test(referenceNumber)) {
+            showNotification(`Reference must follow format: ${prefix}/${currentYearSuffix}/XXX`, 'error');
             return false;
          }
 

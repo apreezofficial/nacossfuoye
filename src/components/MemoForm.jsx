@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Letterhead from '@/components/Letterhead';
+import { createClient } from '@/utils/supabase/client';
 import DownloadBtn from '@/components/DownloadBtn';
 import useScale from '@/hooks/useScale';
 import { House } from 'lucide-react';
@@ -11,9 +12,17 @@ import { AddNewMemo, UpdateMemo } from '@/components/PublishBtn';
 
 import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor';
 
+const PREFIX_MAP = {
+   executive: 'NACOSS',
+   elecom: 'CSCEC',
+   src: 'CSCSRC',
+   president: 'CSCPR'
+};
+
 export default function MemoForm({ isNew = true, initialData = {}, memoType = 'executive' }) {
    const [date, setDate] = useState(initialData.date || '');
    const [referenceNumber, setReferenceNumber] = useState(initialData.reference || '');
+   const supabase = createClient();
    const [content, setContent] = useState(() => {
       let initContent = initialData.content || '';
       if (initialData.head && initContent && !initContent.includes(initialData.head)) {
@@ -41,6 +50,44 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
    const previewRef = useRef(null);
 
    const publishRef = useRef(null);
+
+   useEffect(() => {
+      if (!isNew || initialData.reference) return;
+
+      const fetchNextReference = async () => {
+         const prefix = PREFIX_MAP[memoType] || 'NACOSS';
+         const currentYearSuffix = new Date().getFullYear().toString().slice(-2);
+
+         const { data, error } = await supabase
+            .from('memo')
+            .select('reference')
+            .eq('type', memoType)
+            .like('reference', `${prefix}/${currentYearSuffix}/%`)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single();
+
+         if (error && error.code !== 'PGRST116') {
+            console.error('Error fetching last reference:', error);
+         }
+
+         let nextNum = 1;
+         if (data && data.reference) {
+            const parts = data.reference.split('/');
+            if (parts.length === 3) {
+               const lastNum = parseInt(parts[2], 10);
+               if (!isNaN(lastNum)) {
+                  nextNum = lastNum + 1;
+               }
+            }
+         }
+
+         const paddedNum = nextNum.toString().padStart(3, '0');
+         setReferenceNumber(`${prefix}/${currentYearSuffix}/${paddedNum}`);
+      };
+
+      fetchNextReference();
+   }, [isNew, memoType, initialData.reference, supabase]);
 
    useScale({ letterHeadRef, previewRef });
 
@@ -96,7 +143,7 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
                         id="refInput"
                         value={referenceNumber}
                         onChange={e => setReferenceNumber(e.target.value)}
-                        placeholder="NACOSS/25/..."
+                        placeholder={`${PREFIX_MAP[memoType] || 'NACOSS'}/25/...`}
                         disabled={!isNew}
                         className={`w-full px-4 py-3 rounded-xl border outline-none transition-all duration-300 text-slate-900 backdrop-blur-sm ${!isNew ? 'bg-white/50 border-white/10 cursor-not-allowed opacity-80' : 'border-primary/70 focus:border-primary  bg-white/90 focus:bg-white'}`}
                      />

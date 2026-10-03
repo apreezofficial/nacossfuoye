@@ -80,23 +80,6 @@ export default function TypeDashboard() {
       }
    }
 
-   async function handleDelete(reference) {
-      if (!window.confirm("Are you sure you want to delete this memo? This action cannot be undone.")) return;
-
-      const originalData = [...data];
-      setData(currentMemos => currentMemos.filter(memo => memo.reference !== reference));
-
-      const { error } = await supabase
-         .from('memo')
-         .delete()
-         .eq('reference', reference);
-
-      if (error) {
-         console.error("Failed to delete memo:", error);
-         alert("Error: Could not delete the memo. Restoring the item.");
-         setData(originalData);
-      }
-   }
 
    return (
       <div>
@@ -134,7 +117,6 @@ export default function TypeDashboard() {
                      {...item}
                      isAdminView={true}
                      onToggleVisibility={handleVisibility}
-                     onDelete={handleDelete}
                   />
                ))
             )}
