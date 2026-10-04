@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { getGameBySlug } from './games';
 import { ArrowLeft, Trophy, Code, Settings } from 'lucide-react';
@@ -21,7 +21,7 @@ export default function GameWrapper({ slug, GameComponent }) {
    const [leaderboard, setLeaderboard] = useState([]);
    const [loadingBoard, setLoadingBoard] = useState(true);
 
-   const fetchBoard = async () => {
+   const fetchBoard = useCallback(async () => {
       const data = await getLeaderboard(game.slug);
       if (data && data.length > 0) {
          const ranked = data.map((item, index) => ({
@@ -33,11 +33,11 @@ export default function GameWrapper({ slug, GameComponent }) {
          setLeaderboard(ranked);
       }
       setLoadingBoard(false);
-   };
+   }, [game.slug]);
 
    useEffect(() => {
       fetchBoard();
-   }, [game.slug]);
+   }, [fetchBoard]);
 
    useEffect(() => {
       const savedPlayer = localStorage.getItem('nacoss_player');

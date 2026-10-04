@@ -76,7 +76,6 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
-import { useWindowSize } from "@/hooks/use-window-size"
 
 // --- Components ---
 import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle"
@@ -223,7 +222,6 @@ const MobileToolbarContent = ({
 
 export function SimpleEditor({ content, setContent, mode = 'split', toolbarPortalRef }) {
    const isMobile = useIsBreakpoint()
-   const { height } = useWindowSize()
    const [mobileView, setMobileView] = useState("main")
    const [isSearchAndReplaceOpen, setIsSearchAndReplaceOpen] = useState(false)
    const toolbarRef = useRef(null)

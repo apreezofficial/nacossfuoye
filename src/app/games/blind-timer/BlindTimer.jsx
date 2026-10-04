@@ -6,7 +6,6 @@ export default function BlindTimer({ onGameOver }) {
    const [state, setState] = useState('idle'); // idle, running, finished
    const [targetMs, setTargetMs] = useState(0);
    const [actualMs, setActualMs] = useState(0);
-   const [score, setScore] = useState(null);
    const startTimeRef = useRef(0);
 
    useEffect(() => {
@@ -19,7 +18,6 @@ export default function BlindTimer({ onGameOver }) {
       setTargetMs(target);
       setState('idle');
       setActualMs(0);
-      setScore(null);
    };
 
    const handleStart = () => {
@@ -36,9 +34,7 @@ export default function BlindTimer({ onGameOver }) {
       setState('finished');
       
       const diffFromTarget = Math.abs(targetMs - difference);
-      // 1000 base score. Minus 1 point for every 2ms off. Max score is 1000.
       const finalScore = Math.max(0, 1000 - Math.floor(diffFromTarget / 2));
-      setScore(finalScore);
       setTimeout(() => onGameOver(finalScore), 1000);
    };
 
