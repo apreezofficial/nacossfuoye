@@ -60,7 +60,7 @@ function formatCustomDate(dateString) {
    return `${getOrdinal(day)} ${month}, ${year}`;
 }
 
-function Letterhead({ date, referenceNumber, content, letterHeadRef, viewMode, setContent, type = 'executive' }) {
+function Letterhead({ date, referenceNumber, content, letterHeadRef, viewMode, setContent, type = 'executive', toolbarPortalRef }) {
    const config = MEMO_CONFIGS[type] || MEMO_CONFIGS['executive'];
 
    return (
@@ -78,7 +78,7 @@ function Letterhead({ date, referenceNumber, content, letterHeadRef, viewMode, s
 
             {viewMode === 'document' ? (
                <div className={config.contentClass} style={config.contentStyle}>
-                  <SimpleEditor content={content} setContent={setContent} mode="document" />
+                  <SimpleEditor content={content} setContent={setContent} mode="document" toolbarPortalRef={toolbarPortalRef} />
                </div>
             ) : (
                <div className={`${config.contentClass} tiptap ProseMirror`} style={config.contentStyle} dangerouslySetInnerHTML={{ __html: typeof window !== 'undefined' ? DOMPurify.sanitize(content) : content }} />

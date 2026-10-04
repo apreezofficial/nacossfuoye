@@ -77,7 +77,6 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
 import { useWindowSize } from "@/hooks/use-window-size"
-import { useCursorVisibility } from "@/hooks/use-cursor-visibility"
 
 // --- Components ---
 import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle"
@@ -222,13 +221,20 @@ const MobileToolbarContent = ({
    </>
 )
 
-export function SimpleEditor({ content, setContent, mode = 'split' }) {
+export function SimpleEditor({ content, setContent, mode = 'split', toolbarPortalRef }) {
    const isMobile = useIsBreakpoint()
    const { height } = useWindowSize()
    const [mobileView, setMobileView] = useState("main")
    const [isSearchAndReplaceOpen, setIsSearchAndReplaceOpen] = useState(false)
    const toolbarRef = useRef(null)
    const searchAndReplaceButtonRef = useRef(null)
+   const [portalTarget, setPortalTarget] = useState(null)
+
+   useEffect(() => {
+      if (mode === 'document') {
+         setPortalTarget(toolbarPortalRef?.current || document.getElementById('toolbar-portal-target'))
+      }
+   }, [mode, toolbarPortalRef])
 
    // We use a ref to prevent unnecessary state loops
    const contentRef = useRef(content);
@@ -298,11 +304,6 @@ export function SimpleEditor({ content, setContent, mode = 'split' }) {
       }
    }, [content, editor]);
 
-   const rect = useCursorVisibility({
-      editor,
-      overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
-   })
-
    useEffect(() => {
       if (!isMobile && mobileView !== "main") {
          setMobileView("main")
@@ -331,13 +332,7 @@ export function SimpleEditor({ content, setContent, mode = 'split' }) {
    const renderToolbar = () => (
       <Toolbar
          ref={toolbarRef}
-         style={{
-            ...(isMobile
-               ? {
-                  bottom: `calc(100% - ${height - rect.y}px)`,
-               }
-               : {}),
-         }}
+         className="w-full bg-white shadow-sm"
       >
          {mobileView === "main" ? (
             <MainToolbarContent
@@ -361,7 +356,7 @@ export function SimpleEditor({ content, setContent, mode = 'split' }) {
       <div className={`simple-editor-wrapper relative ${mode === 'document' ? 'document-mode' : 'split-mode'}`}>
          <EditorContext.Provider value={{ editor }}>
             {mode === 'document' 
-               ? (typeof document !== 'undefined' && document.getElementById('toolbar-portal-target') ? createPortal(renderToolbar(), document.getElementById('toolbar-portal-target')) : renderToolbar())
+               ? (portalTarget ? createPortal(renderToolbar(), portalTarget) : null)
                : renderToolbar()
             }
 

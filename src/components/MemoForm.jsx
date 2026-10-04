@@ -48,6 +48,7 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
 
    const letterHeadRef = useRef(null);
    const previewRef = useRef(null);
+   const toolbarPortalRef = useRef(null);
 
    const publishRef = useRef(null);
 
@@ -163,8 +164,8 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
 
             {/* Preview Section */}
             <main className="shadow-xl rounded-2xl w-full relative flex flex-col min-w-0">
-               <div id="toolbar-portal-target" className="w-full z-50 sticky top-0" />
-               <div ref={previewRef} className="w-full relative aspect-794/1123 overflow-hidden">
+               <div ref={toolbarPortalRef} className="w-full z-50 sticky top-0 bg-white" />
+               <div ref={previewRef} className="w-full relative aspect-794/1123 overflow-hidden bg-gray-100">
                   <Letterhead
                      date={date}
                      referenceNumber={referenceNumber}
@@ -173,6 +174,7 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
                      viewMode={viewMode}
                      setContent={setContent}
                      type={memoType}
+                     toolbarPortalRef={toolbarPortalRef}
                   />
                </div>
             </main>
