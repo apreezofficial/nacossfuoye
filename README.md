@@ -63,3 +63,14 @@ Please check the `todo.md` and issues tab, read our [CONTRIBUTING.md](CONTRIBUTI
 
 ## 📜 License
 This project is open-source and available under the MIT License. See the [LICENSE.md](LICENSE.md) file for details.
+
+
+## Games Hub
+Play weekly single-player mini-games built by contributors! Track your high scores on the leaderboard. Check src/app/games/README.md to learn how to add your own.
+
+
+### Games Hub Environment Variables
+To run the Games Hub properly, ensure you have the following in your .env.local:
+- `NEXT_PUBLIC_GAME_SECRET` (for hashing scores)
+- `SUPABASE_SERVICE_ROLE_KEY` (required by the backend action to securely submit scores and bypass RLS)
+Refer to .env.example for the format.

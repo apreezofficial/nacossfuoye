@@ -136,3 +136,15 @@ CREATE POLICY "Treasurer records access" ON public.treasurer_records
 FOR ALL TO authenticated USING (
   public.get_user_role() IN ('admin', 'president', 'treasurer', 'gen_sec', 'ags', 'pro', 'vp')
 );
+
+
+-- Game Scores Table
+CREATE TABLE public.game_scores (
+  id uuid not null default gen_random_uuid(),
+  game_slug text not null,
+  gaming_name text not null,
+  level text not null,
+  score integer not null,
+  created_at timestamp with time zone null default now(),
+  constraint game_scores_pkey primary key (id)
+) TABLESPACE pg_default;

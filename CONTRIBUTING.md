@@ -17,12 +17,21 @@ Check the issues tab or the `todo.md` file for pending tasks. If you spot a bug 
 ### 3. New Features
 Have an idea for a new module? (e.g., event ticketing, voting systems, etc.) As stated above, please open an issue first to discuss it in full detail before you start writing code.
 
+## 🎯 Pull Request Guidelines
+**Keep your Pull Requests strictly focused.** 
+Please only submit a PR that addresses ONE specific thing at a time:
+- If you are adding a new game, your PR should ONLY contain that game.
+- If you are fixing a bug, your PR should ONLY fix that bug.
+- If you are updating a UI element, ONLY update that element.
+
+**Do NOT** combine a bug fix, a new game, and a UI change into the same pull request. Large, mixed PRs will be rejected because they are too difficult to review and merge safely.
+
 ## 🛠️ Contribution Workflow
 
 1. **Fork the Repository**: Create your own fork of the project.
 2. **Create a Branch**: `git checkout -b feature/your-feature-name` or `fix/your-bug-fix`.
 3. **Write Code**: Implement your changes. Make sure to follow the existing coding style (TailwindCSS, functional React components).
-4. **Test**: Ensure your changes don't break existing RBAC rules or layout responsiveness. Run `pnpm run lint` and `pnpm run build` before committing.
+4. **Test**: Ensure your changes don't break existing RBAC rules or layout responsiveness. Run `pnpm run lint` and `pnpm run dev` to test locally.
 5. **Commit**: Write clear, descriptive commit messages.
 6. **Push & Pull Request**: Push your branch to your fork and submit a PR to our `main` branch.
 
@@ -32,3 +41,10 @@ If your feature requires new database tables or columns:
 - You **MUST** update the `supabase_schema.sql` file in your Pull Request to include the new SQL definitions and Row Level Security (RLS) policies.
 
 Welcome to the team! 🎉
+
+
+### Adding a Game to the Games Hub
+If you are submitting a game, please read the rules in src/app/games/README.md. All games must be single-player, isolated in their own folder, and use the GameWrapper to properly track scores.
+
+
+**Note for Games Hub Contributors:** The backend action (src/app/games/actions.js) uses SUPABASE_SERVICE_ROLE_KEY to securely update scores (one person per leaderboard slot). You MUST have this key set in your local .env.local to test score submissions.

@@ -72,3 +72,18 @@ VALUES
 -- To test the Admin Dashboard, you must manually create a user in your Supabase Auth,
 -- then insert their email into the `user_roles` table with the role 'admin'.
 -- ==========================================
+
+
+-- Game Scores Seed
+INSERT INTO public.game_scores (game_slug, gaming_name, level, score)
+VALUES
+  ('memory-match', 'Shadow', '400L', 980),
+  ('memory-match', 'CodeNinja', '300L', 950),
+  ('memory-match', 'BugHunter', '200L', 910),
+  ('memory-match', 'Alpha', '500L', 880),
+  ('memory-match', 'Omega', '100L', 850),
+  ('memory-match', 'Neo', '400L', 820),
+  ('memory-match', 'Trinity', '300L', 800),
+  ('memory-match', 'Morpheus', '500L', 790),
+  ('memory-match', 'Smith', 'Alumni', 750),
+  ('memory-match', 'Cypher', '200L', 700);

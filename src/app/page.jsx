@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader from '@/components/PageHeader';
 import Link from 'next/link';
-import { FileText, ArrowRight, UserStar, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { FileText, ArrowRight, UserStar, Image as ImageIcon, Sparkles, Gamepad2 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 
 export default function Home() {
@@ -159,6 +159,38 @@ export default function Home() {
                </div>
             </Link>
 
+            {/* Games Hub Card */}
+            <Link
+               href="/games"
+               className="relative group flex flex-col p-8 rounded-3xl overflow-hidden border border-white/20 transition-[transform] duration-300 ease-out active:scale-[0.98] bg-purple-700 text-white shadow-xl hover:shadow-2xl backdrop-blur-md min-h-70"
+            >
+               <div className="absolute -bottom-8 -right-8 text-white/5 transition-transform duration-800 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-translate-y-4 group-hover:-translate-x-4 pointer-events-none">
+                  <Gamepad2 size={240} strokeWidth={1} />
+               </div>
+
+               <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex items-start justify-between mb-6">
+                     <span className="inline-flex items-center rounded-full bg-white/20 px-3 py-1.5 text-xs text-white backdrop-blur-sm border border-white/10 font-bold uppercase tracking-widest">
+                        Entertainment
+                     </span>
+                  </div>
+
+                  <div className="flex flex-col flex-1 py-2">
+                     <h3 className="text-3xl font-bold text-white leading-snug mb-3">
+                        Games Hub
+                     </h3>
+                     <p className="text-white/80 text-base font-medium leading-relaxed max-w-[85%]">
+                        Play weekly mini-games created by open-source contributors and compete for the top score.
+                     </p>
+                  </div>
+
+                  <div className="mt-auto flex justify-between items-center border-t border-white/20 pt-6">
+                     <div className="flex items-center text-sm font-semibold text-white opacity-90 group-hover:opacity-100 transition-opacity">
+                        Play Games <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1.5 duration-300 ease-out" />
+                     </div>
+                  </div>
+               </div>
+            </Link>
 
          </div>
       </main>
