@@ -6,11 +6,11 @@ const MEMO_CONFIGS = {
    executive: {
       background: '/letterheads/executive_letter_head.svg',
       referenceClass: 'absolute text-[12pt] text-black font-raleway font-extrabold text-left',
-      referenceStyle: { top: '193px', left: '128px' },
+      referenceStyle: { top: '183px', left: '128px' },
       dateClass: 'absolute text-[12pt] text-black font-raleway font-extrabold text-left',
-      dateStyle: { top: '193px', left: '605px' },
+      dateStyle: { top: '183px', left: '605px' },
       contentClass: 'absolute font-medium text-[14pt] w-[85%] text-left -translate-x-1/2 text-black leading-tight',
-      contentStyle: { top: '250px', left: '50%' }
+      contentStyle: { top: '245px', left: '50%' }
    },
    src: {
       background: '/letterheads/src_letter_head.svg',
@@ -33,11 +33,11 @@ const MEMO_CONFIGS = {
    president: {
       background: '/letterheads/president_letter_head.svg',
       referenceClass: 'absolute text-[12pt] text-black font-bold font-raleway text-left',
-      referenceStyle: { top: '237px', left: '138px' },
+      referenceStyle: { top: '183px', left: '138px' },
       dateClass: 'absolute text-[12pt] text-black font-bold font-raleway text-left',
-      dateStyle: { top: '237px', left: '585px' },
+      dateStyle: { top: '183px', left: '585px' },
       contentClass: 'absolute font-medium text-[14pt] w-[80%] text-left -translate-x-1/2 text-black leading-tight',
-      contentStyle: { top: '300px', left: '50%' }
+      contentStyle: { top: '250px', left: '50%' }
    }
 };
 

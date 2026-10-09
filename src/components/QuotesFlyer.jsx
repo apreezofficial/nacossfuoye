@@ -5,13 +5,13 @@ export const QUOTES_CONFIGS = {
       bgLow: '/quotes/dyk_low.jpg',
       bgHigh: '/quotes/dyk_high.png',
       messageClass: 'absolute top-[1250px] left-1/2 -translate-x-1/2 w-[1750px] text-justify font-raleway font-semibold',
-      messageStyle: { fontSize: '51pt', color: '#ffffff', lineHeight: '1.4' }
+      messageStyle: { fontSize: '50pt', color: '#ffffff', lineHeight: '1.4', whiteSpace: 'pre-wrap' }
    },
    invest_friday: {
       bgLow: '/quotes/invest_friday_low.jpg',
       bgHigh: '/quotes/invest_friday_high.png',
-      messageClass: 'absolute top-[1250px] left-1/2 -translate-x-1/2 w-[1745px] text-justify font-raleway font-semibold ',
-      messageStyle: { fontSize: '51pt', color: '#ffffff', lineHeight: '1.4' }
+      messageClass: 'absolute top-[1250px] left-1/2 -translate-x-1/2 w-[1745px] text-justify font-raleway font-semibold',
+      messageStyle: { fontSize: '50pt', color: '#ffffff', lineHeight: '1.4', whiteSpace: 'pre-wrap' }
    }
 };
 
@@ -46,7 +46,12 @@ function QuotesFlyer({ type = 'dyk', flyerRef, isGenerating, message }) {
             className={config.messageClass}
             style={config.messageStyle}
          >
-            {message}
+            {(message || '').split('\n').map((line, index) => (
+               <React.Fragment key={index}>
+                  {line}
+                  <br />
+               </React.Fragment>
+            ))}
          </div>
       </div>
    );
