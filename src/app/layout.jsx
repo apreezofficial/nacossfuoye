@@ -29,8 +29,8 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-   title: 'NACOSS Memo',
-   description: 'View and manage official NACOSS memorandums.',
+   title: 'NACOSS Portal',
+   description: 'An official portal for the Department of Computer Science, NACOSS.',
 };
 
 export default function RootLayout({ children }) {

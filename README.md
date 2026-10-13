@@ -1,6 +1,6 @@
-# NACOSS Memo & Executive Dashboard 🚀
+# NACOSS Portal 🚀
 
-A comprehensive full-stack platform built for the National Association of Computing Students (NACOSS) to digitize and streamline executive workflows, memo generation, financial ledgers, and official communications.
+An official portal for the Department of Computer Science, National Association of Computing Students (NACOSS). A comprehensive full-stack platform built to digitize and streamline departmental operations, official memos, student directories, financial ledgers, and society communications.
 
 Built with **Next.js 14**, **TailwindCSS**, and **Supabase**.
 
@@ -22,8 +22,8 @@ To run this project locally, you will need Node.js and a free Supabase account.
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/NACOSS-Memo.git
-cd NACOSS-Memo
+git clone https://github.com/your-username/nacoss-portal.git
+cd nacoss-portal
 ```
 
 ### 2. Install dependencies
@@ -52,7 +52,7 @@ pnpm run dev
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🆘 We Need Your Help! (Student-Facing Interfaces)
-While the Executive Admin Dashboard is fully functional and highly secure, **we currently need massive help building the public, student-facing interfaces!** 
+While the Executive Admin Dashboard is fully functional and highly secure, **we currently need massive help building the public, student-facing interfaces for NACOSS Portal!** 
 
 If you are a student or frontend developer looking to contribute, we need:
 - A beautiful public landing page for students to view published memos and announcements.

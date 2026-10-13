@@ -1,6 +1,6 @@
 <!-- @format -->
 
-- [ ] Rename repo to NACOSS Portal
+- [x] Rename repo to NACOSS Portal
 - [ ] Add a landing page view
 - [ ] Add each level page
 - [ ] Fix stakeholders page view

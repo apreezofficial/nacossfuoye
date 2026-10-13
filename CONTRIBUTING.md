@@ -1,6 +1,6 @@
-# Contributing to NACOSS Memo
+# Contributing to NACOSS Portal
 
-First off, thank you for considering contributing to NACOSS Memo! It's people like you that make this community platform great.
+First off, thank you for considering contributing to NACOSS Portal (the official portal for the Department of Computer Science)! It's people like you that make this community platform great.
 
 ## 🛑 STRICT RULE: Ask Before You Code
 **Before writing ANY code, you MUST open an issue first.** 

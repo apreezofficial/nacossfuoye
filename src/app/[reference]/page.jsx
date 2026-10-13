@@ -20,7 +20,7 @@ export async function generateMetadata({ params }) {
    }
 
    return {
-      title: `${data.head} | NACOSS Memo`,
+      title: `${data.head} | NACOSS Portal`,
       description: `Official NACOSS Memorandum. Ref: ${data.reference}. Date: ${data.date}`,
       openGraph: {
          title: data.head,

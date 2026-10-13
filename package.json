@@ -1,5 +1,6 @@
 {
-   "name": "nacoss-memo",
+   "name": "nacoss-portal",
+   "description": "An official portal for the Department of Computer Science",
    "private": true,
    "version": "0.0.0",
    "type": "module",

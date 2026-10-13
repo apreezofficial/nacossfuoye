@@ -45,16 +45,16 @@ export default function Home() {
          <div className="flex flex-col items-center justify-center text-center mt-12 mb-16 space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm">
                <Sparkles size={16} />
-               <span>Official Student Portal</span>
+               <span>Department of Computer Science</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
                Welcome to the <br />
                <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-green-500">
-                  NACOSS Hub
+                  NACOSS Portal
                </span>
             </h1>
             <p className="max-w-2xl text-lg text-slate-500 font-medium">
-               Access official memos, departmental directives, and generate your custom NACOSS birthday flyers instantly.
+               An official portal for the Department of Computer Science. Access official memos, departmental directives, and generate your custom NACOSS birthday flyers instantly.
             </p>
          </div>
 

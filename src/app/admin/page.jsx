@@ -59,7 +59,7 @@ export default function AdminLogin() {
                   <UserStar size={32} />
                </div>
                <h1 className="text-2xl font-bold text-slate-900 font-nasalization text-center">Admin Login</h1>
-               <p className="text-slate-500 mt-2 text-center text-sm">Access the NACOSS memo management dashboard.</p>
+               <p className="text-slate-500 mt-2 text-center text-sm">Access the NACOSS Portal management dashboard.</p>
             </div>
 
             {error && (

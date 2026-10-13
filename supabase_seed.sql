@@ -1,5 +1,5 @@
 -- ==========================================
--- NACOSS Memo: Mock Data (Seed File)
+-- NACOSS Portal: Mock Data (Seed File)
 -- ==========================================
 -- Run this in your Supabase SQL Editor AFTER running 'supabase_schema.sql'
 -- This will populate your test database with fake data so you can test the UI!
