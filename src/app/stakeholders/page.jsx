@@ -1,6 +1,7 @@
 import PageHeader from '@/components/PageHeader';
 import Link from 'next/link';
 import { House, Phone, Twitter, Linkedin, UserCircle2 } from 'lucide-react';
+import { ManQuestion } from '@esvigy/react';
 import stakeholdersData from '@/data/stakeholders.json';
 
 export default function StakeholdersPage() {
@@ -85,8 +86,10 @@ export default function StakeholdersPage() {
                         ))}
                      </div>
                   ) : (
-                     <div className="text-center py-12 px-4 rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/50">
-                        <p className="text-slate-400 font-medium text-lg">Profiles will be updated soon.</p>
+                     <div className="text-center py-12 px-4 rounded-3xl border border-slate-200 bg-white shadow-sm flex flex-col items-center justify-center">
+                        <ManQuestion animated={true} color="#039133" secondaryColor="rgba(3,145,51,0.08)" className="w-28 h-28 mb-3 opacity-90" />
+                        <p className="text-slate-700 font-semibold text-lg">Profiles Updating Soon</p>
+                        <p className="text-slate-400 font-medium text-sm mt-1 max-w-sm">The department secretariat is compiling the verified directory for this category.</p>
                      </div>
                   )}
                </section>

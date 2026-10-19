@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { getGameBySlug } from './games';
 import { ArrowLeft, Trophy, Code, Settings } from 'lucide-react';
+import { GamePad } from '@esvigy/react';
 
 import { submitScore, getLeaderboard } from './actions';
 import { Star } from 'lucide-react';
@@ -158,8 +159,8 @@ export default function GameWrapper({ slug, GameComponent }) {
 
          {showStartModal ? (
             <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-xl max-w-md mx-auto text-center">
-               <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Trophy size={32} />
+               <div className="w-24 h-24 mx-auto mb-3 flex items-center justify-center">
+                  <GamePad animated={true} color="#9333ea" secondaryColor="rgba(147,51,234,0.12)" className="w-24 h-24 filter drop-shadow-md" />
                </div>
                <h2 className="text-2xl font-bold mb-2 text-slate-800">Join the Leaderboard</h2>
                <p className="text-slate-500 mb-6 text-sm">Enter your gaming profile to save your high scores.</p>

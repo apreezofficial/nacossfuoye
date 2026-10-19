@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import Link from 'next/link';
 import { House } from 'lucide-react';
+import { DocumentFolders } from '@esvigy/react';
 
 function Loading() {
    return (
@@ -112,8 +113,20 @@ export default function MemosList() {
                ))}
             </div>
          ) : (
-            <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-slate-200">
-               <p className="text-slate-500 font-medium">No official memos available in this category.</p>
+            <div className="text-center py-16 px-4 bg-white rounded-3xl border border-slate-200/80 shadow-sm flex flex-col items-center justify-center">
+               <DocumentFolders animated={true} color="#039133" secondaryColor="rgba(3,145,51,0.08)" className="w-36 h-36 mb-4 filter drop-shadow-sm" />
+               <h3 className="text-xl font-bold text-slate-800 mb-1">No Memos Found</h3>
+               <p className="text-slate-500 font-medium max-w-sm text-sm mb-6">
+                  There are currently no official memos published under the <span className="font-semibold text-slate-700 capitalize">"{filterType}"</span> category.
+               </p>
+               {filterType !== 'all' && (
+                  <button
+                     onClick={() => setFilterType('all')}
+                     className="px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-hover transition-colors shadow-sm"
+                  >
+                     View All Memos
+                  </button>
+               )}
             </div>
          )}
       </main>

@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader from '@/components/PageHeader';
 import Link from 'next/link';
-import { FileText, ArrowRight, UserStar, Image as ImageIcon, Sparkles, Gamepad2 } from 'lucide-react';
+import { FileText, ArrowRight, UserStar, Image as ImageIcon, Sparkles, Gamepad2, BookOpen, Laptop } from 'lucide-react';
+import { GamePad, DocumentFolders, WomanLaptop } from '@esvigy/react';
 import { createClient } from '@/utils/supabase/client';
 
 export default function Home() {
@@ -54,7 +55,7 @@ export default function Home() {
                </span>
             </h1>
             <p className="max-w-2xl text-lg text-slate-500 font-medium">
-               An official portal for the Department of Computer Science. Access official memos, departmental directives, and generate your custom NACOSS birthday flyers instantly.
+               An official portal for the Department of Computer Science. Access official memos, departmental directives, academic course materials, software requests, and departmental mini-games.
             </p>
          </div>
 
@@ -93,6 +94,72 @@ export default function Home() {
                </div>
             </Link>
 
+            {/* Academic Library Card */}
+            <Link
+               href="/library"
+               className="relative group flex flex-col p-8 rounded-3xl overflow-hidden border border-white/20 transition-[transform] duration-300 ease-out active:scale-[0.98] bg-blue-700 text-white shadow-xl hover:shadow-2xl backdrop-blur-md min-h-70"
+            >
+               <div className="absolute -bottom-10 -right-10 opacity-15 transition-transform duration-800 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-translate-y-4 group-hover:-translate-x-4 pointer-events-none">
+                  <DocumentFolders animated={true} color="#ffffff" secondaryColor="rgba(255,255,255,0.2)" className="w-64 h-64" />
+               </div>
+
+               <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex items-start justify-between mb-6">
+                     <span className="inline-flex items-center rounded-full bg-white/20 px-3 py-1.5 text-xs text-white backdrop-blur-sm border border-white/10 font-bold uppercase tracking-widest">
+                        Academic Hub
+                     </span>
+                  </div>
+
+                  <div className="flex flex-col flex-1 py-2">
+                     <h3 className="text-3xl font-bold text-white leading-snug mb-3">
+                        Academic Library
+                     </h3>
+                     <p className="text-white/80 text-base font-medium leading-relaxed max-w-[85%]">
+                        Access course lecture slides, syllabus guides, reading lists, and past examination archives.
+                     </p>
+                  </div>
+
+                  <div className="mt-auto flex justify-between items-center border-t border-white/20 pt-6">
+                     <div className="flex items-center text-sm font-semibold text-white opacity-90 group-hover:opacity-100 transition-opacity">
+                        Explore Library <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1.5 duration-300 ease-out" />
+                     </div>
+                  </div>
+               </div>
+            </Link>
+
+            {/* Software Submission Card */}
+            <Link
+               href="/software"
+               className="relative group flex flex-col p-8 rounded-3xl overflow-hidden border border-white/20 transition-[transform] duration-300 ease-out active:scale-[0.98] bg-amber-700 text-white shadow-xl hover:shadow-2xl backdrop-blur-md min-h-70"
+            >
+               <div className="absolute -bottom-10 -right-10 opacity-15 transition-transform duration-800 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-translate-y-4 group-hover:-translate-x-4 pointer-events-none">
+                  <WomanLaptop animated={true} color="#ffffff" secondaryColor="rgba(255,255,255,0.2)" className="w-64 h-64" />
+               </div>
+
+               <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex items-start justify-between mb-6">
+                     <span className="inline-flex items-center rounded-full bg-white/20 px-3 py-1.5 text-xs text-white backdrop-blur-sm border border-white/10 font-bold uppercase tracking-widest">
+                        Tech Lab
+                     </span>
+                  </div>
+
+                  <div className="flex flex-col flex-1 py-2">
+                     <h3 className="text-3xl font-bold text-white leading-snug mb-3">
+                        Software Request
+                     </h3>
+                     <p className="text-white/80 text-base font-medium leading-relaxed max-w-[85%]">
+                        Request coursework software packages, IDEs, or submit student projects to the departmental showcase.
+                     </p>
+                  </div>
+
+                  <div className="mt-auto flex justify-between items-center border-t border-white/20 pt-6">
+                     <div className="flex items-center text-sm font-semibold text-white opacity-90 group-hover:opacity-100 transition-opacity">
+                        Submit / Request <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1.5 duration-300 ease-out" />
+                     </div>
+                  </div>
+               </div>
+            </Link>
+
             {/* Stakeholders Card */}
             <Link
                href="/stakeholders"
@@ -121,6 +188,39 @@ export default function Home() {
                   <div className="mt-auto flex justify-between items-center border-t border-white/20 pt-6">
                      <div className="flex items-center text-sm font-semibold text-white opacity-90 group-hover:opacity-100 transition-opacity">
                         View Profiles <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1.5 duration-300 ease-out" />
+                     </div>
+                  </div>
+               </div>
+            </Link>
+
+            {/* Games Hub Card */}
+            <Link
+               href="/games"
+               className="relative group flex flex-col p-8 rounded-3xl overflow-hidden border border-white/20 transition-[transform] duration-300 ease-out active:scale-[0.98] bg-purple-700 text-white shadow-xl hover:shadow-2xl backdrop-blur-md min-h-70"
+            >
+               <div className="absolute -bottom-10 -right-10 opacity-15 transition-transform duration-800 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-translate-y-4 group-hover:-translate-x-4 pointer-events-none">
+                  <GamePad animated={true} color="#ffffff" secondaryColor="rgba(255,255,255,0.2)" className="w-64 h-64" />
+               </div>
+
+               <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex items-start justify-between mb-6">
+                     <span className="inline-flex items-center rounded-full bg-white/20 px-3 py-1.5 text-xs text-white backdrop-blur-sm border border-white/10 font-bold uppercase tracking-widest">
+                        Entertainment
+                     </span>
+                  </div>
+
+                  <div className="flex flex-col flex-1 py-2">
+                     <h3 className="text-3xl font-bold text-white leading-snug mb-3">
+                        Games Hub
+                     </h3>
+                     <p className="text-white/80 text-base font-medium leading-relaxed max-w-[85%]">
+                        Play weekly mini-games created by open-source contributors and compete for the top score.
+                     </p>
+                  </div>
+
+                  <div className="mt-auto flex justify-between items-center border-t border-white/20 pt-6">
+                     <div className="flex items-center text-sm font-semibold text-white opacity-90 group-hover:opacity-100 transition-opacity">
+                        Play Games <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1.5 duration-300 ease-out" />
                      </div>
                   </div>
                </div>
@@ -158,40 +258,6 @@ export default function Home() {
                   </div>
                </div>
             </Link>
-
-            {/* Games Hub Card */}
-            <Link
-               href="/games"
-               className="relative group flex flex-col p-8 rounded-3xl overflow-hidden border border-white/20 transition-[transform] duration-300 ease-out active:scale-[0.98] bg-purple-700 text-white shadow-xl hover:shadow-2xl backdrop-blur-md min-h-70"
-            >
-               <div className="absolute -bottom-8 -right-8 text-white/5 transition-transform duration-800 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-translate-y-4 group-hover:-translate-x-4 pointer-events-none">
-                  <Gamepad2 size={240} strokeWidth={1} />
-               </div>
-
-               <div className="relative z-10 flex flex-col h-full">
-                  <div className="flex items-start justify-between mb-6">
-                     <span className="inline-flex items-center rounded-full bg-white/20 px-3 py-1.5 text-xs text-white backdrop-blur-sm border border-white/10 font-bold uppercase tracking-widest">
-                        Entertainment
-                     </span>
-                  </div>
-
-                  <div className="flex flex-col flex-1 py-2">
-                     <h3 className="text-3xl font-bold text-white leading-snug mb-3">
-                        Games Hub
-                     </h3>
-                     <p className="text-white/80 text-base font-medium leading-relaxed max-w-[85%]">
-                        Play weekly mini-games created by open-source contributors and compete for the top score.
-                     </p>
-                  </div>
-
-                  <div className="mt-auto flex justify-between items-center border-t border-white/20 pt-6">
-                     <div className="flex items-center text-sm font-semibold text-white opacity-90 group-hover:opacity-100 transition-opacity">
-                        Play Games <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1.5 duration-300 ease-out" />
-                     </div>
-                  </div>
-               </div>
-            </Link>
-
          </div>
       </main>
    );

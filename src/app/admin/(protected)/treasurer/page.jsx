@@ -5,7 +5,8 @@ import { createClient } from '@/utils/supabase/client';
 import PageHeader from '@/components/PageHeader';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Clock, Wallet, Construction } from 'lucide-react';
+import { ArrowLeft, Clock } from 'lucide-react';
+import { Wallet } from '@esvigy/react';
 
 export default function TreasurerPage() {
    const [loading, setLoading] = useState(true);
@@ -52,15 +53,13 @@ export default function TreasurerPage() {
 
          <div className="mt-8">
             <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden relative">
-               {/* Decorative background */}
-               <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
-                  <Wallet size={300} />
-               </div>
-               
                <div className="px-6 py-20 sm:px-12 sm:py-24 flex flex-col items-center justify-center text-center relative z-10">
-                  <div className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center mb-6 text-emerald-500 shadow-sm border border-emerald-100/50">
-                     <Construction size={48} strokeWidth={1.5} />
-                  </div>
+                  <Wallet 
+                     animated={true} 
+                     color="#059669" 
+                     secondaryColor="rgba(5,150,105,0.08)" 
+                     className="w-36 h-36 mb-6 filter drop-shadow-md" 
+                  />
                   
                   <h2 className="text-3xl font-extrabold text-slate-800 mb-4 tracking-tight">
                      Feature Under Construction

@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { EyeOff, Eye, UserStar, ArrowRight } from 'lucide-react';
+import { EyeOff, Eye, ArrowRight } from 'lucide-react';
+import { SecurityLock } from '@esvigy/react';
 
 export default function AdminLogin() {
    const [formData, setFormData] = useState({ email: '', password: '' });
@@ -55,11 +56,14 @@ export default function AdminLogin() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex flex-col items-center justify-center min-h-[calc(100vh-8rem)]">
          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl p-8">
             <div className="flex flex-col items-center mb-8">
-               <div className="p-3 bg-primary/10 text-primary rounded-xl mb-4">
-                  <UserStar size={32} />
-               </div>
+               <SecurityLock 
+                  animated={true} 
+                  color="#039133" 
+                  secondaryColor="rgba(3,145,51,0.08)" 
+                  className="w-24 h-24 mb-3 filter drop-shadow-sm" 
+               />
                <h1 className="text-2xl font-bold text-slate-900 font-nasalization text-center">Admin Login</h1>
-               <p className="text-slate-500 mt-2 text-center text-sm">Access the NACOSS Portal management dashboard.</p>
+               <p className="text-slate-500 mt-1 text-center text-sm">Access the NACOSS Portal management dashboard.</p>
             </div>
 
             {error && (

@@ -6,6 +6,7 @@ import PageHeader from '@/components/PageHeader';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Plus, X } from 'lucide-react';
+import { Wallet } from '@esvigy/react';
 import Notification from '@/components/Notification';
 
 export default function LedgerPage() {
@@ -304,7 +305,13 @@ export default function LedgerPage() {
                         </tr>
                      ) : displayedTransactions.length === 0 ? (
                         <tr>
-                           <td colSpan="6" className="py-12 text-center text-slate-400 font-medium">No transactions recorded yet.</td>
+                           <td colSpan="6" className="py-16 text-center text-slate-400 font-medium">
+                              <div className="flex flex-col items-center justify-center">
+                                 <Wallet animated={true} color="#2563eb" secondaryColor="rgba(37,99,235,0.08)" className="w-24 h-24 mb-3 opacity-80" />
+                                 <p className="text-slate-600 font-semibold text-base">No transactions recorded yet</p>
+                                 <p className="text-slate-400 text-xs mt-1">Use the "New Transaction" button above to log income or expenses.</p>
+                              </div>
+                           </td>
                         </tr>
                      ) : (
                         displayedTransactions.map((tx) => (

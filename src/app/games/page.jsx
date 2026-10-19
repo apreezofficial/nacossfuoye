@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { GAMES, getActiveGame } from './games';
 import { Star, Trophy, Home } from 'lucide-react';
+import { GamePad } from '@esvigy/react';
 import { getLeaderboard } from './actions';
 
 export default function GamesDirectory() {
@@ -45,30 +46,47 @@ export default function GamesDirectory() {
             </Link>
          </div>
 
-         <h1 className="text-4xl font-extrabold mb-8 text-center text-slate-800">NACOSS Games Hub</h1>
+         <div className="flex items-center justify-center gap-3 mb-8">
+            <GamePad animated={true} color="#7e22ce" className="w-10 h-10 shrink-0" />
+            <h1 className="text-4xl font-extrabold text-slate-800">NACOSS Games Hub</h1>
+         </div>
 
          <div className="flex flex-col lg:flex-row gap-8 mb-12">
             {/* Left: Active Game of the Week */}
-            <div className="flex-1 bg-purple-700 text-white rounded-3xl p-8 shadow-xl flex flex-col justify-center border border-white/10 relative overflow-hidden">
-               <div className="absolute top-0 right-0 bg-yellow-400 text-black text-xs font-bold px-4 py-2 rounded-bl-xl uppercase tracking-widest z-10">
+            <div className="flex-1 bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-900 text-white rounded-3xl p-8 shadow-xl flex flex-col justify-center border border-white/10 relative overflow-hidden">
+               <div className="absolute top-0 right-0 bg-yellow-400 text-black text-xs font-bold px-4 py-2 rounded-bl-xl uppercase tracking-widest z-10 shadow-sm">
                   Game of the Week
                </div>
                
-               <div className="relative z-10">
-                  <h2 className="text-4xl font-extrabold mb-2">{activeGame?.name}</h2>
-                  
-                  <div className="inline-block bg-white/20 px-3 py-1 rounded-md text-sm mb-4 border border-white/20">
-                     Built by <a href={activeGame?.developerLink} target="_blank" rel="noreferrer" className="font-bold hover:underline text-yellow-300">{activeGame?.developer}</a>
+               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex-1">
+                     <h2 className="text-4xl font-extrabold mb-2">{activeGame?.name}</h2>
+                     
+                     <div className="inline-block bg-white/20 px-3 py-1 rounded-md text-sm mb-4 border border-white/20">
+                        Built by <a href={activeGame?.developerLink} target="_blank" rel="noreferrer" className="font-bold hover:underline text-yellow-300">{activeGame?.developer}</a>
+                     </div>
+                     
+                     <p className="mb-8 text-lg opacity-90 leading-relaxed max-w-lg">{activeGame?.description}</p>
+                     
+                     <Link
+                        href={`/games/${activeGame?.slug}`}
+                        className="inline-flex items-center justify-center bg-white text-purple-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-105 transition-all shadow-lg active:scale-95"
+                     >
+                        <Trophy className="mr-2" size={24} /> Play & Compete
+                     </Link>
                   </div>
-                  
-                  <p className="mb-8 text-lg opacity-90 leading-relaxed max-w-lg">{activeGame?.description}</p>
-                  
-                  <Link
-                     href={`/games/${activeGame?.slug}`}
-                     className="inline-flex items-center justify-center bg-white text-purple-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-105 transition-all shadow-lg active:scale-95"
-                  >
-                     <Trophy className="mr-2" size={24} /> Play & Compete
-                  </Link>
+
+                  <div className="shrink-0 flex items-center justify-center">
+                     <div className="relative group">
+                        <div className="absolute -inset-4 bg-purple-400/20 rounded-full blur-2xl"></div>
+                        <GamePad 
+                           animated={true}
+                           color="#f3e8ff"
+                           secondaryColor="rgba(255,255,255,0.12)"
+                           className="w-44 h-44 sm:w-56 sm:h-56 filter drop-shadow-2xl relative z-10 hover:scale-105 transition-transform duration-300" 
+                        />
+                     </div>
+                  </div>
                </div>
             </div>
 
@@ -82,7 +100,10 @@ export default function GamesDirectory() {
                   {loading ? (
                      <div className="text-center text-slate-400 py-10">Loading scores...</div>
                   ) : topScores.length === 0 ? (
-                     <div className="text-center text-slate-400 py-10">No scores yet. Be the first!</div>
+                     <div className="text-center text-slate-400 py-8 flex flex-col items-center">
+                        <GamePad animated={true} color="#a855f7" className="w-16 h-16 mb-2 opacity-60" />
+                        <p className="font-medium text-sm">No scores yet. Be the first!</p>
+                     </div>
                   ) : (
                      <table className="w-full text-left border-collapse">
                         <thead>
