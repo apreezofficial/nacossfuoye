@@ -38,10 +38,11 @@ function useScale({ letterHeadRef, previewRef, baseWidth = 794, dependency = [] 
 
       window.addEventListener("load", scalePaper);
       // Wait for fonts/layout to settle
-      setTimeout(scalePaper, 100);
+      const timer = setTimeout(scalePaper, 100);
       scalePaper();
 
       return () => {
+         clearTimeout(timer);
          if (resizeObserver && wrapper) {
             resizeObserver.unobserve(wrapper);
          }

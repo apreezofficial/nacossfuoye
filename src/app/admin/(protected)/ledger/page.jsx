@@ -9,6 +9,19 @@ import { ArrowLeft, Plus, X } from 'lucide-react';
 import { Wallet } from '@esvigy/react';
 import Notification from '@/components/Notification';
 
+const formatCurrency = (value) => {
+   if (!value || parseFloat(value) === 0) return '';
+   return '₦' + parseFloat(value).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+
+const formatDate = (dateString) => {
+   const d = new Date(dateString);
+   // Use local timezone offsets to prevent off-by-one day issues
+   const userTimezoneOffset = d.getTimezoneOffset() * 60000;
+   const localDate = new Date(d.getTime() + userTimezoneOffset);
+   return localDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+};
+
 export default function LedgerPage() {
    const [transactions, setTransactions] = useState([]);
    const [loading, setLoading] = useState(true);
@@ -49,30 +62,34 @@ export default function LedgerPage() {
          }
       }
 
-      const { data, error } = await supabase
-         .from('transactions')
-         .select('*')
-         .order('date', { ascending: true })
-         .order('created_at', { ascending: true });
+      try {
+         const { data, error } = await supabase
+            .from('transactions')
+            .select('*')
+            .order('date', { ascending: true })
+            .order('created_at', { ascending: true });
 
-      if (error) {
-         console.error('Error fetching transactions:', error);
+         if (error) {
+            console.error('Error fetching transactions:', error);
+            return;
+         }
+
+         // Calculate running balance
+         let currentBalance = 0;
+         const processedData = data.map(t => {
+            const inc = parseFloat(t.income) || 0;
+            const exp = parseFloat(t.expense) || 0;
+            currentBalance += (inc - exp);
+            return { ...t, computedBalance: currentBalance };
+         });
+
+         // Reverse to show latest first
+         setTransactions(processedData.reverse());
+      } catch (err) {
+         console.error('Unexpected error fetching transactions:', err);
+      } finally {
          setLoading(false);
-         return;
       }
-
-      // Calculate running balance
-      let currentBalance = 0;
-      const processedData = data.map(t => {
-         const inc = parseFloat(t.income) || 0;
-         const exp = parseFloat(t.expense) || 0;
-         currentBalance += (inc - exp);
-         return { ...t, computedBalance: currentBalance };
-      });
-
-      // Reverse to show latest first
-      setTransactions(processedData.reverse());
-      setLoading(false);
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [router]);
 
@@ -107,54 +124,47 @@ export default function LedgerPage() {
 
       setIsSubmitting(true);
 
-      const numAmount = parseFloat(amount);
-      const income = type === 'income' ? numAmount : 0;
-      const expense = type === 'expense' ? numAmount : 0;
+      try {
+         const numAmount = parseFloat(amount);
+         const income = type === 'income' ? numAmount : 0;
+         const expense = type === 'expense' ? numAmount : 0;
 
-      const prevBalance = transactions.length > 0 ? transactions[0].computedBalance : 0;
-      const newBalance = prevBalance + income - expense;
+         const prevBalance = transactions.length > 0 ? transactions[0].computedBalance : 0;
+         const newBalance = prevBalance + income - expense;
 
-      const { data: { user } } = await supabase.auth.getUser();
+         const { data: { user } } = await supabase.auth.getUser();
 
-      const { error } = await supabase
-         .from('transactions')
-         .insert({
-            date,
-            description,
-            income,
-            expense,
-            balance: newBalance,
-            category,
-            created_by: user?.email
-         });
+         const { error } = await supabase
+            .from('transactions')
+            .insert({
+               date,
+               description,
+               income,
+               expense,
+               balance: newBalance,
+               category,
+               created_by: user?.email
+            });
 
-      if (error) {
-         console.error('Error adding transaction:', error);
+         if (error) {
+            console.error('Error adding transaction:', error);
+            showNotif('Failed to add transaction', 'error');
+         } else {
+            showNotif('Transaction added successfully', 'success');
+            setShowForm(false);
+            // Reset form
+            setDate('');
+            setDescription('');
+            setAmount('');
+            setCategory('');
+            fetchTransactions();
+         }
+      } catch (err) {
+         console.error('Error submitting transaction:', err);
          showNotif('Failed to add transaction', 'error');
-      } else {
-         showNotif('Transaction added successfully', 'success');
-         setShowForm(false);
-         // Reset form
-         setDate('');
-         setDescription('');
-         setAmount('');
-         setCategory('');
-         fetchTransactions();
+      } finally {
+         setIsSubmitting(false);
       }
-      setIsSubmitting(false);
-   };
-
-   const formatCurrency = (value) => {
-      if (!value || parseFloat(value) === 0) return '';
-      return '₦' + parseFloat(value).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-   };
-
-   const formatDate = (dateString) => {
-      const d = new Date(dateString);
-      // Use local timezone offsets to prevent off-by-one day issues
-      const userTimezoneOffset = d.getTimezoneOffset() * 60000;
-      const localDate = new Date(d.getTime() + userTimezoneOffset);
-      return localDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
    };
 
    // Overview metrics
@@ -220,34 +230,34 @@ export default function LedgerPage() {
                <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-slate-200 w-full max-w-2xl animate-in zoom-in-95 duration-200 max-h-[85vh] overflow-y-auto">
                   <div className="flex items-center justify-between mb-6">
                      <h3 className="text-xl font-bold text-slate-800">Add New Transaction</h3>
-                     <button onClick={() => setShowForm(false)} className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+                     <button onClick={() => setShowForm(false)} aria-label="Close add transaction modal" className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
                         <X size={20} />
                      </button>
                   </div>
 
                   <form onSubmit={handleAddTransaction} className="flex flex-col space-y-5">
                      <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date</label>
-                        <input required type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-primary outline-none transition-all duration-300 bg-slate-50 focus:bg-white" />
+                        <label htmlFor="tx-date" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date</label>
+                        <input id="tx-date" aria-label="Transaction Date" required type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-primary outline-none transition-all duration-300 bg-slate-50 focus:bg-white" />
                      </div>
                      <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Type</label>
-                        <select value={type} onChange={e => setType(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-primary outline-none transition-all duration-300 bg-slate-50 focus:bg-white">
+                        <label htmlFor="tx-type" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Type</label>
+                        <select id="tx-type" aria-label="Transaction Type" value={type} onChange={e => setType(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-primary outline-none transition-all duration-300 bg-slate-50 focus:bg-white">
                            <option value="income">Income</option>
                            <option value="expense">Expense</option>
                         </select>
                      </div>
                      <div className="md:col-span-2">
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Description</label>
-                        <input required type="text" placeholder="e.g. Student dues" value={description} onChange={e => setDescription(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-primary outline-none transition-all duration-300 bg-slate-50 focus:bg-white" />
+                        <label htmlFor="tx-desc" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Description</label>
+                        <input id="tx-desc" aria-label="Transaction Description" required type="text" placeholder="e.g. Student dues" value={description} onChange={e => setDescription(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-primary outline-none transition-all duration-300 bg-slate-50 focus:bg-white" />
                      </div>
                      <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Amount (₦)</label>
-                        <input required type="number" min="0" step="0.01" placeholder="0.00" value={amount} onChange={e => setAmount(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-primary outline-none transition-all duration-300 bg-slate-50 focus:bg-white" />
+                        <label htmlFor="tx-amount" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Amount (₦)</label>
+                        <input id="tx-amount" aria-label="Transaction Amount" required type="number" min="0" step="0.01" placeholder="0.00" value={amount} onChange={e => setAmount(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-primary outline-none transition-all duration-300 bg-slate-50 focus:bg-white" />
                      </div>
                      <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Category</label>
-                        <input required type="text" placeholder="e.g. Dues, Transport" value={category} onChange={e => setCategory(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-primary outline-none transition-all duration-300 bg-slate-50 focus:bg-white" />
+                        <label htmlFor="tx-cat" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Category</label>
+                        <input id="tx-cat" aria-label="Transaction Category" required type="text" placeholder="e.g. Dues, Transport" value={category} onChange={e => setCategory(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-primary outline-none transition-all duration-300 bg-slate-50 focus:bg-white" />
                      </div>
                      <div className="w-full flex justify-between gap-4 mt-2">
                         <button type="button" onClick={() => setShowForm(false)} className="bg-red-600 rounded-xl font-medium text-white hover:bg-red-700 transition-colors w-full h-12 flex items-center justify-center">Cancel</button>
@@ -265,6 +275,8 @@ export default function LedgerPage() {
             <h3 className="text-lg font-bold text-slate-800">Transaction History</h3>
             <div className="flex gap-2 w-full sm:w-auto">
                <select 
+                  id="tx-filter"
+                  aria-label="Filter transactions by type"
                   value={filter} 
                   onChange={(e) => { setFilter(e.target.value); setDisplayCount(10); }}
                   className="px-4 py-2 rounded-xl border border-slate-200 bg-white text-sm font-medium text-slate-700 outline-none focus:border-primary/50 transition-colors shadow-sm flex-1 sm:flex-none cursor-pointer"
@@ -274,6 +286,8 @@ export default function LedgerPage() {
                   <option value="expense">Expenses Only</option>
                </select>
                <select 
+                  id="tx-sort"
+                  aria-label="Sort transactions by date"
                   value={sortOrder} 
                   onChange={(e) => { setSortOrder(e.target.value); setDisplayCount(10); }}
                   className="px-4 py-2 rounded-xl border border-slate-200 bg-white text-sm font-medium text-slate-700 outline-none focus:border-primary/50 transition-colors shadow-sm flex-1 sm:flex-none cursor-pointer"

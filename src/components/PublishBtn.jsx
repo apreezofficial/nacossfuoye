@@ -4,15 +4,13 @@ import { useState, forwardRef, useImperativeHandle } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import Notification from '@/components/Notification';
 
+const TYPE_PREFIX_MAP = { executive: 'NACOSS', elecom: 'CSCEC', src: 'CSCSRC', president: 'CSCPR' };
+const getPrefix = (t) => TYPE_PREFIX_MAP[t] || 'NACOSS';
+
 export const AddNewMemo = forwardRef(({ referenceNumber, date, head, content, type = 'executive' }, ref) => {
    const [isAdding, setIsAdding] = useState(false);
    const [notification, setNotification] = useState(null);
    const supabase = createClient();
-
-   const getPrefix = (t) => {
-      const map = { executive: 'NACOSS', elecom: 'CSCEC', src: 'CSCSRC', president: 'CSCPR' };
-      return map[t] || 'NACOSS';
-   };
 
    const showNotification = (message, type) => {
       setNotification({ message, type });

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-export const QUOTES_CONFIGS = {
+const QUOTES_CONFIGS = {
    dyk: {
       bgLow: '/quotes/dyk_low.jpg',
       bgHigh: '/quotes/dyk_high.png',
@@ -46,12 +46,15 @@ function QuotesFlyer({ type = 'dyk', flyerRef, isGenerating, message }) {
             className={config.messageClass}
             style={config.messageStyle}
          >
-            {(message || '').split('\n').map((line, index) => (
-               <React.Fragment key={index}>
-                  {line}
-                  <br />
-               </React.Fragment>
-            ))}
+            {(message || '').split('\n').map((line, pos) => {
+               const itemKey = `msg-item-${line}-${pos}`;
+               return (
+                  <React.Fragment key={itemKey}>
+                     {line}
+                     <br />
+                  </React.Fragment>
+               );
+            })}
          </div>
       </div>
    );

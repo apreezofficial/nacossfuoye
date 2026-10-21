@@ -288,9 +288,10 @@ export function isNodeTypeSelected(editor, nodeTypeNames = [], checkAncestorNode
   // Depth-based ancestor node check
   if (checkAncestorNodes) {
     const { $from } = selection
+    const nodeTypeSet = new Set(nodeTypeNames)
     for (let depth = $from.depth; depth > 0; depth--) {
       const ancestorNode = $from.node(depth)
-      if (nodeTypeNames.includes(ancestorNode.type.name)) {
+      if (nodeTypeSet.has(ancestorNode.type.name)) {
         return true
       }
     }

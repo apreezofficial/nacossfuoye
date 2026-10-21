@@ -445,6 +445,7 @@ export const ImageUploadNode = (props) => {
       <input
         ref={inputRef}
         name="file"
+        aria-label="Upload file"
         accept={accept}
         type="file"
         multiple={limit > 1}

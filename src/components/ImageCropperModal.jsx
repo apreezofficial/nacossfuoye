@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import Cropper from 'react-easy-crop';
 import getCroppedImg from '@/utils/cropImage';
 import { X, Check } from 'lucide-react';
@@ -6,19 +6,19 @@ import { X, Check } from 'lucide-react';
 export default function ImageCropperModal({ imageSrc, onComplete, onCancel, aspect = 926 / 1270 }) {
    const [crop, setCrop] = useState({ x: 0, y: 0 });
    const [zoom, setZoom] = useState(1);
-   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+   const croppedAreaPixelsRef = useRef(null);
    const [isCropping, setIsCropping] = useState(false);
 
    const onCropCompleteHandler = useCallback((croppedArea, croppedAreaPixels) => {
-      setCroppedAreaPixels(croppedAreaPixels);
+      croppedAreaPixelsRef.current = croppedAreaPixels;
    }, []);
 
    const handleSave = async () => {
-      if (!croppedAreaPixels) return;
+      if (!croppedAreaPixelsRef.current) return;
       
       try {
          setIsCropping(true);
-         const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
+         const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixelsRef.current);
          onComplete(croppedImage);
       } catch (e) {
          console.error(e);
@@ -51,14 +51,15 @@ export default function ImageCropperModal({ imageSrc, onComplete, onCancel, aspe
 
          <div className="p-6 bg-green-900 border-t border-white/10 flex flex-col items-center gap-6">
             <div className="w-full max-w-md">
-               <label className="text-white/80 text-sm font-medium mb-2 block text-center">Zoom</label>
+               <label htmlFor="cropper-zoom-input" className="text-white/80 text-sm font-medium mb-2 block text-center">Zoom</label>
                <input
+                  id="cropper-zoom-input"
+                  aria-label="Zoom"
                   type="range"
                   value={zoom}
                   min={1}
                   max={3}
                   step={0.1}
-                  aria-labelledby="Zoom"
                   onChange={(e) => setZoom(e.target.value)}
                   className="w-full h-2 bg-green-700 rounded-lg appearance-none cursor-pointer accent-primary"
                />

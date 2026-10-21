@@ -54,6 +54,7 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
 
    useEffect(() => {
       if (!isNew || initialData.reference) return;
+      let isMounted = true;
 
       const fetchNextReference = async () => {
          const prefix = PREFIX_MAP[memoType] || 'NACOSS';
@@ -67,6 +68,8 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
             .order('created_at', { ascending: false })
             .limit(1)
             .single();
+
+         if (!isMounted) return;
 
          if (error && error.code !== 'PGRST116') {
             console.error('Error fetching last reference:', error);
@@ -88,6 +91,9 @@ export default function MemoForm({ isNew = true, initialData = {}, memoType = 'e
       };
 
       fetchNextReference();
+      return () => {
+         isMounted = false;
+      };
    }, [isNew, memoType, initialData.reference, supabase]);
 
    useScale({ letterHeadRef, previewRef });

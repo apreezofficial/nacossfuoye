@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 
@@ -350,9 +350,11 @@ export function SimpleEditor({ content, setContent, mode = 'split', toolbarPorta
       </Toolbar>
    )
 
+   const editorContextValue = useMemo(() => ({ editor }), [editor])
+
    return (
       <div className={`simple-editor-wrapper relative ${mode === 'document' ? 'document-mode' : 'split-mode'}`}>
-         <EditorContext.Provider value={{ editor }}>
+         <EditorContext.Provider value={editorContextValue}>
             {mode === 'document' 
                ? (portalTarget ? createPortal(renderToolbar(), portalTarget) : null)
                : renderToolbar()

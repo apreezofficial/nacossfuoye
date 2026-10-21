@@ -8,9 +8,10 @@ import PageHeader from '@/components/PageHeader';
 import Notification from '@/components/Notification';
 import { toPng } from 'html-to-image';
 import ImageCropperModal from '@/components/ImageCropperModal';
-import BirthdayFlyer, { BIRTHDAY_CONFIGS } from '@/components/BirthdayFlyer';
+import BirthdayFlyer from '@/components/BirthdayFlyer';
+import { BIRTHDAY_CONFIGS } from '@/lib/birthday-configs';
 
-export default function BirthdayForm({ templateType = 'executive', backLink = '/admin/dashboard' }) {
+export default function BirthdayForm({ templateType = 'executive', backLink = '/admin/dashboard', hideHeader = false }) {
    const [firstname, setFirstname] = useState('The');
    const [lastname, setLastname] = useState('Binaries');
    const [post, setPost] = useState('200 Level');
@@ -126,15 +127,12 @@ export default function BirthdayForm({ templateType = 'executive', backLink = '/
             />
          )}
 
-         <PageHeader title={`${templateType.toUpperCase()} Birthday Template`}>
-            <div className="flex flex-wrap items-center gap-3">
-               <Link href={backLink} aria-label="Go back" className="inline-flex items-center justify-center p-3 rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/60 text-primary hover:border-primary/30 transition-all duration-300">
-                  <House size={22} />
-               </Link>
+         {hideHeader ? (
+            <div className="flex justify-end items-center mb-6">
                <button
                   onClick={downloadFlyer}
                   disabled={isGenerating}
-                  className={`inline-flex items-center justify-center px-6 py-3 rounded-xl text-white font-semibold transition-all duration-300 ease-out active:scale-[0.98] ${isGenerating ? 'bg-primary/70 cursor-not-allowed' : 'bg-primary hover:bg-primary-hover'}`}
+                  className={`inline-flex items-center justify-center px-6 py-3 rounded-xl text-white font-semibold transition-all duration-300 ease-out active:scale-[0.98] ${isGenerating ? 'bg-primary/70 cursor-not-allowed' : 'bg-primary hover:bg-primary-hover shadow-md'}`}
                >
                   {isGenerating ? (
                      <div className="flex items-center gap-2">
@@ -149,15 +147,40 @@ export default function BirthdayForm({ templateType = 'executive', backLink = '/
                   )}
                </button>
             </div>
-         </PageHeader>
+         ) : (
+            <PageHeader title={`${templateType.toUpperCase()} Birthday Template`}>
+               <div className="flex flex-wrap items-center gap-3">
+                  <Link href={backLink} aria-label="Go back" className="inline-flex items-center justify-center p-3 rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/60 text-primary hover:border-primary/30 transition-all duration-300">
+                     <House size={22} />
+                  </Link>
+                  <button
+                     onClick={downloadFlyer}
+                     disabled={isGenerating}
+                     className={`inline-flex items-center justify-center px-6 py-3 rounded-xl text-white font-semibold transition-all duration-300 ease-out active:scale-[0.98] ${isGenerating ? 'bg-primary/70 cursor-not-allowed' : 'bg-primary hover:bg-primary-hover'}`}
+                  >
+                     {isGenerating ? (
+                        <div className="flex items-center gap-2">
+                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                           Generating...
+                        </div>
+                     ) : (
+                        <div className="flex items-center gap-2">
+                           <FileDown size={20} />
+                           Download Flyer
+                        </div>
+                     )}
+                  </button>
+               </div>
+            </PageHeader>
+         )}
 
          <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-8 items-start mt-4">
             <aside className="p-6 rounded-2xl bg-white shadow-xl lg:sticky lg:top-8 border border-slate-100">
                <h3 className="text-lg font-bold text-slate-800 mb-6">Flyer Details</h3>
                <div className="space-y-5">
                   <div>
-                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Picture</label>
-                     <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-primary/40 rounded-xl cursor-pointer bg-primary/5 hover:bg-primary/10 transition-colors">
+                     <span className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Picture</span>
+                     <label htmlFor="birthday-photo-upload" className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-primary/40 rounded-xl cursor-pointer bg-primary/5 hover:bg-primary/10 transition-colors">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6 text-primary">
                            {imagePreview ? (
                               <img src={imagePreview} alt="Preview" className="h-28 object-contain rounded-md" />
@@ -169,13 +192,15 @@ export default function BirthdayForm({ templateType = 'executive', backLink = '/
                               </>
                            )}
                         </div>
-                        <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
+                        <input id="birthday-photo-upload" aria-label="Upload photo" type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
                      </label>
                   </div>
 
                   <div>
-                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">First Name</label>
+                     <label htmlFor="bf-firstname" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">First Name</label>
                      <input
+                        id="bf-firstname"
+                        aria-label="First Name"
                         type="text"
                         value={firstname}
                         onChange={e => setFirstname(e.target.value)}
@@ -184,8 +209,10 @@ export default function BirthdayForm({ templateType = 'executive', backLink = '/
                   </div>
 
                   <div>
-                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Last Name</label>
+                     <label htmlFor="bf-lastname" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Last Name</label>
                      <input
+                        id="bf-lastname"
+                        aria-label="Last Name"
                         type="text"
                         value={lastname}
                         onChange={e => setLastname(e.target.value)}
@@ -194,8 +221,10 @@ export default function BirthdayForm({ templateType = 'executive', backLink = '/
                   </div>
 
                   <div>
-                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Post or Level</label>
+                     <label htmlFor="bf-post" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Post or Level</label>
                      <input
+                        id="bf-post"
+                        aria-label="Post or Level"
                         type="text"
                         value={post}
                         onChange={e => setPost(e.target.value)}
@@ -204,8 +233,10 @@ export default function BirthdayForm({ templateType = 'executive', backLink = '/
                   </div>
 
                   <div>
-                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date (e.g. Jan 01)</label>
+                     <label htmlFor="bf-date" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date (e.g. Jan 01)</label>
                      <input
+                        id="bf-date"
+                        aria-label="Date"
                         type="text"
                         value={date}
                         onChange={e => setDate(e.target.value)}

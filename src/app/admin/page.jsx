@@ -38,18 +38,24 @@ export default function AdminLogin() {
       if (!validateForm()) return;
 
       setIsLoading(true);
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-         email: formData.email,
-         password: formData.password,
-      });
+      try {
+         const { error: signInError } = await supabase.auth.signInWithPassword({
+            email: formData.email,
+            password: formData.password,
+         });
 
-      if (signInError) {
+         if (signInError) {
+            setError(signInError.message);
+            return;
+         }
+
+         router.push("/admin/dashboard");
+         router.refresh();
+      } catch (err) {
+         setError(err?.message || "An unexpected error occurred during sign in.");
+      } finally {
          setIsLoading(false);
-         return setError(signInError.message);
       }
-
-      router.push("/admin/dashboard");
-      router.refresh();
    };
 
    return (

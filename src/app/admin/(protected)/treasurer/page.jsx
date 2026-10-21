@@ -4,18 +4,19 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import PageHeader from '@/components/PageHeader';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { ArrowLeft, Clock } from 'lucide-react';
 import { Wallet } from '@esvigy/react';
 
 export default function TreasurerPage() {
    const [loading, setLoading] = useState(true);
+   const [authorized, setAuthorized] = useState(true);
    const supabase = createClient();
-   const router = useRouter();
 
    useEffect(() => {
+      let isMounted = true;
       async function checkAccess() {
          const { data: { user } } = await supabase.auth.getUser();
+         if (!isMounted) return;
          if (user) {
             const { data: roleData } = await supabase
                .from('user_roles')
@@ -23,22 +24,38 @@ export default function TreasurerPage() {
                .eq('user_email', user.email)
                .single();
             
+            if (!isMounted) return;
             const role = roleData?.role;
             if (!['admin', 'president', 'treasurer', 'gen_sec', 'ags', 'pro', 'vp'].includes(role)) {
-               router.replace('/admin/dashboard');
+               setAuthorized(false);
+               setLoading(false);
                return;
             }
          }
-         setLoading(false);
+         if (isMounted) setLoading(false);
       }
       
       checkAccess();
-   }, [supabase, router]);
+      return () => {
+         isMounted = false;
+      };
+   }, [supabase]);
 
    if (loading) {
       return (
          <div className="flex justify-center items-center h-[50vh]">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+         </div>
+      );
+   }
+
+   if (!authorized) {
+      return (
+         <div className="flex flex-col items-center justify-center h-[50vh] text-center gap-4">
+            <p className="text-slate-600 font-medium">You do not have permission to view this page.</p>
+            <Link href="/admin/dashboard" className="px-5 py-2.5 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-all shadow-sm">
+               Return to Dashboard
+            </Link>
          </div>
       );
    }

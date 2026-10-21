@@ -24,9 +24,9 @@ export const ShortcutDisplay = ({
 
    return (
       <div>
-         {shortcuts.map((key, index) => (
-            <Fragment key={index}>
-               {index > 0 && <kbd>+</kbd>}
+         {shortcuts.map((key, pos) => (
+            <Fragment key={key}>
+               {pos > 0 && <kbd>+</kbd>}
                <kbd>{key}</kbd>
             </Fragment>
          ))}

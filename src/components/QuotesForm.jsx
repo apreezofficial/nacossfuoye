@@ -10,7 +10,7 @@ import QuotesFlyer from '@/components/QuotesFlyer';
 import useScale from '@/hooks/useScale';
 import { createClient } from '@/utils/supabase/client';
 
-export default function QuotesForm({ templateType = 'dyk' }) {
+export default function QuotesForm({ templateType = 'dyk', backLink = '/graphics', hideHeader = false }) {
    const [message, setMessage] = useState('');
    const [isGenerating, setIsGenerating] = useState(false);
    const [notification, setNotification] = useState(null);
@@ -109,15 +109,13 @@ export default function QuotesForm({ templateType = 'dyk' }) {
             />
          )}
 
-         <PageHeader title={`${title} Template`}>
-            <div className="flex flex-wrap items-center gap-3">
-               <Link href="/admin/dashboard" aria-label="Go back to dashboard" className="inline-flex items-center justify-center p-3 rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/60 text-primary hover:border-primary/30 transition-all duration-300">
-                  <House size={22} />
-               </Link>
+         {hideHeader ? (
+            <div className="flex justify-end items-center mb-6">
                <button
+                  type="button"
                   onClick={downloadFlyer}
                   disabled={isGenerating}
-                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white shadow-lg transition-all duration-300 active:scale-95 ${
+                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white shadow-md transition-all duration-300 active:scale-95 cursor-pointer ${
                      isGenerating ? 'bg-primary/50 cursor-not-allowed' : 'bg-primary hover:bg-primary-hover hover:shadow-primary/25'
                   }`}
                >
@@ -134,7 +132,35 @@ export default function QuotesForm({ templateType = 'dyk' }) {
                   )}
                </button>
             </div>
-         </PageHeader>
+         ) : (
+            <PageHeader title={`${title} Template`}>
+               <div className="flex flex-wrap items-center gap-3">
+                  <Link href={backLink} aria-label="Go back" className="inline-flex items-center justify-center p-3 rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/60 text-primary hover:border-primary/30 transition-all duration-300">
+                     <House size={22} />
+                  </Link>
+                  <button
+                     type="button"
+                     onClick={downloadFlyer}
+                     disabled={isGenerating}
+                     className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white shadow-lg transition-all duration-300 active:scale-95 ${
+                        isGenerating ? 'bg-primary/50 cursor-not-allowed' : 'bg-primary hover:bg-primary-hover hover:shadow-primary/25'
+                     }`}
+                  >
+                     {isGenerating ? (
+                        <>
+                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                           Generating...
+                        </>
+                     ) : (
+                        <>
+                           <FileDown size={20} />
+                           Download Design
+                        </>
+                     )}
+                  </button>
+               </div>
+            </PageHeader>
+         )}
 
          <div className="flex flex-col lg:flex-row gap-8 items-start">
             {/* Form Controls */}
@@ -147,8 +173,10 @@ export default function QuotesForm({ templateType = 'dyk' }) {
 
                   <div className="space-y-5">
                      <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Message</label>
+                        <label htmlFor="quotes-message" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Message</label>
                         <textarea
+                           id="quotes-message"
+                           aria-label="Message"
                            value={message}
                            onChange={(e) => setMessage(e.target.value)}
                            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none h-48"
