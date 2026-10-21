@@ -1,16 +1,17 @@
 import { Eye, EyeOff, Trash, SquarePen, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 export default function MemoCard({ reference, head, date, is_published, onToggleVisibility, href, isAdminView = false, type = 'executive' }) {
    const shortHead = head?.length > 50 ? `${head.substring(0, 50).toUpperCase().trim()}...` : head?.toUpperCase();
    const isDraft = !is_published;
    const bgClasses = isDraft ? 'bg-red-600/95 border-red-400/30 text-white' : 'bg-primary/95 border-white/20 text-white';
 
    const d = new Date(date);
-   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
    const formattedDate = isNaN(d.getTime())
       ? date
-      : `${days[d.getDay()]} ${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+      : `${DAYS[d.getDay()]} ${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
 
    const CardContent = (
       <div className={`relative h-full flex flex-col p-4 rounded-2xl overflow-hidden border transition-[transform] duration-300 ease-out active:scale-[0.98] group ${bgClasses} backdrop-blur-md`}>

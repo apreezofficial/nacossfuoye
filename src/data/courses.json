@@ -1,0 +1,274 @@
+[
+  {
+    "level": "100",
+    "title": "100 Level",
+    "courses": [
+      {
+        "code": "CHM 101",
+        "title": "General Chemistry I",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "PHY 101",
+        "title": "General Physics I",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "PHY 107",
+        "title": "General Physics Practical I",
+        "units": 1,
+        "status": "C"
+      },
+      {
+        "code": "BIO 101",
+        "title": "Introductory Biology I",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "BIO 107",
+        "title": "Practical Biology I",
+        "units": 1,
+        "status": "C"
+      },
+      {
+        "code": "MTH 101",
+        "title": "Elementary Mathematics I",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "STA 111",
+        "title": "Descriptive Statistics",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "CHM 107",
+        "title": "Practical Chemistry I",
+        "units": 1,
+        "status": "C"
+      },
+      {
+        "code": "COS 101",
+        "title": "Introduction to Computing",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "ENT 101",
+        "title": "Introduction to Entrepreneurial Skill Development",
+        "units": 1,
+        "status": "G"
+      },
+      {
+        "code": "GST 101",
+        "title": "Communication in English I",
+        "units": 2,
+        "status": "G"
+      },
+      {
+        "code": "GST 103",
+        "title": "Use of library and ICT",
+        "units": 2,
+        "status": "G"
+      }
+    ],
+    "totalUnits": 22,
+    "totalCourses": 12
+  },
+  {
+    "level": "200",
+    "title": "200 Level",
+    "courses": [
+      {
+        "code": "COS 201",
+        "title": "Computer Programming I",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "CSC 211",
+        "title": "Digital Logic Design",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "CSC 203",
+        "title": "Computer Hardware and Maintenance",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "MTH 201",
+        "title": "Mathematical Method I",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "MTH 209",
+        "title": "Numerical Analysis",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "ENT 211",
+        "title": "Entrepreneurship and Innovation",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "GST 201",
+        "title": "Philosophy, logic and human Existence",
+        "units": 2,
+        "status": "G"
+      },
+      {
+        "code": "GST 203",
+        "title": "Feasibility Plan and Investment Decision making",
+        "units": 0,
+        "status": "G"
+      },
+      {
+        "code": "SEN 201",
+        "title": "Introduction to Software Engineering",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "CYB 201",
+        "title": "Introduction to Cyber Security and Strategy",
+        "units": 2,
+        "status": "E"
+      },
+      {
+        "code": "DTS 201",
+        "title": "Introduction to Data Science",
+        "units": 2,
+        "status": "E"
+      },
+      {
+        "code": "MTH 203",
+        "title": "Set, Logic and Algebra",
+        "units": 2,
+        "status": "E"
+      }
+    ],
+    "totalUnits": 25,
+    "totalCourses": 12
+  },
+  {
+    "level": "300",
+    "title": "300 Level",
+    "courses": [
+      {
+        "code": "CSC 301",
+        "title": "Object Oriented Programming in Java",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "CSC 303",
+        "title": "Database Design and Management",
+        "units": 3,
+        "status": "R"
+      },
+      {
+        "code": "CSC 305",
+        "title": "Web Programming",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "CSC 307",
+        "title": "Operations Research",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "CSC 309",
+        "title": "Data Structures & Analysis of Algorithms",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "CSC 311",
+        "title": "Systems Analysis and Design",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "CSC 315",
+        "title": "Computer Programming with C",
+        "units": 2,
+        "status": "C"
+      },
+      {
+        "code": "CSC 317",
+        "title": "Digital Signal Processing",
+        "units": 2,
+        "status": "E"
+      },
+      {
+        "code": "CSC 319",
+        "title": "Introduction to Principles of Computer System Design",
+        "units": 3,
+        "status": "E"
+      }
+    ],
+    "totalUnits": 22,
+    "totalCourses": 9
+  },
+  {
+    "level": "400",
+    "title": "400 Level",
+    "courses": [
+      {
+        "code": "CSC 401",
+        "title": "Software Engineering",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "CSC 403",
+        "title": "Principle of Compiler Construction",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "CSC 405",
+        "title": "Artificial Intelligence & Expert Systems",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "CSC 407",
+        "title": "Computer Networks",
+        "units": 3,
+        "status": "C"
+      },
+      {
+        "code": "CSC 409",
+        "title": "Computer and Information Security",
+        "units": 2,
+        "status": "R"
+      },
+      {
+        "code": "CSC 399",
+        "title": "Industrial Training (SIWES)/ Seminar",
+        "units": 6,
+        "status": "C"
+      },
+      {
+        "code": "CSC 413",
+        "title": "Queueing Systems",
+        "units": 3,
+        "status": "E"
+      }
+    ],
+    "totalUnits": 23,
+    "totalCourses": 7
+  }
+]

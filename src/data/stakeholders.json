@@ -4,7 +4,8 @@
          "id": "executive",
          "name": "The Executives",
          "priority": 1,
-         "members": [
+         "members": [],
+         "executives_directory": [
             {
                "name": "Comr. Nicholas Benson",
                "post": "President",

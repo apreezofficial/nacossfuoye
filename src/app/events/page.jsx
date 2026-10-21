@@ -1,0 +1,325 @@
+'use client';
+
+import { useState } from 'react';
+import {
+   ArrowRight,
+   Calendar,
+   MapPin,
+   Clock,
+   ExternalLink,
+   Trophy,
+} from 'lucide-react';
+import { ActionCreate } from '@esvigy/react';
+
+const DEPARTMENT_EVENTS = [
+   {
+      id: 'fresher-orientation',
+      title: 'Fresher\'s Technical Orientation',
+      desc: 'Hands-on workstation configuration, installing VS Code, Python, and C compilers, plus introduction to departmental academic resources.',
+      date: 'NOV 12, 2026',
+      time: '10:00 AM - 1:00 PM',
+      venue: 'Department Computer Laboratory, Phase II',
+      type: 'Workshop',
+      status: 'Upcoming',
+      badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200/60',
+   },
+   {
+      id: 'tech-symposium',
+      title: 'Annual Tech Symposium: AI Agents & Modern Web Systems',
+      desc: 'Keynote sessions with alumni software engineers and industry guest speakers discussing career transitions, internships, and cloud architectures.',
+      date: 'NOV 28, 2026',
+      time: '11:00 AM - 3:30 PM',
+      venue: 'Planing',
+      type: 'Symposium',
+      status: 'Upcoming',
+      badgeColor: 'bg-blue-50 text-blue-800 border-blue-200/60',
+   },
+   {
+      id: 'git-bootcamp',
+      title: 'Git, GitHub & Open Source Contribution Sprint',
+      desc: 'Live interactive workshop teaching clean Git workflows, pull requests, resolving merge conflicts, and contributing to departmental open source repos.',
+      date: 'DEC 05, 2026',
+      time: '2:00 PM - 5:00 PM',
+      venue: 'Virtual (Google Meet)',
+      type: 'Hands-on Bootcamp',
+      status: 'Upcoming',
+      badgeColor: 'bg-purple-50 text-purple-800 border-purple-200/60',
+   },
+];
+
+const EXTERNAL_HACKATHONS = [
+   {
+      id: 'google-solution-challenge',
+      title: 'Google Solution Challenge 2026',
+      organizer: 'Google Developer Student Clubs',
+      desc: 'Build solutions addressing one or more of the UN 17 Sustainable Development Goals using Google developer technologies.',
+      deadline: 'Apply by Nov 30, 2026',
+      prize: '$12,000 USD Prize Pool + Mentorship',
+      mode: 'Virtual (Global)',
+      tags: ['AI/ML', 'Cloud', 'Mobile', 'Civic Tech'],
+      applyUrl: 'https://developers.google.com/community/gdsc-solution-challenge',
+      featured: true,
+   },
+   {
+      id: 'eth-global-hack',
+      title: 'ETHGlobal Online Sprint',
+      organizer: 'ETHGlobal Community',
+      desc: '48-hour global blockchain hackathon focusing on smart contracts, decentralized finance protocols, and decentralized apps.',
+      deadline: 'Apply by Dec 08, 2026',
+      prize: '$100,000 USD Total Bounties',
+      mode: 'Virtual',
+      tags: ['Web3', 'Smart Contracts', 'DeFi'],
+      applyUrl: 'https://ethglobal.com',
+      featured: true,
+   },
+   {
+      id: 'nacoss-national-hack',
+      title: 'NACOSS National Inter-University Tech Fest',
+      organizer: 'NACOSS National Secretariat',
+      desc: 'Premier university hackathon bringing top computer science departments across Nigeria together to build scalable fintech and edtech.',
+      deadline: 'Apply by Jan 15, 2027',
+      prize: '₦3,500,000 Cash + Incubator Fast-track',
+      mode: 'Hybrid (Abuja & Online)',
+      tags: ['FinTech', 'EdTech', 'HealthTech'],
+      applyUrl: 'https://nacoss.org.ng',
+      featured: true,
+   },
+   {
+      id: 'hng-internship-challenge',
+      title: 'HNG Pre-Internship Hack Sprint',
+      organizer: 'HNG Network',
+      desc: 'Rapid product sprint testing full-stack, frontend, DevOps and UI/UX design capabilities under tight deadlines.',
+      deadline: 'Apply by Jan 25, 2027',
+      prize: 'Internship Placement & Swag Packs',
+      mode: 'Virtual',
+      tags: ['Fullstack', 'Frontend', 'Backend', 'DevOps'],
+      applyUrl: 'https://hng.tech',
+      featured: false,
+   },
+];
+
+export default function EventsPage() {
+   const [activeTab, setActiveTab] = useState('events'); // 'events' | 'hackathons'
+
+   return (
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+         {/* Events & Hackathons Hero Section (solid bg-amber-700 with ActionCreate watermark) */}
+         <section className="relative overflow-hidden rounded-3xl md:rounded-[2.5rem] bg-amber-700 p-6 sm:p-10 md:p-14 mb-10 text-white">
+            {/* Background Watermark ActionCreate SVG */}
+            <div className="absolute -right-8 -bottom-12 sm:-right-12 sm:-bottom-16 md:-right-16 md:-bottom-20 lg:-right-12 lg:-bottom-16 w-72 h-72 sm:w-96 sm:h-96 md:w-120 md:h-120 lg:w-xl lg:h-144 opacity-20 pointer-events-none select-none">
+               <ActionCreate
+                  animated={true}
+                  color="#ffffff"
+                  secondaryColor="rgba(255,255,255,0.2)"
+                  className="w-full h-full"
+               />
+            </div>
+
+            {/* Foreground Details & Call to Action */}
+            <div className="relative z-10 max-w-3xl space-y-5 text-left">
+               <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-white/90">
+                  Department of Computer Science &bull; FUOYE
+               </p>
+
+               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12]">
+                  Events & <br />
+                  <span className="text-white">
+                     Hackathon Arena
+                  </span>
+               </h1>
+
+               <p className="text-amber-100 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
+                  Stay updated with upcoming departmental workshops, technical symposiums, and curated national and international hackathons open for application.
+               </p>
+
+               {/* Call to Action Buttons */}
+               <div className="pt-2 flex flex-wrap items-center gap-3.5">
+                  <button
+                     type="button"
+                     onClick={() => {
+                        setActiveTab('events');
+                        document.getElementById('events-board')?.scrollIntoView({ behavior: 'smooth' });
+                     }}
+                     className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-amber-800 font-bold text-sm shadow-sm hover:shadow-md transition-all duration-300 active:scale-95 cursor-pointer"
+                  >
+                     <span>Departmental Events</span>
+                     <ArrowRight size={18} />
+                  </button>
+
+                  <button
+                     type="button"
+                     onClick={() => {
+                        setActiveTab('hackathons');
+                        document.getElementById('events-board')?.scrollIntoView({ behavior: 'smooth' });
+                     }}
+                     className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-bold text-sm border border-white/20 backdrop-blur-xs transition-all duration-300 active:scale-95 cursor-pointer"
+                  >
+                     <Trophy size={16} className="text-white" />
+                     <span>Hackathons to Apply For</span>
+                  </button>
+               </div>
+            </div>
+         </section>
+
+         {/* Navigation Tabs */}
+         <div id="events-board" className="scroll-mt-6 flex flex-wrap items-center justify-between gap-4 mb-8">
+            <div className="flex items-center gap-2 p-1.5 bg-white border border-slate-200 rounded-2xl shadow-xs">
+               <button
+                  type="button"
+                  onClick={() => setActiveTab('events')}
+                  className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${activeTab === 'events'
+                        ? 'bg-amber-700 text-white shadow-xs'
+                        : 'text-slate-600 hover:text-amber-800'
+                     }`}
+               >
+                  <Calendar size={16} />
+                  <span>Upcoming Events ({DEPARTMENT_EVENTS.length})</span>
+               </button>
+
+               <button
+                  type="button"
+                  onClick={() => setActiveTab('hackathons')}
+                  className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${activeTab === 'hackathons'
+                        ? 'bg-amber-700 text-white shadow-xs'
+                        : 'text-slate-600 hover:text-amber-800'
+                     }`}
+               >
+                  <Trophy size={16} />
+                  <span>Hackathons to Apply For ({EXTERNAL_HACKATHONS.length})</span>
+               </button>
+            </div>
+         </div>
+
+         {/* TAB 1: UPCOMING DEPARTMENTAL EVENTS */}
+         {activeTab === 'events' && (
+            <div className="space-y-6 mb-16">
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {DEPARTMENT_EVENTS.map((event) => (
+                     <div
+                        key={event.id}
+                        className="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 hover:border-amber-300 transition-all shadow-xs hover:shadow-md flex flex-col justify-between space-y-5"
+                     >
+                        <div className="space-y-3.5">
+                           <div className="flex flex-wrap items-center justify-between gap-2">
+                              <span className={`text-[11px] font-bold px-2.5 py-1 rounded-md border uppercase tracking-wider ${event.badgeColor}`}>
+                                 {event.type}
+                              </span>
+
+                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                                 {event.status}
+                              </span>
+                           </div>
+
+                           <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+                              {event.title}
+                           </h3>
+
+                           <p className="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed">
+                              {event.desc}
+                           </p>
+                        </div>
+
+                        {/* Event Details: Date, Time, Venue */}
+                        <div className="pt-4 border-t border-slate-100 space-y-2 text-xs font-semibold text-slate-600">
+                           <div className="flex items-center gap-2 text-slate-800">
+                              <Calendar size={15} className="text-amber-700 shrink-0" />
+                              <span className="font-bold">{event.date}</span>
+                              <span className="text-slate-300">&bull;</span>
+                              <Clock size={14} className="text-slate-400 shrink-0" />
+                              <span>{event.time}</span>
+                           </div>
+
+                           <div className="flex items-center gap-2 text-slate-600">
+                              <MapPin size={15} className="text-amber-700 shrink-0" />
+                              <span>{event.venue}</span>
+                           </div>
+                        </div>
+                     </div>
+                  ))}
+               </div>
+
+               {/* Community Event Notice */}
+               <div className="p-8 rounded-3xl bg-amber-50/60 border border-amber-200/70 text-center flex flex-col items-center mx-auto space-y-3 mt-8">
+                  <Calendar className="w-10 h-10 text-amber-700" />
+                  <h4 className="text-lg font-bold text-slate-900">Hosting a Student Tech Event or Study Circle?</h4>
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-md font-medium">
+                     If you are organizing a level revision class, programming workshop, or design tutorial, reach out to the executive council to list it on the calendar.
+                  </p>
+                  <a
+                     href="https://chat.whatsapp.com/invite/nacossfuoye"
+                     target="_blank"
+                     rel="noreferrer"
+                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs sm:text-sm font-bold shadow-xs transition-all mt-1"
+                  >
+                     <span>Submit Event for Listing</span>
+                     <ArrowRight size={14} />
+                  </a>
+               </div>
+            </div>
+         )}
+
+         {/* TAB 2: HACKATHONS TO APPLY FOR */}
+         {activeTab === 'hackathons' && (
+            <div className="space-y-8 mb-16">
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {EXTERNAL_HACKATHONS.map((hack) => (
+                     <div
+                        key={hack.id}
+                        className="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 hover:border-amber-300 transition-all shadow-xs hover:shadow-md flex flex-col justify-between space-y-4"
+                     >
+                        <div className="space-y-3">
+                           <div className="flex items-center justify-between gap-2">
+                              <span className="text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200/60">
+                                 {hack.organizer}
+                              </span>
+                              <span className="text-[11px] font-semibold text-slate-500">
+                                 {hack.mode}
+                              </span>
+                           </div>
+
+                           <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+                              {hack.title}
+                           </h3>
+
+                           <p className="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed">
+                              {hack.desc}
+                           </p>
+
+                           {/* Tags */}
+                           <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                              {hack.tags.map((t) => (
+                                 <span key={t} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                                    {t}
+                                 </span>
+                              ))}
+                           </div>
+                        </div>
+
+                        <div className="pt-4 border-t border-slate-100 space-y-3">
+                           <div className="flex flex-wrap items-center justify-between text-xs gap-2">
+                              <span className="font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200/60">
+                                 {hack.prize}
+                              </span>
+                              <span className="text-slate-500 font-medium">
+                                 {hack.deadline}
+                              </span>
+                           </div>
+
+                           <a
+                              href={hack.applyUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs sm:text-sm shadow-xs transition-all active:scale-98"
+                           >
+                              <span>Apply for Hackathon</span>
+                              <ExternalLink size={14} />
+                           </a>
+                        </div>
+                     </div>
+                  ))}
+               </div>
+            </div>
+         )}
+      </main>
+   );
+}
