@@ -246,7 +246,7 @@ export default function EventsPage() {
                      If you are organizing a level revision class, programming workshop, or design tutorial, reach out to the executive council to list it on the calendar.
                   </p>
                   <a
-                     href="https://chat.whatsapp.com/invite/nacossfuoye"
+                     href="https://whatsapp.com/channel/0029VaikWEcGOj9fZKC4sK2N"
                      target="_blank"
                      rel="noreferrer"
                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs sm:text-sm font-bold shadow-xs transition-all mt-1"

@@ -7,10 +7,23 @@ import {
    Laptop,
    CheckCircle2,
    BookOpen,
-   Clock
+   ExternalLink
 } from 'lucide-react';
 import { DocumentFolders } from '@esvigy/react';
 import COURSES_DATA from '@/data/courses.json';
+
+const WHATSAPP_CHANNEL_URL = 'https://whatsapp.com/channel/0029VaikWEcGOj9fZKC4sK2N';
+const DEFAULT_DRIVE_URL = process.env.NEXT_PUBLIC_DRIVE_MATERIALS_URL || 'https://drive.google.com/drive/folders/1-nacossfuoye-materials';
+
+const getLevelDriveUrl = (level) => {
+   const driveLinks = {
+      '100': process.env.NEXT_PUBLIC_DRIVE_100L_URL || DEFAULT_DRIVE_URL,
+      '200': process.env.NEXT_PUBLIC_DRIVE_200L_URL || DEFAULT_DRIVE_URL,
+      '300': process.env.NEXT_PUBLIC_DRIVE_300L_URL || DEFAULT_DRIVE_URL,
+      '400': process.env.NEXT_PUBLIC_DRIVE_400L_URL || DEFAULT_DRIVE_URL,
+   };
+   return driveLinks[level] || DEFAULT_DRIVE_URL;
+};
 
 const LEVELS = [
    { id: 'all', label: 'All Levels' },
@@ -213,17 +226,15 @@ export default function AcademicsPage() {
                            </span>
                         </div>
 
-                        <button
-                           type="button"
-                           onClick={() => {
-                              setActiveTab('software');
-                              document.getElementById('academics-tabs')?.scrollIntoView({ behavior: 'smooth' });
-                           }}
-                           className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs sm:text-sm border border-blue-200/60 transition-colors shrink-0 self-start sm:self-center cursor-pointer"
+                        <a
+                           href={getLevelDriveUrl(vault.level)}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs sm:text-sm border border-blue-200/60 transition-colors shrink-0 self-start sm:self-center"
                         >
-                           <span>Request Software</span>
-                           <ArrowRight size={15} />
-                        </button>
+                           <span>View All Materials</span>
+                           <ExternalLink size={14} />
+                        </a>
                      </div>
 
                      {/* Courses Table */}
@@ -560,7 +571,7 @@ export default function AcademicsPage() {
                If you are a lecturer, course representative, or student with past questions, lecture notes, textbooks, or useful software packages and installers to share with fellow students, please get in touch with the academic and technical committee.
             </p>
             <a
-               href="https://chat.whatsapp.com/invite/nacossfuoye"
+               href={WHATSAPP_CHANNEL_URL}
                target="_blank"
                rel="noreferrer"
                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:text-blue-700 hover:border-blue-300 text-sm font-bold shadow-xs hover:shadow-sm transition-all active:scale-95"
