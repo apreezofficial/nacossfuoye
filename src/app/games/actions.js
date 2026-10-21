@@ -1,10 +1,26 @@
 'use server';
 
 import { createClient } from '@supabase/supabase-js';
+import { createClient as createServerAuthClient } from '@/utils/supabase/server';
 
 export async function submitScore(data, hash) {
-   // The secret key should ideally be set in your .env.local file
-   const secret = process.env.NEXT_PUBLIC_GAME_SECRET || 'nacoss_secret_2026';
+   // Validate server action session context
+   try {
+      const authClient = await createServerAuthClient();
+      await authClient.auth.getUser();
+   } catch {
+      // Allow unauthenticated arcade players to submit leaderboard scores
+   }
+
+   if (!data || typeof data !== 'object' || !data.game_slug || !data.gaming_name || typeof data.score !== 'number') {
+      return { success: false, error: 'Invalid score payload' };
+   }
+
+   const secret = process.env.GAME_SALT || process.env.GAME_SECRET || process.env.NEXT_PUBLIC_GAME_SALT;
+   if (!secret) {
+      console.error('GAME_SALT or NEXT_PUBLIC_GAME_SALT environment variable is missing.');
+      return { success: false, error: 'Server configuration error' };
+   }
 
    // Reconstruct the expected hash on the server side
    const expectedHash = Buffer.from(`${data.score}-${data.game_slug}-${secret}`).toString('base64');

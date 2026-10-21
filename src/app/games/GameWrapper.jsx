@@ -41,10 +41,14 @@ export default function GameWrapper({ slug, GameComponent }) {
    }, [fetchBoard]);
 
    useEffect(() => {
-      const savedPlayer = localStorage.getItem('nacoss_player');
+      const savedPlayer = localStorage.getItem('nacoss_player_v1') || localStorage.getItem('nacoss_player');
       if (savedPlayer) {
-         setPlayer(JSON.parse(savedPlayer));
-         setShowStartModal(false);
+         try {
+            setPlayer(JSON.parse(savedPlayer));
+            setShowStartModal(false);
+         } catch {
+            // ignore JSON parse error
+         }
       }
    }, []);
 
@@ -54,7 +58,7 @@ export default function GameWrapper({ slug, GameComponent }) {
       e.preventDefault();
       if (!formData.name) return;
 
-      localStorage.setItem('nacoss_player', JSON.stringify(formData));
+      localStorage.setItem('nacoss_player_v1', JSON.stringify(formData));
       setPlayer(formData);
       setShowStartModal(false);
       setShowSwitchModal(false);
@@ -67,8 +71,7 @@ export default function GameWrapper({ slug, GameComponent }) {
 
       setIsSubmitting(true);
       
-      // Create a basic hash using the public env secret or a fallback
-      const secret = process.env.NEXT_PUBLIC_GAME_SECRET || 'nacoss_secret_2026';
+      const secret = process.env.NEXT_PUBLIC_GAME_SALT || '';
       const hash = btoa(`${finalScore}-${game.slug}-${secret}`);
       
       // Fire and forget: save happens in parallel in the background
@@ -87,20 +90,23 @@ export default function GameWrapper({ slug, GameComponent }) {
    const renderPlayerForm = () => (
       <form onSubmit={handleStart} className="flex flex-col gap-4 text-left w-full max-w-sm mx-auto">
          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-1">Unique Gaming Name</label>
+            <label htmlFor="gaming_name_input" className="block text-sm font-bold text-slate-700 mb-1">Unique Gaming Name</label>
             <input
+               id="gaming_name_input"
                type="text"
                placeholder="e.g. ShadowHunter"
-               className="w-full border border-slate-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+               className="w-full border border-slate-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                value={formData.name}
                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                required
             />
          </div>
          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-1">Level</label>
+            <label htmlFor="player_level_select" className="block text-sm font-bold text-slate-700 mb-1">Level</label>
             <select
-               className="w-full border border-slate-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white"
+               id="player_level_select"
+               aria-label="Level"
+               className="w-full border border-slate-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-white"
                value={formData.level}
                onChange={(e) => setFormData({ ...formData, level: e.target.value })}
             >
@@ -121,7 +127,7 @@ export default function GameWrapper({ slug, GameComponent }) {
                   Cancel
                </button>
             )}
-            <button type="submit" className="flex-1 bg-purple-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-purple-700 hover:shadow-lg transition-all active:scale-95">
+            <button type="submit" className="flex-1 bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl hover:bg-indigo-800 transition-all active:scale-95">
                {showSwitchModal ? 'Update Player' : 'Start Playing'}
             </button>
          </div>
@@ -130,7 +136,7 @@ export default function GameWrapper({ slug, GameComponent }) {
 
    return (
       <div className="max-w-4xl mx-auto p-4 md:p-6 relative">
-         <button onClick={() => router.push('/games')} className="inline-flex items-center text-slate-500 hover:text-purple-600 font-medium mb-6 transition-colors">
+         <button onClick={() => router.push('/games')} className="inline-flex items-center text-slate-500 hover:text-indigo-700 font-medium mb-6 transition-colors">
             <ArrowLeft size={18} className="mr-2" /> Back to Games Hub
          </button>
 
@@ -139,7 +145,7 @@ export default function GameWrapper({ slug, GameComponent }) {
                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 flex items-center flex-wrap gap-3">
                   {game.name}
                   {game.isActive 
-                     ? <span className="bg-purple-100 text-purple-700 text-sm px-3 py-1 rounded-full font-bold uppercase tracking-wider">Weekly Live</span>
+                     ? <span className="bg-indigo-100 text-indigo-700 text-sm px-3 py-1 rounded-full font-bold uppercase tracking-wider">Weekly Live</span>
                      : <span className="bg-slate-100 text-slate-500 text-sm px-3 py-1 rounded-full font-bold uppercase tracking-wider">Archived</span>
                   }
                </h1>
@@ -185,7 +191,7 @@ export default function GameWrapper({ slug, GameComponent }) {
                         setFormData({ name: player?.name || '', level: player?.level || '100L' });
                         setShowSwitchModal(true);
                      }}
-                     className="inline-flex items-center text-sm text-slate-500 hover:text-purple-600 font-semibold transition-colors bg-slate-50 hover:bg-purple-50 px-3 py-1.5 rounded-lg"
+                     className="inline-flex items-center text-sm text-slate-500 hover:text-indigo-700 font-semibold transition-colors bg-slate-50 hover:bg-indigo-50 px-3 py-1.5 rounded-lg"
                   >
                      <Settings size={16} className="mr-2" /> Switch Player
                   </button>
@@ -207,7 +213,7 @@ export default function GameWrapper({ slug, GameComponent }) {
                         <Trophy size={48} className="mx-auto text-yellow-400 mb-4" />
                         <h2 className="text-3xl font-extrabold text-slate-800 mb-2">Game Over!</h2>
                         <div className="text-slate-500 font-medium mb-6">
-                           Your Score: <span className="text-4xl block text-purple-600 font-black mt-2">{gameOverScore}</span>
+                           Your Score: <span className="text-4xl block text-indigo-700 font-black mt-2">{gameOverScore}</span>
                         </div>
                         
                         {isSubmitting ? (
@@ -216,7 +222,7 @@ export default function GameWrapper({ slug, GameComponent }) {
 
                         <button 
                            onClick={() => setGameOverScore(null)} 
-                           className="w-full bg-purple-600 text-white font-bold py-3 rounded-xl hover:bg-purple-700 transition"
+                           className="w-full bg-indigo-700 text-white font-bold py-3 rounded-xl hover:bg-indigo-800 transition"
                         >
                            Play Again
                         </button>
@@ -258,8 +264,8 @@ export default function GameWrapper({ slug, GameComponent }) {
                            </tr>
                         </thead>
                         <tbody>
-                           {leaderboard.map((s, idx) => (
-                              <tr key={idx} className="border-b border-slate-50 last:border-0 hover:bg-slate-50 transition">
+                           {leaderboard.map((s) => (
+                              <tr key={s.id || `${s.name}-${s.score}-${s.rank || ''}`} className="border-b border-slate-50 last:border-0 hover:bg-slate-50 transition">
                                  <td className="py-3 text-sm font-bold">
                                     {s.rank === 1 && <Star className="inline text-yellow-500 fill-yellow-500" size={16} />}
                                     {s.rank === 2 && <Star className="inline text-gray-400 fill-gray-400" size={16} />}

@@ -53,6 +53,9 @@ export default function MemoryMatch({ onGameOver }) {
       }
    };
 
+   const flippedSet = new Set(flipped);
+   const solvedSet = new Set(solved);
+
    return (
       <div className="flex flex-col items-center w-full max-w-md">
          <div className="flex justify-between w-full mb-6 px-2 font-bold text-slate-600">
@@ -62,7 +65,7 @@ export default function MemoryMatch({ onGameOver }) {
 
          <div className="grid grid-cols-4 gap-3 w-full">
             {cards.map((card, idx) => {
-               const isFlipped = flipped.includes(idx) || solved.includes(idx);
+               const isFlipped = flippedSet.has(idx) || solvedSet.has(idx);
                return (
                   <button
                      key={card.id}
