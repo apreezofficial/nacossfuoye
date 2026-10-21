@@ -1,50 +1,120 @@
-# Contributing to NACOSS Portal
+# Contributing to NACOSS FUOYE Portal 🤝
 
-First off, thank you for considering contributing to NACOSS Portal (the official portal for the Department of Computer Science)! It's people like you that make this community platform great.
+First off, thank you for taking the time to contribute to the official **NACOSS FUOYE Portal** for the **Department of Computer Science, Federal University Oye-Ekiti (FUOYE)**!
 
-## 🛑 STRICT RULE: Ask Before You Code
-**Before writing ANY code, you MUST open an issue first.** 
-In the issue, explain exactly what you want to implement and provide full details on how you plan to do it. You may only start working on the code once one of the core maintainers has given you the official "go ahead". This saves everyone time and ensures your work aligns with the project's vision.
+This platform is engineered by students, for students. Whether you are fixing a UI bug, proposing a new tool, improving documentation, or building a new arcade game, your contributions make a massive impact.
 
-## 🤝 How Can I Contribute?
+---
 
-### 1. Student-Facing Interfaces (Priority!)
-Our biggest current need is building out the public-facing side of the platform where students can view announcements, published memos, and society updates. If you love frontend development and UI/UX design, this is the perfect place to start!
+## 📜 Intellectual Property & Contribution Policy
 
-### 2. Fixing Bugs & Refactoring
-Check the issues tab or the `todo.md` file for pending tasks. If you spot a bug in the admin dashboard, feel free to submit a patch.
+Before contributing, please note the licensing model:
 
-### 3. New Features
-Have an idea for a new module? (e.g., event ticketing, voting systems, etc.) As stated above, please open an issue first to discuss it in full detail before you start writing code.
+1. **Departmental Ownership**: The entire NACOSS FUOYE Portal is the exclusive intellectual property of the **Department of Computer Science, FUOYE**.
+2. **Contributor Attribution**: By contributing, you retain credit for your work (recognized in repository commit history and in the [Portal Contributors directory](https://nacossfuoye.vercel.app/#contributors)).
+3. **No Reuse or External Copying**: You may not copy, duplicate, or reuse this codebase or its proprietary design for external projects or separate institutional deployments without explicit written permission from the Head of Department (HOD).
+4. **License Agreement**: All contributions submitted via Pull Requests are governed by our [**LICENSE.md**](LICENSE.md).
+
+---
+
+## 🛑 Golden Rule: Open an Issue First
+
+**Before writing significant code, please open an Issue to discuss your idea.**
+
+- **Bug Fix**: Open a [Bug Report](.github/ISSUE_TEMPLATE/bug_report.md) describing the problem, reproduction steps, and device.
+- **New Feature**: Open a [Feature Request](.github/ISSUE_TEMPLATE/feature_request.md) detailing the user flow and proposed technical approach.
+- **New Arcade Game**: Open a [Game Proposal](.github/ISSUE_TEMPLATE/add_game.md) detailing the mechanics and responsive controls.
+
+Once an issue is discussed and approved by the maintainers, you'll receive the green light to implement!
+
+---
+
+## 🧭 The 7 Portal Hubs
+
+When contributing, ensure your work maps to the appropriate hub:
+
+| Hub | Route | Purpose | Key Stack |
+| :--- | :--- | :--- | :--- |
+| **Memos** | `/memos`, `/[reference]` | Official circulars, memos, letterhead renderer | Next.js, PDF/image export |
+| **Academics** | `/academics` | Course vaults, outlines, software requests | React state, direct forms |
+| **BuildLab** | `/buildlab` | Venture incubator under NDA, student showcase | Tabbed filters, intake forms |
+| **Events** | `/events` | Hackathons, workshops, and tech bootcamps | Calendar cards, filters |
+| **Governance** | `/governance` | Stakeholder directory, elections & ballots | Directory grids, state machines |
+| **Arcade Arena** | `/games` | Web mini-games with hashed leaderboards | Custom game engines, Server Actions |
+| **Graphics** | `/graphics` | Celebration flyer generator with live cropper | HTML Canvas, `@esvigy/react` |
+
+---
+
+## 🕹️ Adding a Game to the Arcade Arena
+
+We love student-built games! To add a game:
+
+1. **Review Rules**: Read the detailed guidelines in [`src/app/games/README.md`](src/app/games/README.md).
+2. **Isolation**: Place all components, logic, and assets in a dedicated folder: `src/app/games/<your-game-slug>/`.
+3. **Single Player & Responsiveness**: The game must be playable on both mobile touch screens and desktop keyboards.
+4. **Use `GameWrapper`**: Integrate with the shared `<GameWrapper slug="..." GameComponent={...} />`.
+5. **Anti-Cheat Hash Verification**: The wrapper automatically hashes the final score using `NEXT_PUBLIC_GAME_SALT` and submits it to the server action (`src/app/games/actions.js`).
+6. **Register**: Add your game metadata to `src/app/games/games.js`.
+
+---
 
 ## 🎯 Pull Request Guidelines
-**Keep your Pull Requests strictly focused.** 
-Please only submit a PR that addresses ONE specific thing at a time:
-- If you are adding a new game, your PR should ONLY contain that game.
-- If you are fixing a bug, your PR should ONLY fix that bug.
-- If you are updating a UI element, ONLY update that element.
 
-**Do NOT** combine a bug fix, a new game, and a UI change into the same pull request. Large, mixed PRs will be rejected because they are too difficult to review and merge safely.
+To ensure smooth code reviews, please follow these rules:
 
-## 🛠️ Contribution Workflow
+1. **Atomic PRs (One Thing at a Time)**:
+   - If fixing a bug, your PR should **only** fix that bug.
+   - If adding a game, your PR should **only** contain that game.
+   - Do **not** mix refactors, formatting sweeps, and features into one PR.
+2. **Package Manager**:
+   - Use **`pnpm`** exclusively. Do **not** commit `package-lock.json` or `yarn.lock`.
+3. **Lint & Code Health Before Submitting**:
+   Always run the following commands locally before opening a PR:
+   ```bash
+   # 1. Verify ESLint passes with 0 errors
+   pnpm lint
 
-1. **Fork the Repository**: Create your own fork of the project.
-2. **Create a Branch**: `git checkout -b feature/your-feature-name` or `fix/your-bug-fix`.
-3. **Write Code**: Implement your changes. Make sure to follow the existing coding style (TailwindCSS, functional React components).
-4. **Test**: Ensure your changes don't break existing RBAC rules or layout responsiveness. Run `pnpm run lint` and `pnpm run dev` to test locally.
-5. **Commit**: Write clear, descriptive commit messages.
-6. **Push & Pull Request**: Push your branch to your fork and submit a PR to our `main` branch.
+   # 2. Verify no dead files or unused packages
+   pnpm dlx knip
 
-## 🔒 Security & Database Changes
-If your feature requires new database tables or columns:
-- **Do NOT** just modify your local database.
-- You **MUST** update the `supabase_schema.sql` file in your Pull Request to include the new SQL definitions and Row Level Security (RLS) policies.
+   # 3. Verify React health scan
+   pnpm dlx react-doctor src --no-telemetry
+   ```
+4. **Responsive Testing**:
+   - Test your changes at mobile viewport (375px) and desktop viewport (1280px+).
+5. **Database Changes**:
+   - If your feature requires new Supabase tables, columns, or RLS policies, update [`supabase_schema.sql`](supabase_schema.sql) in your pull request.
 
-Welcome to the team! 🎉
+---
 
+## 🛠️ Contribution Workflow Step-by-Step
 
-### Adding a Game to the Games Hub
-If you are submitting a game, please read the rules in src/app/games/README.md. All games must be single-player, isolated in their own folder, and use the GameWrapper to properly track scores.
+```bash
+# 1. Fork the repo on GitHub, then clone your fork
+git clone https://github.com/<your-username>/nacossfuoye.git
+cd nacossfuoye
 
+# 2. Install dependencies with pnpm
+pnpm install
 
-**Note for Games Hub Contributors:** The backend action (src/app/games/actions.js) uses SUPABASE_SERVICE_ROLE_KEY to securely update scores (one person per leaderboard slot). You MUST have this key set in your local .env.local to test score submissions.
+# 3. Set up environment variables
+cp .env.example .env
+
+# 4. Create a dedicated feature branch
+git checkout -b feat/your-feature-name
+# or for bug fixes:
+git checkout -b fix/issue-description
+
+# 5. Run the dev server
+pnpm dev
+
+# 6. Commit your changes with clear, descriptive messages
+git commit -m "feat(academics): add software intake request form"
+
+# 7. Push to your fork and submit a Pull Request
+git push origin feat/your-feature-name
+```
+
+Fill out the [Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md) completely, link the related issue, and request a review.
+
+Thank you for helping build a world-class digital experience for NACOSSites! 🚀
