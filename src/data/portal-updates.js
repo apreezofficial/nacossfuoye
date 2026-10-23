@@ -75,7 +75,7 @@ export const SHOWCASE_PROJECTS = [
       featured: true,
    },
    {
-      id: 'Engue',
+      id: 'Enque',
       title: 'Enque',
       desc: 'Ditch the waiting room. Manage queues with Enque transparent, code-driven system that ensures fair batching and tracking.',
       category: 'EdTech',
@@ -88,12 +88,12 @@ export const SHOWCASE_PROJECTS = [
    {
       id: 'ShareD',
       title: 'Share D',
-      desc: 'Solit the cost of multi-user plans for services with verified members',
+      desc: 'Split the cost of multi-user plans for services with verified members',
       category: 'Web App',
-      author: 'Ibukun',
+      author: 'Kehinde-leoso Peter',
       level: '400 Level',
-      tech: ['php', 'Firebase'],
-      demoUrl: 'https://shared-6773c.web.app/a',
+      tech: ['Next.js', 'PostgreSQL', 'Firebase'],
+      demoUrl: 'https://shared-6773c.web.app/',
       featured: true,
    },
 ];
