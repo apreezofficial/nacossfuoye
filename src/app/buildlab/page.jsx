@@ -12,85 +12,13 @@ import {
    ExternalLink,
    Github,
    CheckCircle2,
+   AlertCircle,
    Send,
    PlusCircle,
+   Loader2,
 } from 'lucide-react';
 import { WomanLaptop } from '@esvigy/react';
-
-const SHOWCASE_PROJECTS = [
-   {
-      id: 'campus-escrow',
-      title: 'PeerPay FUOYE',
-      desc: 'Campus P2P escrow transaction protocol and hostel fee milestone protection service built for student trade.',
-      category: 'FinTech',
-      author: 'David Adebayo & Team',
-      level: '300 Level',
-      tech: ['Next.js', 'Node.js', 'PostgreSQL', 'TailwindCSS'],
-      demoUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      githubUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      featured: true,
-   },
-   {
-      id: 'timetable-scheduler',
-      title: 'Smart Timetable Pro',
-      desc: 'Automated clash-free lecture & exam scheduling optimizer designed around departmental hall constraints.',
-      category: 'EdTech',
-      author: 'Amina Yusuf',
-      level: '400 Level',
-      tech: ['React', 'Python', 'FastAPI', 'Genetic Algorithms'],
-      demoUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      githubUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      featured: true,
-   },
-   {
-      id: 'study-bot',
-      title: 'FUOYE Course AI Tutor',
-      desc: 'Retrieval-augmented AI chat assistant indexed on departmental past questions and lecture PDF slides.',
-      category: 'AI / ML',
-      author: 'Samuel Okafor',
-      level: '300 Level',
-      tech: ['Next.js', 'LangChain', 'OpenAI', 'Supabase Vector'],
-      demoUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      githubUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      featured: false,
-   },
-   {
-      id: 'cgpa-analyzer',
-      title: 'GradeMaster CGPA Simulator',
-      desc: 'Visual GPA / CGPA trajectory planner supporting 5.0 grading systems, target grade advice, and course forecasting.',
-      category: 'Student Tool',
-      author: 'Bolanle Olatunji',
-      level: '200 Level',
-      tech: ['TypeScript', 'TailwindCSS', 'IndexedDB'],
-      demoUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      githubUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      featured: false,
-   },
-   {
-      id: 'hostel-connect',
-      title: 'HostelFinder Oye',
-      desc: 'Verified student off-campus accommodation marketplace with direct caretaker contact and review scores.',
-      category: 'Web App',
-      author: 'Tobi Daniels',
-      level: '300 Level',
-      tech: ['Vue.js', 'Firebase', 'Leaflet Maps'],
-      demoUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      githubUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      featured: false,
-   },
-   {
-      id: 'c-debugger-gui',
-      title: 'QuickC Trace Engine',
-      desc: 'Lightweight browser-based memory visualizer and pointer tracing utility created for CSC 201 & 315 students.',
-      category: 'Developer Tool',
-      author: 'Victor Adeleke',
-      level: '400 Level',
-      tech: ['WebAssembly', 'C/C++', 'Canvas API'],
-      demoUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      githubUrl: 'https://github.com/nickfrostech/nacossfuoye',
-      featured: true,
-   },
-];
+import { SHOWCASE_PROJECTS } from '@/data/portal-updates';
 
 const CATEGORIES = ['All', 'Web App', 'FinTech', 'EdTech', 'AI / ML', 'Developer Tool', 'Student Tool'];
 
@@ -98,16 +26,75 @@ export default function BuildLabPage() {
    const [activeView, setActiveView] = useState('showcase'); // 'showcase' | 'incubate' | 'submit'
    const [selectedCategory, setSelectedCategory] = useState('All');
    const [submissionType, setSubmissionType] = useState('product'); // 'product' | 'idea'
-   const [submitted, setSubmitted] = useState(false);
+   const [submitStatus, setSubmitStatus] = useState(null); // null | 'success' | 'error'
+   const [submitMessage, setSubmitMessage] = useState('');
+   const [isSubmitting, setIsSubmitting] = useState(false);
+   const [formData, setFormData] = useState({
+      fullName: '',
+      level: '100',
+      title: '',
+      demoUrl: '',
+      githubUrl: '',
+      phone: '',
+      desc: '',
+   });
 
    const filteredProjects = selectedCategory === 'All'
       ? SHOWCASE_PROJECTS
       : SHOWCASE_PROJECTS.filter((p) => p.category === selectedCategory);
 
-   const handleSubmit = (e) => {
+   const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({ ...prev, [name]: value }));
+   };
+
+   const handleSubmit = async (e) => {
       e.preventDefault();
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 5000);
+      setIsSubmitting(true);
+      setSubmitStatus(null);
+      setSubmitMessage('');
+
+      const payloadType = submissionType === 'product' ? 'product_showcase' : 'buildlab_submission';
+      const scriptUrl = process.env.NEXT_PUBLIC_APPS_SCRIPT_URL;
+
+      try {
+         if (scriptUrl) {
+            await fetch(scriptUrl, {
+               method: 'POST',
+               mode: 'no-cors',
+               headers: { 'Content-Type': 'application/json' },
+               body: JSON.stringify({
+                  type: payloadType,
+                  ...formData,
+                  timestamp: new Date().toISOString(),
+               }),
+            });
+         } else {
+            await new Promise((resolve) => setTimeout(resolve, 800));
+         }
+
+         setSubmitStatus('success');
+         setSubmitMessage('Submission received! The Technical Directorate will review and reach out to you shortly.');
+         setFormData({
+            fullName: '',
+            level: '100',
+            title: '',
+            demoUrl: '',
+            githubUrl: '',
+            phone: '',
+            desc: '',
+         });
+         setTimeout(() => {
+            setSubmitStatus(null);
+            setSubmitMessage('');
+         }, 8000);
+      } catch (err) {
+         console.error('Submission error:', err);
+         setSubmitStatus('error');
+         setSubmitMessage('Unable to send submission. Please check your internet connection and try again.');
+      } finally {
+         setIsSubmitting(false);
+      }
    };
 
    return (
@@ -125,7 +112,7 @@ export default function BuildLabPage() {
             </div>
 
             {/* Foreground Details & Call to Action */}
-            <div className="relative z-10 max-w-3xl space-y-5 text-left">
+            <div className="relative z-10 max-w-3xl space-y-5 text-center sm:text-left">
                <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-white/90">
                   Department of Computer Science &bull; FUOYE
                </p>
@@ -137,12 +124,12 @@ export default function BuildLabPage() {
                   </span>
                </h1>
 
-               <p className="text-teal-50 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
+               <p className="text-teal-50 text-base sm:text-lg leading-relaxed max-w-xl mx-auto sm:mx-0 font-medium">
                   Discover production-ready software engineered by students, submit your apps for departmental recognition, or incubate raw tech ideas under full Mutual NDA protection.
                </p>
 
                {/* Call to Action Buttons */}
-               <div className="pt-2 flex flex-wrap items-center gap-3.5">
+               <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3.5">
                   <button
                      type="button"
                      onClick={() => {
@@ -171,61 +158,68 @@ export default function BuildLabPage() {
          </section>
 
          {/* View Selector Tabs */}
-         <div id="buildlab-content" className="scroll-mt-6 flex flex-wrap items-center justify-between gap-4 mb-8">
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 p-1.5 bg-white border border-slate-200 rounded-2xl shadow-xs w-full sm:w-auto">
-               <button
-                  type="button"
-                  onClick={() => setActiveView('showcase')}
-                  className={`flex-1 sm:flex-initial px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer ${activeView === 'showcase'
-                        ? 'bg-teal-700 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-teal-700'
-                     }`}
-               >
-                  <Rocket size={16} className="shrink-0" />
-                  <span>Student Showcase ({SHOWCASE_PROJECTS.length})</span>
-               </button>
+         <div id="buildlab-content" className="scroll-mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div className="w-full sm:w-auto p-1.5 bg-white border border-slate-200 rounded-2xl shadow-xs">
+               <div className="grid grid-cols-3 sm:flex sm:items-center gap-1 sm:gap-1.5">
+                  <button
+                     type="button"
+                     onClick={() => setActiveView('showcase')}
+                     className={`w-full sm:w-auto px-2 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer select-none active:scale-[0.98] ${activeView === 'showcase'
+                           ? 'bg-teal-700 text-white shadow-xs'
+                           : 'text-slate-600 hover:text-teal-700'
+                        }`}
+                  >
+                     <Rocket size={15} className="shrink-0" />
+                     <span className="sm:hidden">Showcase</span>
+                     <span className="hidden sm:inline">Student Showcase ({SHOWCASE_PROJECTS.length})</span>
+                  </button>
 
-               <button
-                  type="button"
-                  onClick={() => setActiveView('incubate')}
-                  className={`flex-1 sm:flex-initial px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer ${activeView === 'incubate'
-                        ? 'bg-teal-700 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-teal-700'
-                     }`}
-               >
-                  <Lock size={16} className="shrink-0" />
-                  <span>BuildLab Incubation (NDA)</span>
-               </button>
+                  <button
+                     type="button"
+                     onClick={() => setActiveView('incubate')}
+                     className={`w-full sm:w-auto px-2 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer select-none active:scale-[0.98] ${activeView === 'incubate'
+                           ? 'bg-teal-700 text-white shadow-xs'
+                           : 'text-slate-600 hover:text-teal-700'
+                        }`}
+                  >
+                     <Lock size={15} className="shrink-0" />
+                     <span className="sm:hidden">Incubate</span>
+                     <span className="hidden sm:inline">BuildLab Incubation (NDA)</span>
+                  </button>
 
-               <button
-                  type="button"
-                  onClick={() => setActiveView('submit')}
-                  className={`flex-1 sm:flex-initial px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer ${activeView === 'submit'
-                        ? 'bg-teal-700 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-teal-700'
-                     }`}
-               >
-                  <Send size={16} className="shrink-0" />
-                  <span>Submit to Showcase / Incubate</span>
-               </button>
+                  <button
+                     type="button"
+                     onClick={() => setActiveView('submit')}
+                     className={`w-full sm:w-auto px-2 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer select-none active:scale-[0.98] ${activeView === 'submit'
+                           ? 'bg-teal-700 text-white shadow-xs'
+                           : 'text-slate-600 hover:text-teal-700'
+                        }`}
+                  >
+                     <Send size={15} className="shrink-0" />
+                     <span className="sm:hidden">Submit</span>
+                     <span className="hidden sm:inline">Submit to Showcase / Incubate</span>
+                  </button>
+               </div>
             </div>
 
             {/* Category filter when viewing showcase */}
             {activeView === 'showcase' && (
-               <div className="flex flex-wrap items-center gap-1.5">
-                  {CATEGORIES.map((cat) => (
-                     <button
-                        key={cat}
-                        type="button"
-                        onClick={() => setSelectedCategory(cat)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${selectedCategory === cat
-                              ? 'bg-teal-700 text-white shadow-xs'
-                              : 'bg-white border border-slate-200 text-slate-700 hover:border-teal-300 hover:text-teal-700'
-                           }`}
-                     >
-                        {cat}
-                     </button>
-                  ))}
+               <div className="w-full sm:w-auto overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 py-0.5">
+                  <div className="flex items-center gap-1.5 min-w-max">
+                     {CATEGORIES.map((cat) => (
+                        <button
+                           key={cat}
+                           type="button"
+                           onClick={() => setSelectedCategory(cat)}
+                           className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer select-none active:scale-[0.97] whitespace-nowrap ${selectedCategory === cat
+                                 ? 'bg-teal-700 text-white shadow-xs'
+                                 : 'bg-white border border-slate-200 text-slate-700 hover:border-teal-300 hover:text-teal-700'
+                              }`}
+                        >
+                           {cat}
+                        </button>
+                     ))}
+                  </div>
                </div>
             )}
          </div>
@@ -458,21 +452,17 @@ export default function BuildLabPage() {
                      </button>
                   </div>
 
-                  {submitted && (
-                     <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-bold flex items-center gap-2">
-                        <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
-                        <span>Submission received! The Technical Directorate will review and get in touch with you shortly.</span>
-                     </div>
-                  )}
-
                   <form onSubmit={handleSubmit} className="space-y-4">
                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                            <label htmlFor="submitter-name" className="block text-xs font-bold text-slate-700 uppercase mb-1">Your Full Name</label>
                            <input
                               id="submitter-name"
+                              name="fullName"
                               type="text"
                               required
+                              value={formData.fullName}
+                              onChange={handleInputChange}
                               placeholder="e.g. John Doe"
                               aria-label="Your Full Name"
                               className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:border-teal-600"
@@ -482,7 +472,10 @@ export default function BuildLabPage() {
                            <label htmlFor="submitter-level" className="block text-xs font-bold text-slate-700 uppercase mb-1">Academic Level</label>
                            <select
                               id="submitter-level"
+                              name="level"
                               required
+                              value={formData.level}
+                              onChange={handleInputChange}
                               aria-label="Academic Level"
                               className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:border-teal-600 bg-white"
                            >
@@ -500,8 +493,11 @@ export default function BuildLabPage() {
                         </label>
                         <input
                            id="project-title"
+                           name="title"
                            type="text"
                            required
+                           value={formData.title}
+                           onChange={handleInputChange}
                            aria-label={submissionType === 'product' ? 'Project or Product Title' : 'Idea or Startup Concept Title'}
                            placeholder={submissionType === 'product' ? 'e.g. PeerPay FUOYE' : 'e.g. Campus Automated Lost & Found'}
                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:border-teal-600"
@@ -514,7 +510,10 @@ export default function BuildLabPage() {
                               <label htmlFor="demo-url" className="block text-xs font-bold text-slate-700 uppercase mb-1">Live Demo URL</label>
                               <input
                                  id="demo-url"
+                                 name="demoUrl"
                                  type="url"
+                                 value={formData.demoUrl}
+                                 onChange={handleInputChange}
                                  aria-label="Live Demo URL"
                                  placeholder="https://..."
                                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:border-teal-600"
@@ -524,7 +523,10 @@ export default function BuildLabPage() {
                               <label htmlFor="github-url" className="block text-xs font-bold text-slate-700 uppercase mb-1">GitHub Repo URL</label>
                               <input
                                  id="github-url"
+                                 name="githubUrl"
                                  type="url"
+                                 value={formData.githubUrl}
+                                 onChange={handleInputChange}
                                  aria-label="GitHub Repository URL"
                                  placeholder="https://github.com/..."
                                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:border-teal-600"
@@ -537,8 +539,11 @@ export default function BuildLabPage() {
                         <label htmlFor="submitter-phone" className="block text-xs font-bold text-slate-700 uppercase mb-1">WhatsApp / Phone Number</label>
                         <input
                            id="submitter-phone"
+                           name="phone"
                            type="tel"
                            required
+                           value={formData.phone}
+                           onChange={handleInputChange}
                            aria-label="WhatsApp or Phone Number"
                            placeholder="e.g. 08123456789"
                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:border-teal-600"
@@ -551,8 +556,11 @@ export default function BuildLabPage() {
                         </label>
                         <textarea
                            id="project-desc"
+                           name="desc"
                            rows={4}
                            required
+                           value={formData.desc}
+                           onChange={handleInputChange}
                            aria-label={submissionType === 'product' ? 'Description & Technologies Used' : 'Problem Solved & What Help You Need'}
                            placeholder={submissionType === 'product' ? 'Tell us what your product does and the tech stack you built it with...' : 'Describe what problem your idea solves and what engineering/mentor support you need...'}
                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:border-teal-600"
@@ -566,11 +574,36 @@ export default function BuildLabPage() {
                         </div>
                      )}
 
+                     {/* Inline Success or Error Alert directly above the Submit button */}
+                     {submitStatus === 'success' && (
+                        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-bold flex items-center gap-2.5 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                           <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+                           <span>{submitMessage}</span>
+                        </div>
+                     )}
+
+                     {submitStatus === 'error' && (
+                        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm font-bold flex items-center gap-2.5 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                           <AlertCircle size={18} className="text-rose-600 shrink-0" />
+                           <span>{submitMessage}</span>
+                        </div>
+                     )}
+
                      <button
                         type="submit"
-                        className="w-full py-3.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm shadow-xs transition-all active:scale-98 cursor-pointer"
+                        disabled={isSubmitting}
+                        className="w-full py-3.5 rounded-xl bg-teal-700 hover:bg-teal-800 disabled:opacity-60 text-white font-bold text-sm shadow-xs transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2"
                      >
-                        {submissionType === 'product' ? 'Submit Product to Showcase' : 'Pitch Idea to Technical Directorate'}
+                        {isSubmitting ? (
+                           <>
+                              <Loader2 size={16} className="animate-spin" />
+                              <span>Submitting...</span>
+                           </>
+                        ) : (
+                           <span>
+                              {submissionType === 'product' ? 'Submit Product to Showcase' : 'Pitch Idea to Technical Directorate'}
+                           </span>
+                        )}
                      </button>
                   </form>
                </div>

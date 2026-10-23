@@ -59,7 +59,7 @@ export default function GamesDirectory() {
             </div>
 
             {/* Foreground Details & Call to Action */}
-            <div className="relative z-10 max-w-3xl space-y-5 text-left">
+            <div className="relative z-10 max-w-3xl space-y-5 text-center sm:text-left">
                <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-white/90">
                   Department of Computer Science &bull; FUOYE
                </p>
@@ -71,12 +71,12 @@ export default function GamesDirectory() {
                   </span>
                </h1>
 
-               <p className="text-indigo-100 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
+               <p className="text-indigo-100 text-base sm:text-lg leading-relaxed max-w-xl mx-auto sm:mx-0 font-medium">
                   Play weekly mini-games crafted by departmental open-source contributors, test your skills, and compete on the live leaderboard.
                </p>
 
                {/* Call to Action Buttons */}
-               <div className="pt-2 flex flex-wrap items-center gap-3.5">
+               <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3.5">
                   <a
                      href="#featured-game"
                      className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-indigo-700 font-bold text-sm transition-all duration-300 active:scale-95"

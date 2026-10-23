@@ -21,7 +21,8 @@ import {
    ExternalLink,
    MessageSquare,
    Send,
-   CheckCircle2
+   CheckCircle2,
+   GraduationCap
 } from 'lucide-react';
 
 const REPO_URL = 'https://github.com/nickfrostech/nacossfuoye';
@@ -78,22 +79,56 @@ const DO_SOMETHING_ITEMS = [
    },
 ];
 
+const PRO_WHATSAPP_NUMBER = '2348055986730';
+const LEVEL_JOIN_MSG = encodeURIComponent(
+   `Hello P.R.O, I would like to join my departmental level WhatsApp group.\n\n` +
+   `• Full Name: \n` +
+   `• Matric No: \n` +
+   `• Level (100L / 200L / 300L / 400L): `
+);
+
+const SPORT_DIRECTOR_NUMBER = '2349137345520';
+const SPORT_JOIN_MSG = encodeURIComponent(
+   `Hello Sports Director, I would like to join the NACOSS FUOYE Sports community and games/football group.\n\n` +
+   `• Full Name: \n` +
+   `• Level: \n` +
+   `• Sport of Interest (Football, Basketball, Table Tennis, Chess, Esports, etc.): `
+);
+
 const COMMUNITY_CHANNELS = [
    {
       name: 'WhatsApp Channel',
-      desc: 'Official departmental announcements, level channels & study circles',
+      desc: 'Official departmental announcements, broad updates & broadcast circulars',
       icon: MessageSquare,
       color: 'bg-emerald-500 text-white',
-      badge: 'Most Active',
+      badge: 'Broadcast',
       linkText: 'Join Channel',
       url: 'https://whatsapp.com/channel/0029VaikWEcGOj9fZKC4sK2N',
    },
    {
-      name: 'Departmental Secretariat',
-      desc: 'Speak directly with executive representatives and student welfare',
+      name: 'Join Your Level Group',
+      desc: 'Connect with course mates in the official 100L–400L class WhatsApp groups via the P.R.O',
+      icon: GraduationCap,
+      color: 'bg-blue-600 text-white',
+      badge: 'Level Groups',
+      linkText: 'Message P.R.O',
+      url: `https://wa.me/${PRO_WHATSAPP_NUMBER}?text=${LEVEL_JOIN_MSG}`,
+   },
+   {
+      name: 'Join Sports Community',
+      desc: 'Departmental football teams, inter-level tournaments, athletics & indoor games',
+      icon: Trophy,
+      color: 'bg-amber-600 text-white',
+      badge: 'Sports Hub',
+      linkText: 'Message Sports Director',
+      url: `https://wa.me/${SPORT_DIRECTOR_NUMBER}?text=${SPORT_JOIN_MSG}`,
+   },
+   {
+      name: 'Departmental Directory',
+      desc: 'Speak directly with executive representatives and student welfare leadership',
       icon: Users,
       color: 'bg-purple-600 text-white',
-      badge: 'Support',
+      badge: 'Directory',
       linkText: 'View Directory',
       url: '/governance',
    },
@@ -424,7 +459,7 @@ export default function Navbar() {
                   </div>
 
                   {/* Channel Cards */}
-                  <div className="space-y-3">
+                  <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
                      {COMMUNITY_CHANNELS.map((channel) => {
                         const ChannelIcon = channel.icon;
                         const isInternal = channel.url.startsWith('/');

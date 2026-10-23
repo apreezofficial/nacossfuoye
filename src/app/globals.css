@@ -22,6 +22,7 @@
 @layer base {
    html {
       scroll-behavior: smooth;
+      -webkit-tap-highlight-color: transparent;
    }
 
    body {
@@ -40,6 +41,14 @@
 @layer utilities {
    .flex-center {
       @apply flex items-center justify-center;
+   }
+
+   .no-scrollbar::-webkit-scrollbar {
+      display: none;
+   }
+   .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
    }
 }
 

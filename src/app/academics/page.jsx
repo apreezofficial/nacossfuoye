@@ -6,24 +6,32 @@ import {
    Send,
    Laptop,
    CheckCircle2,
+   AlertCircle,
    BookOpen,
    ExternalLink
 } from 'lucide-react';
 import { DocumentFolders } from '@esvigy/react';
 import COURSES_DATA from '@/data/courses.json';
 
-const WHATSAPP_CHANNEL_URL = 'https://whatsapp.com/channel/0029VaikWEcGOj9fZKC4sK2N';
-const DEFAULT_DRIVE_URL = process.env.NEXT_PUBLIC_DRIVE_MATERIALS_URL || 'https://drive.google.com/drive/folders/1-nacossfuoye-materials';
+const VP_WHATSAPP_NUMBER = '2347043068635';
+const MATERIAL_CONTRIBUTION_MSG = encodeURIComponent(
+   `Hello Vice President, I would like to contribute academic materials or software to the NACOSS FUOYE Portal.\n\n` +
+   `• Contributor Name: \n` +
+   `• Course Code / Material Title: \n` +
+   `• Academic Level (100L-400L): \n` +
+   `• Drive Link / File Attachment: `
+);
+const CONTRIBUTE_MATERIALS_URL = `https://wa.me/${VP_WHATSAPP_NUMBER}?text=${MATERIAL_CONTRIBUTION_MSG}`;
+const DEFAULT_DRIVE_URL = 'https://drive.google.com/drive/folders/1-nacossfuoye-materials';
 
-const getLevelDriveUrl = (level) => {
-   const driveLinks = {
-      '100': process.env.NEXT_PUBLIC_DRIVE_100L_URL || DEFAULT_DRIVE_URL,
-      '200': process.env.NEXT_PUBLIC_DRIVE_200L_URL || DEFAULT_DRIVE_URL,
-      '300': process.env.NEXT_PUBLIC_DRIVE_300L_URL || DEFAULT_DRIVE_URL,
-      '400': process.env.NEXT_PUBLIC_DRIVE_400L_URL || DEFAULT_DRIVE_URL,
-   };
-   return driveLinks[level] || DEFAULT_DRIVE_URL;
+const LEVEL_DRIVE_LINKS = {
+   '100': DEFAULT_DRIVE_URL,
+   '200': DEFAULT_DRIVE_URL,
+   '300': DEFAULT_DRIVE_URL,
+   '400': DEFAULT_DRIVE_URL,
 };
+
+const getLevelDriveUrl = (level) => LEVEL_DRIVE_LINKS[level] || DEFAULT_DRIVE_URL;
 
 const LEVELS = [
    { id: 'all', label: 'All Levels' },
@@ -51,6 +59,7 @@ export default function AcademicsPage() {
    });
    const [isSubmitting, setIsSubmitting] = useState(false);
    const [isSubmitted, setIsSubmitted] = useState(false);
+   const [submitError, setSubmitError] = useState('');
 
    const handleInputChange = (e) => {
       const { name, value } = e.target;
@@ -60,24 +69,28 @@ export default function AcademicsPage() {
    const handleSoftwareSubmit = async (e) => {
       e.preventDefault();
       setIsSubmitting(true);
+      setSubmitError('');
 
       try {
-         // GOOGLE APPS SCRIPT WEB APP INTEGRATION:
-         // Once deployed, set NEXT_PUBLIC_SOFTWARE_SCRIPT_URL in your .env
-         // const scriptUrl = process.env.NEXT_PUBLIC_SOFTWARE_SCRIPT_URL;
-         // if (scriptUrl) {
-         //    await fetch(scriptUrl, {
-         //       method: 'POST',
-         //       mode: 'no-cors',
-         //       headers: { 'Content-Type': 'application/json' },
-         //       body: JSON.stringify({ ...formData, timestamp: new Date().toISOString() })
-         //    });
-         // }
-         await new Promise((resolve) => setTimeout(resolve, 800));
+         const scriptUrl = process.env.NEXT_PUBLIC_APPS_SCRIPT_URL;
+         if (scriptUrl) {
+            await fetch(scriptUrl, {
+               method: 'POST',
+               mode: 'no-cors',
+               headers: { 'Content-Type': 'application/json' },
+               body: JSON.stringify({
+                  type: 'software_request',
+                  ...formData,
+                  timestamp: new Date().toISOString(),
+               }),
+            });
+         } else {
+            await new Promise((resolve) => setTimeout(resolve, 800));
+         }
          setIsSubmitted(true);
       } catch (err) {
          console.error('Submission error:', err);
-         setIsSubmitted(true);
+         setSubmitError('Unable to send request. Please check your internet connection and try again.');
       } finally {
          setIsSubmitting(false);
       }
@@ -117,7 +130,7 @@ export default function AcademicsPage() {
             </div>
 
             {/* Foreground Details & Call to Action */}
-            <div className="relative z-10 max-w-3xl space-y-5 text-left">
+            <div className="relative z-10 max-w-3xl space-y-5 text-center sm:text-left">
                <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-white/90">
                   Department of Computer Science &bull; FUOYE
                </p>
@@ -129,12 +142,12 @@ export default function AcademicsPage() {
                   </span>
                </h1>
 
-               <p className="text-blue-50 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
+               <p className="text-blue-50 text-base sm:text-lg leading-relaxed max-w-xl mx-auto sm:mx-0 font-medium">
                   Official departmental curriculum, registered units, course outlines, and verified software programmes and lab packages curated for FUOYE Computer Science students.
                </p>
 
                {/* Call to Action Buttons */}
-               <div className="pt-2 flex flex-wrap items-center gap-3.5">
+               <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3.5">
                   <a
                      href="#academics-tabs"
                      onClick={() => setActiveTab('courses')}
@@ -157,49 +170,55 @@ export default function AcademicsPage() {
          </section>
 
          {/* Navigation Tabs (Courses vs Software) */}
-         <div id="academics-tabs" className="scroll-mt-6 flex flex-wrap items-center justify-between gap-4 mb-8">
-            <div className="flex items-center gap-2 p-1.5 bg-white border border-slate-200 rounded-2xl shadow-xs">
-               <button
-                  type="button"
-                  onClick={() => setActiveTab('courses')}
-                  className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${activeTab === 'courses'
-                     ? 'bg-blue-700 text-white shadow-xs'
-                     : 'text-slate-600 hover:text-blue-700'
-                     }`}
-               >
-                  <BookOpen size={16} />
-                  <span>Course Vaults &amp; Units</span>
-               </button>
+         <div id="academics-tabs" className="scroll-mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div className="w-full sm:w-auto p-1.5 bg-white border border-slate-200 rounded-2xl shadow-xs">
+               <div className="grid grid-cols-2 sm:flex sm:items-center gap-1.5">
+                  <button
+                     type="button"
+                     onClick={() => setActiveTab('courses')}
+                     className={`w-full sm:w-auto px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer select-none active:scale-[0.98] ${activeTab === 'courses'
+                        ? 'bg-blue-700 text-white shadow-xs'
+                        : 'text-slate-600 hover:text-blue-700'
+                        }`}
+                  >
+                     <BookOpen size={16} className="shrink-0" />
+                     <span className="sm:hidden">Courses</span>
+                     <span className="hidden sm:inline">Course Vaults &amp; Units</span>
+                  </button>
 
-               <button
-                  type="button"
-                  onClick={() => setActiveTab('software')}
-                  className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${activeTab === 'software'
-                     ? 'bg-blue-700 text-white shadow-xs'
-                     : 'text-slate-600 hover:text-blue-700'
-                     }`}
-               >
-                  <Laptop size={16} />
-                  <span>Software &amp; Programmes</span>
-               </button>
+                  <button
+                     type="button"
+                     onClick={() => setActiveTab('software')}
+                     className={`w-full sm:w-auto px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer select-none active:scale-[0.98] ${activeTab === 'software'
+                        ? 'bg-blue-700 text-white shadow-xs'
+                        : 'text-slate-600 hover:text-blue-700'
+                        }`}
+                  >
+                     <Laptop size={16} className="shrink-0" />
+                     <span className="sm:hidden">Software</span>
+                     <span className="hidden sm:inline">Software &amp; Programmes</span>
+                  </button>
+               </div>
             </div>
 
             {/* Level Filter Tabs (Shown when in courses tab) */}
             {activeTab === 'courses' && (
-               <div className="flex flex-wrap items-center gap-1.5">
-                  {LEVELS.map((lvl) => (
-                     <button
-                        key={lvl.id}
-                        type="button"
-                        onClick={() => setActiveLevel(lvl.id)}
-                        className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer ${activeLevel === lvl.id
-                           ? 'bg-blue-700 text-white shadow-xs'
-                           : 'bg-white border border-slate-200 text-slate-700 hover:border-blue-300 hover:text-blue-700'
-                           }`}
-                     >
-                        {lvl.label}
-                     </button>
-                  ))}
+               <div className="w-full sm:w-auto overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 py-0.5">
+                  <div className="flex items-center gap-1.5 min-w-max">
+                     {LEVELS.map((lvl) => (
+                        <button
+                           key={lvl.id}
+                           type="button"
+                           onClick={() => setActiveLevel(lvl.id)}
+                           className={`shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer select-none active:scale-[0.97] whitespace-nowrap ${activeLevel === lvl.id
+                              ? 'bg-blue-700 text-white shadow-xs'
+                              : 'bg-white border border-slate-200 text-slate-700 hover:border-blue-300 hover:text-blue-700'
+                              }`}
+                        >
+                           {lvl.label}
+                        </button>
+                     ))}
+                  </div>
                </div>
             )}
          </div>
@@ -539,6 +558,14 @@ export default function AcademicsPage() {
                            </p>
                         </div>
 
+                        {/* Error Alert directly above submit button */}
+                        {submitError && (
+                           <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm font-bold flex items-center gap-2.5 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                              <AlertCircle size={18} className="text-rose-600 shrink-0" />
+                              <span>{submitError}</span>
+                           </div>
+                        )}
+
                         {/* Submit Button */}
                         <button
                            type="submit"
@@ -571,12 +598,12 @@ export default function AcademicsPage() {
                If you are a lecturer, course representative, or student with past questions, lecture notes, textbooks, or useful software packages and installers to share with fellow students, please get in touch with the academic and technical committee.
             </p>
             <a
-               href={WHATSAPP_CHANNEL_URL}
+               href={CONTRIBUTE_MATERIALS_URL}
                target="_blank"
-               rel="noreferrer"
+               rel="noopener noreferrer"
                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:text-blue-700 hover:border-blue-300 text-sm font-bold shadow-xs hover:shadow-sm transition-all active:scale-95"
             >
-               <span>Contribute Materials or Software</span>
+               <span>Message VP with Materials</span>
                <ArrowRight size={16} />
             </a>
          </div>

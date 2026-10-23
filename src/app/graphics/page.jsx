@@ -42,7 +42,7 @@ export default function GraphicsPage() {
             </div>
 
             {/* Foreground Details & Call to Action */}
-            <div className="relative z-10 max-w-3xl space-y-5 text-left">
+            <div className="relative z-10 max-w-3xl space-y-5 text-center sm:text-left">
                <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-white/90">
                   Department of Computer Science &bull; FUOYE
                </p>
@@ -54,12 +54,12 @@ export default function GraphicsPage() {
                   </span>
                </h1>
 
-               <p className="text-purple-100 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
+               <p className="text-purple-100 text-base sm:text-lg leading-relaxed max-w-xl mx-auto sm:mx-0 font-medium">
                   Select and generate official departmental celebration designs, social media flyers, educational quotes, and upcoming verifiable certificates.
                </p>
 
                {/* Call to Action Buttons */}
-               <div className="pt-2 flex flex-wrap items-center gap-3.5">
+               <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3.5">
                   <button
                      type="button"
                      onClick={() => {

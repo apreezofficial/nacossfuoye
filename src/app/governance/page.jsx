@@ -34,7 +34,7 @@ export default function GovernancePage() {
             </div>
 
             {/* Foreground Details & Call to Action */}
-            <div className="relative z-10 max-w-3xl space-y-5 text-left">
+            <div className="relative z-10 max-w-3xl space-y-5 text-center sm:text-left">
                <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-white/90">
                   Department of Computer Science &bull; FUOYE
                </p>
@@ -46,12 +46,12 @@ export default function GovernancePage() {
                   </span>
                </h1>
 
-               <p className="text-green-50 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
+               <p className="text-green-50 text-base sm:text-lg leading-relaxed max-w-xl mx-auto sm:mx-0 font-medium">
                   Connect with the executive council and student representatives, review electoral guidelines, and exercise your democratic franchise during departmental elections.
                </p>
 
                {/* Call to Action Buttons */}
-               <div className="pt-2 flex flex-wrap items-center gap-3.5">
+               <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3.5">
                   <button
                      type="button"
                      onClick={() => {
@@ -80,33 +80,37 @@ export default function GovernancePage() {
          </section>
 
          {/* Navigation Tabs */}
-         <div id="governance-content" className="scroll-mt-6 flex flex-wrap items-center justify-between gap-4 mb-8">
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 p-1.5 bg-white border border-slate-200 rounded-2xl shadow-xs w-full sm:w-auto">
-               <button
-                  type="button"
-                  onClick={() => setActiveTab('stakeholders')}
-                  className={`flex-1 sm:flex-initial px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
-                     activeTab === 'stakeholders'
-                        ? 'bg-green-700 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-green-800'
-                  }`}
-               >
-                  <Users size={16} />
-                  <span>Leadership &amp; Stakeholders</span>
-               </button>
+         <div id="governance-content" className="scroll-mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div className="w-full sm:w-auto p-1.5 bg-white border border-slate-200 rounded-2xl shadow-xs">
+               <div className="grid grid-cols-2 sm:flex sm:items-center gap-1.5">
+                  <button
+                     type="button"
+                     onClick={() => setActiveTab('stakeholders')}
+                     className={`w-full sm:w-auto px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer select-none active:scale-[0.98] ${
+                        activeTab === 'stakeholders'
+                           ? 'bg-green-700 text-white shadow-xs'
+                           : 'text-slate-600 hover:text-green-800'
+                     }`}
+                  >
+                     <Users size={16} className="shrink-0" />
+                     <span className="sm:hidden">Leadership</span>
+                     <span className="hidden sm:inline">Leadership &amp; Stakeholders</span>
+                  </button>
 
-               <button
-                  type="button"
-                  onClick={() => setActiveTab('voting')}
-                  className={`flex-1 sm:flex-initial px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
-                     activeTab === 'voting'
-                        ? 'bg-green-700 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-green-800'
-                  }`}
-               >
-                  <Vote size={16} />
-                  <span>Election Voting Center</span>
-               </button>
+                  <button
+                     type="button"
+                     onClick={() => setActiveTab('voting')}
+                     className={`w-full sm:w-auto px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer select-none active:scale-[0.98] ${
+                        activeTab === 'voting'
+                           ? 'bg-green-700 text-white shadow-xs'
+                           : 'text-slate-600 hover:text-green-800'
+                     }`}
+                  >
+                     <Vote size={16} className="shrink-0" />
+                     <span className="sm:hidden">Voting Center</span>
+                     <span className="hidden sm:inline">Election Voting Center</span>
+                  </button>
+               </div>
             </div>
          </div>
 

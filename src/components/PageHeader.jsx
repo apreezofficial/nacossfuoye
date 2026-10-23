@@ -9,7 +9,7 @@ export default function PageHeader({
 }) {
    return (
       <div className={`flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 ${className}`}>
-         <div className="shrink-0">
+         <div className="w-full shrink-0 text-center md:w-auto md:text-left">
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{title}</h1>
             {description && <p className="mt-1.5 text-base sm:text-lg text-slate-600">{description}</p>}
          </div>

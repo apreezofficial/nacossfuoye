@@ -10,93 +10,19 @@ import {
    Trophy,
 } from 'lucide-react';
 import { ActionCreate } from '@esvigy/react';
+import { DEPARTMENT_EVENTS, EXTERNAL_HACKATHONS } from '@/data/portal-updates';
 
-const DEPARTMENT_EVENTS = [
-   {
-      id: 'fresher-orientation',
-      title: 'Fresher\'s Technical Orientation',
-      desc: 'Hands-on workstation configuration, installing VS Code, Python, and C compilers, plus introduction to departmental academic resources.',
-      date: 'NOV 12, 2026',
-      time: '10:00 AM - 1:00 PM',
-      venue: 'Department Computer Laboratory, Phase II',
-      type: 'Workshop',
-      status: 'Upcoming',
-      badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200/60',
-   },
-   {
-      id: 'tech-symposium',
-      title: 'Annual Tech Symposium: AI Agents & Modern Web Systems',
-      desc: 'Keynote sessions with alumni software engineers and industry guest speakers discussing career transitions, internships, and cloud architectures.',
-      date: 'NOV 28, 2026',
-      time: '11:00 AM - 3:30 PM',
-      venue: 'Planing',
-      type: 'Symposium',
-      status: 'Upcoming',
-      badgeColor: 'bg-blue-50 text-blue-800 border-blue-200/60',
-   },
-   {
-      id: 'git-bootcamp',
-      title: 'Git, GitHub & Open Source Contribution Sprint',
-      desc: 'Live interactive workshop teaching clean Git workflows, pull requests, resolving merge conflicts, and contributing to departmental open source repos.',
-      date: 'DEC 05, 2026',
-      time: '2:00 PM - 5:00 PM',
-      venue: 'Virtual (Google Meet)',
-      type: 'Hands-on Bootcamp',
-      status: 'Upcoming',
-      badgeColor: 'bg-purple-50 text-purple-800 border-purple-200/60',
-   },
-];
-
-const EXTERNAL_HACKATHONS = [
-   {
-      id: 'google-solution-challenge',
-      title: 'Google Solution Challenge 2026',
-      organizer: 'Google Developer Student Clubs',
-      desc: 'Build solutions addressing one or more of the UN 17 Sustainable Development Goals using Google developer technologies.',
-      deadline: 'Apply by Nov 30, 2026',
-      prize: '$12,000 USD Prize Pool + Mentorship',
-      mode: 'Virtual (Global)',
-      tags: ['AI/ML', 'Cloud', 'Mobile', 'Civic Tech'],
-      applyUrl: 'https://developers.google.com/community/gdsc-solution-challenge',
-      featured: true,
-   },
-   {
-      id: 'eth-global-hack',
-      title: 'ETHGlobal Online Sprint',
-      organizer: 'ETHGlobal Community',
-      desc: '48-hour global blockchain hackathon focusing on smart contracts, decentralized finance protocols, and decentralized apps.',
-      deadline: 'Apply by Dec 08, 2026',
-      prize: '$100,000 USD Total Bounties',
-      mode: 'Virtual',
-      tags: ['Web3', 'Smart Contracts', 'DeFi'],
-      applyUrl: 'https://ethglobal.com',
-      featured: true,
-   },
-   {
-      id: 'nacoss-national-hack',
-      title: 'NACOSS National Inter-University Tech Fest',
-      organizer: 'NACOSS National Secretariat',
-      desc: 'Premier university hackathon bringing top computer science departments across Nigeria together to build scalable fintech and edtech.',
-      deadline: 'Apply by Jan 15, 2027',
-      prize: '₦3,500,000 Cash + Incubator Fast-track',
-      mode: 'Hybrid (Abuja & Online)',
-      tags: ['FinTech', 'EdTech', 'HealthTech'],
-      applyUrl: 'https://nacoss.org.ng',
-      featured: true,
-   },
-   {
-      id: 'hng-internship-challenge',
-      title: 'HNG Pre-Internship Hack Sprint',
-      organizer: 'HNG Network',
-      desc: 'Rapid product sprint testing full-stack, frontend, DevOps and UI/UX design capabilities under tight deadlines.',
-      deadline: 'Apply by Jan 25, 2027',
-      prize: 'Internship Placement & Swag Packs',
-      mode: 'Virtual',
-      tags: ['Fullstack', 'Frontend', 'Backend', 'DevOps'],
-      applyUrl: 'https://hng.tech',
-      featured: false,
-   },
-];
+const PRO_WHATSAPP_NUMBER = '2348055986730';
+const EVENT_SUBMISSION_MSG = encodeURIComponent(
+   `Hello P.R.O, I would like to submit a student tech event / study circle for listing on the NACOSS FUOYE Events Board.\n\n` +
+   `• Event Title: \n` +
+   `• Organizer / Club: \n` +
+   `• Date & Time: \n` +
+   `• Venue (Physical / Virtual): \n` +
+   `• Brief Description: \n` +
+   `• Registration Link / Flyer: `
+);
+const SUBMIT_EVENT_URL = `https://wa.me/${PRO_WHATSAPP_NUMBER}?text=${EVENT_SUBMISSION_MSG}`;
 
 export default function EventsPage() {
    const [activeTab, setActiveTab] = useState('events'); // 'events' | 'hackathons'
@@ -116,7 +42,7 @@ export default function EventsPage() {
             </div>
 
             {/* Foreground Details & Call to Action */}
-            <div className="relative z-10 max-w-3xl space-y-5 text-left">
+            <div className="relative z-10 max-w-3xl space-y-5 text-center sm:text-left">
                <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-white/90">
                   Department of Computer Science &bull; FUOYE
                </p>
@@ -128,12 +54,12 @@ export default function EventsPage() {
                   </span>
                </h1>
 
-               <p className="text-amber-100 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
+               <p className="text-amber-100 text-base sm:text-lg leading-relaxed max-w-xl mx-auto sm:mx-0 font-medium">
                   Stay updated with upcoming departmental workshops, technical symposiums, and curated national and international hackathons open for application.
                </p>
 
                {/* Call to Action Buttons */}
-               <div className="pt-2 flex flex-wrap items-center gap-3.5">
+               <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3.5">
                   <button
                      type="button"
                      onClick={() => {
@@ -162,31 +88,35 @@ export default function EventsPage() {
          </section>
 
          {/* Navigation Tabs */}
-         <div id="events-board" className="scroll-mt-6 flex flex-wrap items-center justify-between gap-4 mb-8">
-            <div className="flex items-center gap-2 p-1.5 bg-white border border-slate-200 rounded-2xl shadow-xs">
-               <button
-                  type="button"
-                  onClick={() => setActiveTab('events')}
-                  className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${activeTab === 'events'
-                        ? 'bg-amber-700 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-amber-800'
-                     }`}
-               >
-                  <Calendar size={16} />
-                  <span>Upcoming Events ({DEPARTMENT_EVENTS.length})</span>
-               </button>
+         <div id="events-board" className="scroll-mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div className="w-full sm:w-auto p-1.5 bg-white border border-slate-200 rounded-2xl shadow-xs">
+               <div className="grid grid-cols-2 sm:flex sm:items-center gap-1.5">
+                  <button
+                     type="button"
+                     onClick={() => setActiveTab('events')}
+                     className={`w-full sm:w-auto px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer select-none active:scale-[0.98] ${activeTab === 'events'
+                           ? 'bg-amber-700 text-white shadow-xs'
+                           : 'text-slate-600 hover:text-amber-800'
+                        }`}
+                  >
+                     <Calendar size={16} className="shrink-0" />
+                     <span className="sm:hidden">Events ({DEPARTMENT_EVENTS.length})</span>
+                     <span className="hidden sm:inline">Upcoming Events ({DEPARTMENT_EVENTS.length})</span>
+                  </button>
 
-               <button
-                  type="button"
-                  onClick={() => setActiveTab('hackathons')}
-                  className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${activeTab === 'hackathons'
-                        ? 'bg-amber-700 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-amber-800'
-                     }`}
-               >
-                  <Trophy size={16} />
-                  <span>Hackathons to Apply For ({EXTERNAL_HACKATHONS.length})</span>
-               </button>
+                  <button
+                     type="button"
+                     onClick={() => setActiveTab('hackathons')}
+                     className={`w-full sm:w-auto px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer select-none active:scale-[0.98] ${activeTab === 'hackathons'
+                           ? 'bg-amber-700 text-white shadow-xs'
+                           : 'text-slate-600 hover:text-amber-800'
+                        }`}
+                  >
+                     <Trophy size={16} className="shrink-0" />
+                     <span className="sm:hidden">Hackathons ({EXTERNAL_HACKATHONS.length})</span>
+                     <span className="hidden sm:inline">Hackathons to Apply For ({EXTERNAL_HACKATHONS.length})</span>
+                  </button>
+               </div>
             </div>
          </div>
 
@@ -246,12 +176,12 @@ export default function EventsPage() {
                      If you are organizing a level revision class, programming workshop, or design tutorial, reach out to the executive council to list it on the calendar.
                   </p>
                   <a
-                     href="https://whatsapp.com/channel/0029VaikWEcGOj9fZKC4sK2N"
+                     href={SUBMIT_EVENT_URL}
                      target="_blank"
-                     rel="noreferrer"
+                     rel="noopener noreferrer"
                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs sm:text-sm font-bold shadow-xs transition-all mt-1"
                   >
-                     <span>Submit Event for Listing</span>
+                     <span>Message P.R.O to List Event</span>
                      <ArrowRight size={14} />
                   </a>
                </div>

@@ -118,10 +118,13 @@ export default function Footer() {
                         <MapPin size={14} className="text-primary shrink-0" />
                         <span>Department of Computer Science, FUOYE, Oye-Campus, Ekiti State</span>
                      </div>
-                     <div className="flex items-center gap-2.5">
+                     <a
+                        href="mailto:nacossfuoye100@gmail.com"
+                        className="flex items-center gap-2.5 hover:text-white transition-colors"
+                     >
                         <Mail size={14} className="text-primary shrink-0" />
                         <span>nacossfuoye100@gmail.com</span>
-                     </div>
+                     </a>
                   </div>
                </div>
 

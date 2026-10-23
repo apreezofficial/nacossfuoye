@@ -8,20 +8,9 @@ import {
    ArrowUpRight,
    GraduationCap
 } from 'lucide-react';
+import { PORTAL_CONTRIBUTORS } from '@/data/portal-updates';
 
 const REPO_URL = 'https://github.com/nickfrostech/nacossfuoye';
-
-const CONTRIBUTORS = [
-   {
-      login: 'nickfrostech',
-      name: 'Nicholas Benson (Nick Frost)',
-      level: '400 Level',
-      role: 'Lead Architect & Core Maintainer',
-      avatar_url: 'https://avatars.githubusercontent.com/u/166176427?v=4',
-      html_url: 'https://github.com/nickfrostech',
-      bio: 'Architected and built the core NACOSS FUOYE portal infrastructure, memo systems, and games engine.',
-   },
-];
 
 export default function ContributorsSection() {
 
@@ -40,7 +29,7 @@ export default function ContributorsSection() {
          {/* Contributors Cards Grid */}
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Contributor Cards */}
-            {CONTRIBUTORS.map((contributor) => (
+            {PORTAL_CONTRIBUTORS.map((contributor) => (
                <div
                   key={contributor.login}
                   className="relative group flex flex-col p-6 rounded-3xl bg-white border border-slate-200 overflow-hidden"

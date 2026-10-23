@@ -21,7 +21,7 @@ export default function HomeHero() {
          </div>
 
          {/* Foreground Details & Call to Action */}
-         <div className="relative z-10 max-w-3xl space-y-5 text-left">
+         <div className="relative z-10 max-w-3xl space-y-5 text-center sm:text-left">
             <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-white/90">
                Department of Computer Science &bull; FUOYE
             </p>
@@ -33,12 +33,12 @@ export default function HomeHero() {
                </span>
             </h1>
 
-            <p className="text-slate-100 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
+            <p className="text-slate-100 text-base sm:text-lg leading-relaxed max-w-xl mx-auto sm:mx-0 font-medium">
                The official digital hub for Computer Science students at Federal University Oye-Ekiti. Access verified memos, courseware, dev software, student idea incubation under full NDA, and hackathons.
             </p>
 
             {/* Call to Action Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-3.5">
+            <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3.5">
                <Link
                   href="/memos"
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-primary font-bold text-sm shadow-sm hover:shadow-md transition-all duration-300 active:scale-95"
