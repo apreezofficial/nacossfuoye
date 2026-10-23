@@ -22,7 +22,7 @@ const MATERIAL_CONTRIBUTION_MSG = encodeURIComponent(
    `• Drive Link / File Attachment: `
 );
 const CONTRIBUTE_MATERIALS_URL = `https://wa.me/${VP_WHATSAPP_NUMBER}?text=${MATERIAL_CONTRIBUTION_MSG}`;
-const DEFAULT_DRIVE_URL = 'https://drive.google.com/drive/folders/1-nacossfuoye-materials';
+const DEFAULT_DRIVE_URL = 'https://drive.google.com/drive/folders/1xx2xCsIKWdqYBSSZb4eCVnidQTTm_515?usp=sharing';
 
 const LEVEL_DRIVE_LINKS = {
    '100': DEFAULT_DRIVE_URL,

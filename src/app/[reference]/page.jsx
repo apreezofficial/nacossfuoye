@@ -16,21 +16,42 @@ export async function generateMetadata({ params }) {
    if (!data) {
       return {
          title: 'Memo Not Found',
+         robots: { index: false, follow: false },
       };
    }
 
+   const memoUrl = `/${encodeURIComponent(data.reference)}`;
+   const memoTitle = `${data.head} | Official Memorandum`;
+   const memoDesc = `Official NACOSS Memorandum: "${data.head}". Reference: ${data.reference}. Date: ${data.date}. Department of Computer Science, FUOYE.`;
+
    return {
-      title: `${data.head} | NACOSS Portal`,
-      description: `Official NACOSS Memorandum. Ref: ${data.reference}. Date: ${data.date}`,
+      title: data.head,
+      description: memoDesc,
+      alternates: {
+         canonical: memoUrl,
+      },
       openGraph: {
-         title: data.head,
-         description: `Official NACOSS Memorandum. Ref: ${data.reference}. Date: ${data.date}`,
+         title: memoTitle,
+         description: memoDesc,
+         url: memoUrl,
          type: 'article',
+         publishedTime: data.date,
+         authors: ['NACOSS FUOYE Executive Council'],
+         images: [
+            {
+               url: '/og.png',
+               width: 1200,
+               height: 630,
+               alt: `NACOSS FUOYE Memo - ${data.head}`,
+            },
+         ],
       },
       twitter: {
          card: 'summary_large_image',
-         title: data.head,
-         description: `Official NACOSS Memorandum. Ref: ${data.reference}`,
+         title: memoTitle,
+         description: memoDesc,
+         images: ['/og.png'],
+         creator: '@nacossfuoye',
       },
    };
 }
