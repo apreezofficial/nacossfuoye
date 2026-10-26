@@ -29,7 +29,7 @@ export const GAMES = [
    {
       slug: 'stroop-challenge',
       name: 'Stroop Challenge',
-      developer: 'apreezofficial',
+      developer: 'apcodesphere',
       developerLink: 'https://github.com/apreezofficial',
       description: 'Match colours and text under pressure. Can you ignore the word and pick the right card?',
       howToPlay: 'Read the instruction: find the card whose background, text colour or word matches the target colour. You have 5 seconds per round and 3 lives. Wrong picks and timeouts cost a life. Tap a card or press keys 1-4. Each correct answer adds a point.',
